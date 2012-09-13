@@ -1,0 +1,22 @@
+<div class="tab-pane" id="notebook-tab-${notebookId}">
+
+    <div class="page-header">
+      <h1><span id="nb-header-${notebookId}">:: ${label} ::</span> <small>${notebookId}</small></h1>
+    </div>
+
+    <div>
+        <p>
+            <button type="button" class="btn btn-large btn-info" data-loading-text="Loading...">Refresh</button>
+            <button type="button" class="btn btn-large btn-warning">Bookmark this notebook</button>
+            <button type="button" class="btn btn-large btn-danger pull-right">Close</button>
+
+        </p>
+    <div>
+        
+    <!-- will contain metadata -->
+    <div class="well ask-notebook-item-metadata"></div>
+
+    <!-- will contain annotations -->
+    <div class="ask-notebook-item-annotations"></div>
+
+</div>

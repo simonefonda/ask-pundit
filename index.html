@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html>
+<head><title>Ask the pundit (beta)</title></head>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/dojo/1.8/dijit/themes/tundra/tundra.css" media="screen">
+    <link rel="stylesheet" href="css/ask.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<body>
+
+    <div id="ask_container"></div>
+
+<script>
+    dojoConfig = {
+        isDebug: 1,
+        parseOnLoad: true,
+        
+        has: {
+            "dojo-debug-messages": true
+        },
+
+        packages: [
+            // Any references to a "demo" resource should load modules locally, *not* from CDN
+            { name: 'ask', location: '/ask-dojo/js' },
+            { name: 'bootstrap', location: '/ask-dojo/dojo-Bootstrap/src/bootstrap' }
+        ],
+
+        // Timeout after 10 seconds
+        waitSeconds: 10,
+        // Get "fresh" resources
+        // cacheBust: true
+    };
+</script>
+
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.0/dojo/dojo.js"></script>
+<script>
+    require(["ask/Index", "dojo/ready", "dijit/registry", "dojo/json", "dojo/_base/config", "dojo/parser", "dojo/domReady!"], function(Index, ready, registry, JSON, config, parser) {
+        // Parse the page
+        parser.parse();
+        // Do something with demo/AuthoredDialog...
+
+        var index = new Index({name: 'gino', bio: 'zio'}).placeAt(dojo.byId('ask_container'));
+        index.startup();
+
+    });
+</script>
+
+</body></html>

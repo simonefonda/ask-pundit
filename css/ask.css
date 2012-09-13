@@ -1,0 +1,151 @@
+/* @override 
+	http://localhost/ask-dojo/css/ask.css */
+
+/* ################ RESET */
+
+/*
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+*/
+
+/* ################ FINE RESET */
+
+@import 'http://fonts.googleapis.com/css?family=Lato:400,900';
+
+#askTabContainer .tab-content {
+	height: 94%;
+}
+ul.nav-pills {
+	height: 4%;
+}
+
+
+.askNotebookItem {
+    border: 2px solid green;
+}
+
+#askTabContainer {
+    border: 0px solid black;
+	font-family: 'Lato', sans-serif;
+	position: absolute;
+	top: 1%;
+	bottom: 1%;
+	left: 0.5%;
+	right: 0.5%;
+}
+
+.askNotebookItemAnnotation {
+    margin: 0px;
+    padding: 0px;
+	overflow: hidden;
+	*zoom: 1;
+	border-bottom: 1px dashed #aaa;
+}
+
+.askNotebookItemAnnotationTarget {
+	margin: 0px;
+	margin-top: 20px; 
+	padding: 10px;
+   	width: 200px;
+    min-height: 200px;
+    border: 0px;
+    background: #444;
+    border-radius: 3px;
+    float: left;
+    color: #cfc;
+	box-shadow: 0px 3px 16px #444;
+}
+
+.askNotebookItemAnnotationMeta {
+    border-radius: 3px;
+	margin: 30px 70px 10px 220px;
+	padding: 15px;
+	box-shadow: 0px 3px 6px #444;
+	background: #eee;
+	color: #666;
+}
+
+.askNotebookItemAnnotationContent {
+    border-radius: 3px;
+	padding: 10px;
+	margin-left: 230px; 
+	background: #663636;
+	color: #bbb;
+	margin-bottom: 50px;
+	box-shadow: 3px 3px 16px #444;
+}
+
+.askNotebookItemAnnotationContent .annotation-item-content {
+	border-bottom: 1px dashed #aaa;
+	margin: 10px;
+	padding: 5px;	
+}
+
+.askNotebookItemAnnotationContent-subject {
+}
+.askNotebookItemAnnotationContent-predicate {
+	padding-left: 80px;
+	font-size: 2em;
+}
+.askNotebookItemAnnotationContent-object {
+	padding-left: 160px;
+}
+.askNotebookItemAnnotationContent-subject h1,
+.askNotebookItemAnnotationContent-predicate h1,
+.askNotebookItemAnnotationContent-object h1 {
+	font-size: 2em;
+	color: white;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	text-shadow: 5px 3px 5px #333;
+}
+
+.askNotebookItemAnnotationTarget h1 {
+	font-weight: 900;
+	font-size: 1.25em;	
+	color: white;
+	margin-bottom: 10px;
+	margin-top: 20px;
+}
+

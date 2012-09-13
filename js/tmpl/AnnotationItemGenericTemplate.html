@@ -1,0 +1,20 @@
+<div class="annotation-item-content">
+
+    <h1>
+        <div class="${show.depiction}">
+            <img src="${depiction}" />
+        </div>
+        ${label}
+    </h1>
+
+    <div class='${show.description} accordion-heading'>
+        <span class="" data-toggle="collapse" data-target="p[about='desc-${uri}']">Full content</span>
+        <p class="collapse" about="desc-${uri}">${description}</p>
+    </div>
+
+    <div class='${show.types}'>
+        <span class="field-title">Types: </span>
+        <span class="field-inline-content">${types}</span>
+    </div>
+
+</div>
