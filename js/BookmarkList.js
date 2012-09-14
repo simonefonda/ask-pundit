@@ -22,7 +22,6 @@ define(["dojo/_base/declare",
             
             var s = self.socketHelper.socket;
             s.on('res bookmarks', function(data) {
-                console.log('ricevuti bookmarks? yay', data);
                 self.displayBookmarks(data);
             });
 
@@ -31,6 +30,7 @@ define(["dojo/_base/declare",
         constructor: function() {
 
         },
+
         startup: function() {
             var self = this;
             
@@ -44,11 +44,10 @@ define(["dojo/_base/declare",
         
         loadBookmarks: function() {
             this.socketHelper.socket.emit('get bookmarks');
+
         },
         displayBookmarks: function(data) {
             var self = this;
-            
-            console.log('Display bm: ', data)
             dojo.place('<p>List list list</p>', dojo.query('#bookmarksContainer .bookmarks')[0]);
         }
 
