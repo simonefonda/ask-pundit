@@ -1,2 +1,3 @@
 .DS_STORE
 dojoConfig.js
+server/data/collections.db
