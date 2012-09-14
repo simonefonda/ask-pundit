@@ -35,12 +35,13 @@ define(["dojo/_base/declare",
             var self = this;
             
             router.register('/notebooks/', function(evt) {
-                // self._tabsContainer.selectChild(self._tabNotebooks);
+                dojo.query("[href='#tab-notebooks']").tab('show');
                 self.refreshNotebooks();
             });
 
             router.register('/bookmarks/', function(evt) {
-                // self._tabsContainer.selectChild(self._tabBookmarks);
+                dojo.query("[href='#tab-bookmarks']").tab('show');
+
             });
 
             router.register('/notebooks/:id', function(evt) {
@@ -51,28 +52,26 @@ define(["dojo/_base/declare",
             if (document.location.hash === '')
                 router.go("/notebooks/");
 
-
-            on(dojo.query('#ask-pills')[0], on.selector('a[data-toggle="pill"]', 'click'), function (e) {
-                console.log('click on ', e.target);
+            on(dojo.query('#ask-pills')[0], on.selector('a[data-toggle="tab"]', 'click'), function (e) {
 
                 var id = dojo.attr(e.target, 'href');
-                if (id === "#tab-bookmarks")
+                if (id === "#tab-bookmarks") {
                     router.go('/bookmarks/')
-                else if (id === "#tab-notebooks")
-                    router.go('/notebooks/')
-                else 
+                } else if (id === "#tab-notebooks") {
+                    router.go('/notebooks/');
+                } else 
                     router.go('/notebooks/'+ id.substr(-8, 8));
             });
                 
         },
 
         refreshNotebooks: function() {
-            dojo.query('#notebooksContainer').empty();
 
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/public/", {
                 handleAs: "json"
             }).then(
                 function(data) {
+                    dojo.query('#notebooksContainer').empty();
                     for (var i in data.NotebookIDs) 
                         new NotebookItem({notebookId: data.NotebookIDs[i]})
                             .placeAt(dojo.byId('notebooksContainer'));
@@ -93,7 +92,7 @@ define(["dojo/_base/declare",
                     id: 'notebook-tab-'+ id
                 }).placeAt(dojo.byId('ask-tab-content'));
             
-            dojo.query("#pill-"+id).tab('show');
+            dojo.query("#tab-"+id).tab('show');
             
         },
         

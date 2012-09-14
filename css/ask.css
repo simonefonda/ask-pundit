@@ -54,25 +54,30 @@ table {
 @import 'http://fonts.googleapis.com/css?family=Lato:400,900';
 
 #askTabContainer .tab-content {
-	height: 94%;
-}
-ul.nav-pills {
-	height: 4%;
+	position: relative;
+	top: 50px;
 }
 
+#ask-pills {
+	width: 100%;
+	position: fixed;
+	height: 40px;
+	top: 5px;
+	background: #fc0;
+}
 
 .askNotebookItem {
-    border: 2px solid green;
+    
 }
 
 #askTabContainer {
     border: 0px solid black;
 	font-family: 'Lato', sans-serif;
-	position: absolute;
+/*	position: absolute;
 	top: 1%;
 	bottom: 1%;
 	left: 0.5%;
-	right: 0.5%;
+	right: 0.5%;*/
 }
 
 .askNotebookItemAnnotation {

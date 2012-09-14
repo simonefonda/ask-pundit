@@ -1,6 +1,8 @@
 define(["dojo/_base/declare", 
         "dojo/request", 
         "dojo/dom-construct",
+        "dojo/on", 
+        "dojo/router", 
         "dojo/text!ask/tmpl/NotebookTabTemplate.html", 
         "ask/NotebookItemMetadata",
         "ask/NotebookItemAnnotation",
@@ -13,7 +15,7 @@ define(["dojo/_base/declare",
         "dijit/layout/ContentPane", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, 
+    function(declare, request, domConstruct, on, router,
                 notebookTabTemplate, NotebookItemMetadata, NotebookItemAnnotation, 
                 NotebookItemAnnotationContent, NotebookItemAnnotationTarget, 
                 AnnotationItemTextFragment, AnnotationItemGeneric, AnnotationItemPredicate,
@@ -32,10 +34,32 @@ define(["dojo/_base/declare",
             var self = this;
             self.inherited(arguments);
 
-            dojo.place("<li><a href='#notebook-tab-"+this.notebookId+"' data-toggle='pill' id='pill-"+this.notebookId+"'>Notebook "+this.notebookId+"</a></li>", "ask-pills");
+            // place the tab button
+            var b = "<li><a href='#notebook-tab-"+this.notebookId+
+                    "' data-toggle='tab' id='tab-"+this.notebookId+
+                    "'>Notebook "+this.notebookId+"</a></li>";
+            dojo.place(b, "ask-pills");
 
             self.loadNotebookMetadata();
             self.loadNotebookAnnotations();
+     
+            // Close tab button: removes pill + tab content, unregistering
+            // the dojo's widgets
+            on(dojo.byId('nb-tab-close-'+ self.notebookId), 'click', function(e) {
+
+                router.go('/notebooks/');
+
+                var node = dojo.query('#notebook-tab-'+self.notebookId)[0];
+
+                dijit.registry.forEach(function(w){ 
+                    if (w.id === 'notebook-tab-'+self.notebookId) 
+                        w.destroyRecursive();
+                });
+
+                dojo.destroy(dojo.query('#tab-'+self.notebookId)[0].parentNode);
+                dojo.destroy(node);
+                
+            });
      
         }, // startup
         
