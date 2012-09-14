@@ -1,0 +1,28 @@
+// Personalize this file and rename/copy it to dojoConfig.js
+
+dojoConfig = {
+    
+    ask: {
+        // address of the nodejs instance running the server (js/server/server.js)
+        nodeServerAddress: 'localhost:3000'
+    },
+
+    isDebug: 1,
+    parseOnLoad: true,
+    
+    has: {
+        "dojo-debug-messages": true
+    },
+
+    packages: [
+        // Path relative to the the web server hosting the app
+        { name: 'ask', location: '/js' },
+        { name: 'bootstrap', location: '/dojo-Bootstrap/src/bootstrap' }
+    ],
+
+    // Timeout after 10 seconds
+    waitSeconds: 10,
+
+    // Get "fresh" resources
+    // cacheBust: true
+};

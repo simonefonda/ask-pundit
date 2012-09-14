@@ -1,7 +1,8 @@
 define(["dojo/_base/declare", 
         "dojo/router", 
         "dojo/on", 
-        "dojo/request", 
+        "dojo/request",
+        "dojo/_base/config", 
         "dojo/text!ask/tmpl/IndexTemplate.html", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin",
@@ -11,7 +12,7 @@ define(["dojo/_base/declare",
         "bootstrap/Tab",
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane"], 
-    function(declare, router, on, request, 
+    function(declare, router, on, request, config,
         indexTemplate, _WidgetBase, _TemplatedMixin, 
         NotebookItem, NotebookTab, IOHelper, BTab, TabContainer, 
         ContentPane) {
@@ -32,7 +33,7 @@ define(["dojo/_base/declare",
             this.inherited(arguments);
             this.setupRouter();
             
-            this.socketHelper = new IOHelper({serverAddress: 'ws://localhost:3000'});
+            this.socketHelper = new IOHelper({serverAddress: config.ask.nodeServerAddress});
             this.socketHelper;
         },
         

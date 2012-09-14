@@ -30,12 +30,6 @@ io.sockets.on('connection', function (socket) {
             console.log('dced: ', name);
             delete sks[name];
             delete ppl[name];
-            if (name in games)
-                delete games[name];
-            if (name in black)
-                delete black[name];
-            
-            games.removeGame(name);
             refresh();
         });
     });
