@@ -15,9 +15,12 @@
     z-index: 1000;
 }
 
-.askNotebookItem {
-    
+legend.interactive:hover {
+    cursor: pointer;
+    color: #FAA732;
 }
+
+
 
 #askTabContainer {
 	font-family: 'Lato', sans-serif;

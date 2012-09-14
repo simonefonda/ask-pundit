@@ -54,7 +54,25 @@ io.sockets.on('connection', function (socket) {
                 socket.emit('res collection exist ko', {err: err, doc: doc, key: key, name: name});
             } else {
                 console.log('Collection exist!', err, doc, key);
+                // TODO: Sending back the whole object.. password included? super!
                 socket.emit('res collection exist ok', {err: err, doc: doc, key: key});
+            }
+        });
+    });
+
+    socket.on('subscribe collection', function(data) {
+        collections.get(data.name, function(err, doc, key) {
+            if (err) {
+                console.log('err reading :(', err, doc, key);
+                socket.emit('res subscribe collection ko', {err: err, doc: doc, key: key, name: data.name});
+            } else {
+                if (doc.password !== data.password) {
+                    console.log('## WRONG PASS! help', err, doc, key);
+                    socket.emit('res subscribe collection ko', {err: err, doc: doc, key: key, name: data.name});
+                } else {
+                    console.log('Password match yay!', err, doc, key);
+                    socket.emit('res subscribe collection ok', {err: err, doc: doc, key: key});
+                }
             }
         });
     });

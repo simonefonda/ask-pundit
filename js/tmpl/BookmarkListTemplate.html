@@ -1,6 +1,6 @@
 <div id="bookmark-list-content">
 
-    <div class="clearfix">
+    <div class="clearfix row">
         <div class="span7">
             <button type="button" id="bookmarksRefresh" class="btn btn-large btn-info" data-loading-text="Wait a second...">Refresh</button>
         </div>
@@ -9,26 +9,57 @@
     </div>
     <br />
         
-    <div class="clearfix">
+    <div class="clearfix row">
 
-        <div class="bookmarks span7"></div>
+        <div class="bookmarks span7">..loading</div>
 
-        <div class="well myBookmarks span4">
-            <form id="bookmarksCreateForm">
-                <legend>Create a new collection</legend>
-                <input type="text" id="bookmarksNewName" class="span4" placeholder="Collection name" required>
-                
-                <span class="help-block">
-                    <span class="label" id="bookmarksNewNameLabel">Check</span>
-                </span>
-                <input type="text" id="bookmarksNewDescription" class="span4" placeholder="Description">
-                <input type="password"  id="bookmarksNewPassword" class="span4" placeholder="Password" required>
-                <button style="margin-left:0" type="submit" id="bookmarksCreateNew" class="btn-block btn" data-loading-text="Creating your new collection ... " data-complete-text=".. and done!">
-                    Create
-                </button>
-            </form>
+        <div class="myBookmarks span7">
+
+            <div class="row well span5">
+                <legend data-toggle="collapse" data-target="#bookmarksFormContent" class="interactive">Create a new collection</legend>
+                <div id="bookmarksFormContent" class="collapse">
+                    <form id="bookmarksCreateForm">
+                        <input type="text" id="bookmarksNewName" class="span5" placeholder="Collection name" required>
+                        <span class="help-block">
+                            <span class="label" id="bookmarksNewNameLabel">Check</span>
+                        </span>
+                        <input type="text" id="bookmarksNewDescription" class="span5" placeholder="Description">
+                        <input type="password"  id="bookmarksNewPassword" class="span5" placeholder="Password" required>
+                        <button style="margin-left:0" type="submit" id="bookmarksCreateNew" class="btn-block btn" data-loading-text="Creating your new collection ... " data-complete-text=".. and done!">
+                            Create
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="row well span5">
+                <legend data-toggle="collapse" data-target="#subscribedContent" class="interactive">Subscribed collections</legend>
+                <div id="subscribedContent" class="collapse in">
+                    estiquaatsi
+                </div>
+            </div>
+
+        </div><!-- well myBookmarks -->
+
+    </div>
+
+    <div class="modal hide fade" id="subscribeCollectionModal" tabindex="-1" role="dialog" aria-labelledby="scmLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="scmLabel">Please</h3>
         </div>
-        
+        <form id="subscribeCollectionForm">
+            <div class="modal-body">
+                <p>Insert "<strong><span class='text-info'></span></strong>" collection password</p>
+                <input type="hidden" id="subscribeCollectionHiddenName" value="">
+                <input type="password" id="subscribeCollectionPassword" class="span6" placeholder="Password" required>
+            </div>
+            <div class="modal-footer">
+                <span class="label pull-left">Check</span>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </div>
+        </form>
     </div>
 
 </div>

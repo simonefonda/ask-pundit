@@ -84,7 +84,6 @@ define(["dojo/_base/declare",
                     createAt: (new Date()).toString()
                 });
                 return false;
-                
             });
             
             // "new collection ok" response, reset the form
@@ -101,13 +100,47 @@ define(["dojo/_base/declare",
                     dojo.query('#bookmarksNewPassword')[0].value = '';
                 }, 3000);
             });
+               
+            // Response from subscribe collection modal      
+            on(dojo.byId('subscribeCollectionForm'), 'submit', function(e) {
+
+                self.subscribeCollection(
+                    dojo.query('#subscribeCollectionHiddenName')[0].value,
+                    dojo.query('#subscribeCollectionPassword')[0].value);
+
+                    console.log('Subsss ', dojo.query('#subscribeCollectionHiddenName')[0].value, dojo.query('#subscribeCollectionPassword')[0].value);
+                    
+                return false;
+            });
             
+            s.on('res subscribe collection ko', function(data) {
+                dojo.query('#subscribeCollectionForm .modal-footer span.label')
+                    .removeClass('label-info')
+                    .addClass('label-important')
+                    .innerHTML('The password was wrong, try again!');
+                dojo.query('#subscribeCollectionPassword')[0].value = '';
+                console.log('wrong pass');
+            });
+            s.on('res subscribe collection ok', function(data) {
+                console.log('pass was right, good boy', data);
+                dojo.query('#subscribeCollectionModal').modal('hide');
+                
+            });
+            
+            
+            
+                        
         }, // startup
+
         
+        subscribeCollection: function(name, password) {
+            console.log('sticazzi? ', arguments);
+            this.socketHelper.socket.emit('subscribe collection', {name: name, password: password});
+        },
         loadBookmarks: function() {
             this.socketHelper.socket.emit('get bookmarks');
-
         },
+
         displayBookmarks: function(data) {
             var self = this;
             
@@ -119,7 +152,7 @@ define(["dojo/_base/declare",
                     name: name,
                     description: data[name].description
                 }).placeAt(dojo.query('#bookmarksContainer .bookmarks')[0]);
-                
+                x.startup();
             }
         }
 
