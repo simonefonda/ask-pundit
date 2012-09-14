@@ -22,22 +22,19 @@ define(["dojo/_base/declare"
                 console.log('Connected to the server, yay ', data);
             });
 			
-			s.emit('set nickname', 'user '+(Math.random()*500|0));
-			
             s.on('refresh', function (data) {
                 console.log('REFRESH', data);
-
             });
             
             s.on('change nickname', function (data) {
                 console.log('Nickname taken?! ouch.. ', data);
-
             });
             
             s.on('logged in', function (data) {
                 console.log('Logged in.. hello!', data);
-
             });
+			
+			s.emit('set nickname', 'user '+(Math.random()*500|0));
             
         },
      

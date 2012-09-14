@@ -4,16 +4,20 @@ define(["dojo/_base/declare",
         "dojo/on", 
         "dojo/router", 
         "dojo/text!ask/tmpl/BookmarkListTemplate.html", 
+        "ask/CollectionItem",
+        "bootstrap/Button",
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
     function(declare, request, domConstruct, on, router,
-                bookmarkTabTemplate,
+                bookmarkTabTemplate, CollectionItem, BButton,
                 TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
 	
 	return declare("ask.BookmarkList", [_WidgetBase, _TemplatedMixin], {
         socketHelper: 'x',
+        newNotebookTimer: '',
+        notebookTimerLength: 400,
         templateString: bookmarkTabTemplate,
 
         postMixInProperties: function() {
@@ -39,6 +43,64 @@ define(["dojo/_base/declare",
             on(dojo.byId('bookmarksRefresh'), 'click', function(e) {
                 self.loadBookmarks();
             });
+
+            on(dojo.byId('bookmarksNewName'), 'keyup', function(e) {
+                dojo.query('#bookmarksNewNameLabel')
+                    .addClass('label-info')
+                    .removeClass('label-important label-success');
+                    
+                clearTimeout(self.newNotebookTimer);
+                self.newNotebookTimer = setTimeout(function() {
+                    var name = dojo.query('#bookmarksNewName')[0].value;
+                    self.socketHelper.socket.emit('collection exist', name);
+                }, self.notebookTimerLength);
+            });
+
+            // "collection exist" responses, if it does not, allow the
+            // user to use it!
+            s.on('res collection exist ko', function(data) {
+                var n = dojo.query('#bookmarksNewNameLabel');
+                n.addClass('label-success').removeClass('label-important label-info');
+                n[0].innerHTML = "This name is available!"
+                dojo.query('#bookmarksNewName')[0].setCustomValidity('');
+                
+            });
+            s.on('res collection exist ok', function(data) {
+                var n = dojo.query('#bookmarksNewNameLabel');
+                n.addClass('label-important').removeClass('label-success label-info');
+                n[0].innerHTML = "This name is taken! Please choose a new one";
+                dojo.query('#bookmarksNewName')[0].setCustomValidity("Told ya!! "+n[0].innerHTML);
+            });
+            
+
+            // Create a new collection
+            on(dojo.byId('bookmarksCreateForm'), 'submit', function(e) {
+                dojo.query('#bookmarksCreateNew').button('loading');
+
+                self.socketHelper.socket.emit('new collection', {
+                    name: dojo.query('#bookmarksNewName')[0].value,
+                    description: dojo.query('#bookmarksNewDescription')[0].value,
+                    password: dojo.query('#bookmarksNewPassword')[0].value,
+                    createAt: (new Date()).toString()
+                });
+                return false;
+                
+            });
+            
+            // "new collection ok" response, reset the form
+            s.on('res new collection ok', function(data) {
+                self.loadBookmarks();
+                dojo.query('#bookmarksCreateNew')
+                    .button('complete')
+                    .addClass('btn-success');
+                setTimeout(function() {
+                    dojo.query('#bookmarksCreateNew').button('reset').removeClass('btn-success');
+                    dojo.query('#bookmarksNewNameLabel')[0].innerHTML = "Check";
+                    dojo.query('#bookmarksNewName')[0].value = '';
+                    dojo.query('#bookmarksNewDescription')[0].value = '';
+                    dojo.query('#bookmarksNewPassword')[0].value = '';
+                }, 3000);
+            });
             
         }, // startup
         
@@ -48,7 +110,17 @@ define(["dojo/_base/declare",
         },
         displayBookmarks: function(data) {
             var self = this;
+            
             dojo.place('<p>List list list</p>', dojo.query('#bookmarksContainer .bookmarks')[0]);
+            
+            dojo.query('#bookmarksContainer .bookmarks').empty();
+            for (var name in data) {
+                var x = new CollectionItem({
+                    name: name,
+                    description: data[name].description
+                }).placeAt(dojo.query('#bookmarksContainer .bookmarks')[0]);
+                
+            }
         }
 
         

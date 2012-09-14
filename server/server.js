@@ -1,5 +1,12 @@
 require('../dojoConfig.js');
 
+var nStore = require('nstore'), collections;
+nStore = nStore.extend(require('nstore/query')());
+    
+collections = nStore.new('data/collections.db', function () {
+    console.log('DB ready.');
+});
+
 console.log('Launching socket.io server on port '+dojoConfig.ask.nodeServerPort);
 
 var io = require('socket.io').listen(parseInt(dojoConfig.ask.nodeServerPort, 10)),
@@ -29,22 +36,36 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-
-    socket.on('get bookmarks', function() {
-        socket.get('nickname', function (err, name) {
-            console.log(name+" get bookmarks");
-            
-            var foo = {
-                bookmarks: [
-                    {a: 'xyz', b: 'ksjjz'},
-                    {abc: '...', def: '___'}
-                ],
-                num: 2
+    socket.on('new collection', function(data) {
+        collections.save(data.name, data, function (err) {
+            if (err) { 
+                throw err;
+            } else {
+                console.log("new collection", data);
+                socket.emit('res new collection ok', data);
             }
-            socket.emit('res bookmarks', foo);
         });
     });
 
+    socket.on('collection exist', function(name) {
+        collections.get(name, function(err, doc, key) {
+            if (err) {
+                console.log('err reading :(', err, doc, key);
+                socket.emit('res collection exist ko', {err: err, doc: doc, key: key, name: name});
+            } else {
+                console.log('Collection exist!', err, doc, key);
+                socket.emit('res collection exist ok', {err: err, doc: doc, key: key});
+            }
+        });
+    });
+
+
+    socket.on('get bookmarks', function() {
+        collections.all(function(err, result) {
+            console.log('All collections ', err, result);
+            socket.emit('res bookmarks', result);
+        });
+    });
     
     socket.on('disconnect', function () {
         socket.get('nickname', function (err, name) {
@@ -54,9 +75,6 @@ io.sockets.on('connection', function (socket) {
             refresh();
         });
     });
-    
-    
-    
 
     // c for chat
     socket.on('c party', function (msg) {
