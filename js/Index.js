@@ -7,18 +7,20 @@ define(["dojo/_base/declare",
         "dijit/_TemplatedMixin",
         "ask/NotebookItem",
         "ask/NotebookTab",
+        "ask/IOHelper",
         "bootstrap/Tab",
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane"], 
     function(declare, router, on, request, 
         indexTemplate, _WidgetBase, _TemplatedMixin, 
-        NotebookItem, NotebookTab, BTab, TabContainer, 
+        NotebookItem, NotebookTab, IOHelper, BTab, TabContainer, 
         ContentPane) {
 	
 	return declare("ask.Index", [_WidgetBase, _TemplatedMixin], {
         name: '',
         bio: '',
         templateString: indexTemplate,
+        socketHelper: '',
         postMixInProperties: function() {
             this.inherited(arguments);
         },
@@ -29,6 +31,9 @@ define(["dojo/_base/declare",
         startup: function() {
             this.inherited(arguments);
             this.setupRouter();
+            
+            this.socketHelper = new IOHelper({serverAddress: 'ws://localhost:3000'});
+            this.socketHelper;
         },
         
         setupRouter: function() {

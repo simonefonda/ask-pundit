@@ -33,16 +33,14 @@
     };
 </script>
 
+<script src="js/socket.io.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.0/dojo/dojo.js"></script>
 <script>
     require(["ask/Index", "dojo/ready", "dijit/registry", "dojo/json", "dojo/_base/config", "dojo/parser", "dojo/domReady!"], function(Index, ready, registry, JSON, config, parser) {
-        // Parse the page
         parser.parse();
-        // Do something with demo/AuthoredDialog...
 
-        var index = new Index({name: 'gino', bio: 'zio'}).placeAt(dojo.byId('ask_container'));
+        var index = new Index().placeAt(dojo.byId('ask_container'));
         index.startup();
-
     });
 </script>
 
