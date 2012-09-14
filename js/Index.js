@@ -28,7 +28,10 @@ define(["dojo/_base/declare",
         },
         constructor: function() {
             this.inherited(arguments);
-            this.socketHelper = new IOHelper({serverAddress: config.ask.nodeServerAddress});
+            this.socketHelper = new IOHelper({
+                serverAddress: config.ask.nodeServerAddress,
+                serverPort: config.ask.nodeServerPort
+            });
         },
         
         startup: function() {

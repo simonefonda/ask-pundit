@@ -9,7 +9,7 @@ define(["dojo/_base/declare"
             var self = this;
 
             self.inherited(arguments);
-            self.serverAddress = opts.serverAddress;
+            self.serverAddress = opts.serverAddress+":"+opts.serverPort;
             
             self.socket = io.connect(self.serverAddress);
             s = self.socket;

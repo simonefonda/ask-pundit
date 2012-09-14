@@ -1,4 +1,8 @@
-var io = require('socket.io').listen(3000)
+require('../dojoConfig.js');
+
+console.log('Launching socket.io server on port '+dojoConfig.ask.nodeServerPort);
+
+var io = require('socket.io').listen(parseInt(dojoConfig.ask.nodeServerPort, 10)),
     ppl = {},
     sks = {};
 

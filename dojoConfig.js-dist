@@ -4,7 +4,8 @@ dojoConfig = {
     
     ask: {
         // address of the nodejs instance running the server (js/server/server.js)
-        nodeServerAddress: 'http://localhost:3000'
+        nodeServerAddress: 'http://localhost'
+        nodeServerPort: '53000'
     },
 
     isDebug: 1,
