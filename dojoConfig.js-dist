@@ -4,7 +4,7 @@ dojoConfig = {
     
     ask: {
         // address of the nodejs instance running the server (js/server/server.js)
-        nodeServerAddress: 'localhost:3000'
+        nodeServerAddress: 'http://localhost:3000'
     },
 
     isDebug: 1,

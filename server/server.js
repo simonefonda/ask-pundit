@@ -24,6 +24,23 @@ io.sockets.on('connection', function (socket) {
             }
         });
     });
+
+
+    socket.on('get bookmarks', function() {
+        socket.get('nickname', function (err, name) {
+            console.log(name+" get bookmarks");
+            
+            var foo = {
+                bookmarks: [
+                    {a: 'xyz', b: 'ksjjz'},
+                    {abc: '...', def: '___'}
+                ],
+                num: 2
+            }
+            socket.emit('res bookmarks', foo);
+        });
+    });
+
     
     socket.on('disconnect', function () {
         socket.get('nickname', function (err, name) {
@@ -33,6 +50,9 @@ io.sockets.on('connection', function (socket) {
             refresh();
         });
     });
+    
+    
+    
 
     // c for chat
     socket.on('c party', function (msg) {
