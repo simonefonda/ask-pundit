@@ -26,7 +26,7 @@ define(["dojo/_base/declare",
 
             // place the tab button
             var b = "<li><a data-target-collection='"+this.base64+"' " +
-                    "href='/bookmarks/"+this.base64+"'" +
+                    "href='#/bookmarks/"+this.base64+"'" +
                     "' data-toggle='tab' id='tab-"+this.base64+
                     "'>B: "+this.name+"</a></li>";
 
