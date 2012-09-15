@@ -37,7 +37,7 @@ define(["dojo/_base/declare",
             // place the tab button
             var b = "<li><a href='#notebook-tab-"+this.notebookId+
                     "' data-toggle='tab' id='tab-"+this.notebookId+
-                    "'>Notebook "+this.notebookId+"</a></li>";
+                    "'>N: "+this.notebookId+"</a></li>";
             dojo.place(b, "ask-pills");
 
             self.loadNotebookMetadata();
@@ -80,7 +80,8 @@ define(["dojo/_base/declare",
                         }).placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-metadata')[0]);
 
                         self.label = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value;
-                        dojo.query('#nb-header-'+self.notebookId)[0].innerHTML = self.label;
+                        dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
+                        dojo.query('#tab-'+self.notebookId).innerHTML("N: "+ self.label);
                     }
 
                 }, 

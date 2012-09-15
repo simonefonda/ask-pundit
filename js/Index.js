@@ -3,19 +3,21 @@ define(["dojo/_base/declare",
         "dojo/on", 
         "dojo/request",
         "dojo/_base/config", 
+        "dojox/encoding/easy64",
         "dojo/text!ask/tmpl/IndexTemplate.html", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin",
         "ask/NotebookItem",
         "ask/NotebookTab",
+        "ask/BookmarkCollectionTab",
         "ask/BookmarkList",
         "ask/IOHelper",
         "bootstrap/Tab",
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane"], 
-    function(declare, router, on, request, config,
+    function(declare, router, on, request, config, encode,
         indexTemplate, _WidgetBase, _TemplatedMixin, 
-        NotebookItem, NotebookTab, BookmarkList, IOHelper, BTab, TabContainer, 
+        NotebookItem, NotebookTab, BookmarkCollectionTab, BookmarkList, IOHelper, BTab, TabContainer, 
         ContentPane) {
 	
 	return declare("ask.Index", [_WidgetBase, _TemplatedMixin], {
@@ -39,8 +41,8 @@ define(["dojo/_base/declare",
         startup: function() {
             this.inherited(arguments);
             this.setupRouter();
-            this.openNotebooks();
-            this.openBookmarks();
+            this.loadNotebookList();
+            this.loadBookmarkList();
             this.setupHandlers();
         },
 
@@ -51,10 +53,13 @@ define(["dojo/_base/declare",
             on(dojo.query('#ask-pills')[0], on.selector('a[data-toggle="tab"]', 'click'), function (e) {
 
                 var id = dojo.attr(e.target, 'href');
+                
                 if (id === "#tab-bookmarks") {
                     router.go('/bookmarks/')
                 } else if (id === "#tab-notebooks") {
                     router.go('/notebooks/');
+                } else if (id.match(/\/bookmarks\//) !== null) {
+                    router.go(id);
                 } else 
                     router.go('/notebooks/'+ id.substr(-8, 8));
             });
@@ -94,6 +99,11 @@ define(["dojo/_base/declare",
                 dojo.query("[href='#tab-bookmarks']").tab('show');
             });
 
+            router.register('/bookmarks/:base64', function(evt) {
+                console.log('url name ', evt.params.base64, BASE64.decode(evt.params.base64));
+                self.openBookmark(BASE64.decode(evt.params.base64), evt.params.base64);
+            });
+
             router.register('/notebooks/:id', function(evt) {
                 self.openNotebook(evt.params.id);
             });
@@ -107,7 +117,7 @@ define(["dojo/_base/declare",
         },
 
         // TODO: move this to an object handling himself?
-        openNotebooks: function() {
+        loadNotebookList: function() {
             var self = this;
 
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/public/", {
@@ -154,7 +164,7 @@ define(["dojo/_base/declare",
             
         },
 
-        openBookmarks: function(force) {
+        loadBookmarkList: function() {
             var self = this;
             
             dojo.query('#bookmarksContainer').empty();
@@ -162,6 +172,21 @@ define(["dojo/_base/declare",
                 socketHelper: self.socketHelper
             }).placeAt(dojo.byId('bookmarksContainer'));
             
+        },
+        
+        openBookmark: function(name, base64) {
+            console.log('Bookmark collection tab? ', name, base64);
+            
+            if (dojo.query('[data-tab-pane-base64="'+base64+'"]').length === 0) {
+                console.log('## CREO NUOVO TAB ');
+                var bmTab = new BookmarkCollectionTab({
+                    name: name,
+                    base64: base64
+                }).placeAt(dojo.byId('ask-tab-content'));
+            }
+            _on = on;
+            console.log('Mostro tab ......... '+base64);
+            dojo.query('[data-target-collection="'+base64+'"]').tab('show');
         },
         
         openNotebook: function(id) {

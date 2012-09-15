@@ -150,6 +150,7 @@ define(["dojo/_base/declare",
             for (var name in data) {
                 var x = new CollectionItem({
                     name: name,
+                    base64: BASE64.encode(name),
                     description: data[name].description
                 }).placeAt(dojo.query('#bookmarksContainer .bookmarks')[0]);
                 x.startup();

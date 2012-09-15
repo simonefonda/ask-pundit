@@ -9,6 +9,7 @@ define(["dojo/_base/declare",
 	
 	return declare("ask.CollectionItem", [_WidgetBase, _TemplatedMixin], {
         name: '',
+        base64: '',
         description: '',
         templateString: collectionItemTemplate,
         postMixInProperties: function() {

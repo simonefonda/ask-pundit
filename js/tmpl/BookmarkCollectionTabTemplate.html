@@ -1,0 +1,22 @@
+<div class="tab-pane" data-collection-name="${name}" data-tab-pane-base64="${base64}">
+
+    <div class="page-header">
+      <h1><span>:: ${name} ::</span> <small> ... </small></h1>
+    </div>
+
+    <div>
+        <p>
+            <button type="button" class="btn btn-large btn-info" data-loading-text="Loading...">Refresh</button>
+            <button type="button" class="btn btn-large btn-warning">Bookmark this notebook</button>
+            <button type="button" class="btn btn-large btn-danger pull-right" data-collection-target="${name}" id="nb-tab-close">Close</button>
+
+        </p>
+    <div>
+        
+    <!-- will contain metadata -->
+    <div class="well ask-notebook-item-metadata"></div>
+
+    <!-- will contain annotations -->
+    <div class="ask-notebook-item-annotations"></div>
+
+</div>

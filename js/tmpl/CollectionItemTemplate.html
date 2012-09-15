@@ -6,7 +6,9 @@
         </blockquote>
     </div>
     <div class="span1">        
-		<button type="button" class="subscribeCollection btn btn-warning" data-collection-name="${name}" data-loading-text="Wait a second...">Subscribe</button>
+		<button type="button" class="subscribeCollection btn btn-warning" 
+            data-collection-base64="${base64}" data-collection-name="${name}" 
+            data-loading-text="Wait a second...">Subscribe</button>
+        <a class="btn btn-success" href="#/bookmarks/${base64}">Browse</a>
     </div>
-
 </div>
