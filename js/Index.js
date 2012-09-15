@@ -65,19 +65,14 @@ define(["dojo/_base/declare",
             });
             
             on(dojo.byId('tabNotebooksSearchInput'), 'keyup', function(e) {
-                // dojo.query('#bookmarksNewNameLabel')
-                //    .addClass('label-info')
-                //    .removeClass('label-important label-success');
                     
                 clearTimeout(self.liveSearchTimer);
                 self.liveSearchTimer = setTimeout(function() {
                     var s = dojo.query('#tabNotebooksSearchInput')[0].value;
-          
                     dojo.query('div.nb-item').style('display', 'none');
-
                     dojo.query('div.nb-item:contains("'+s+'")').style('display', 'block');
-                    console.log(dojo.query('div.nb-item:contains("'+s+'")'), 'div.nb-item:contains("'+s+'")');
                 }, self.liveSearchTimerLength);
+
             });
             
             on(dojo.byId('tabNotebooksSearchButton'), 'click', function() {
@@ -100,7 +95,6 @@ define(["dojo/_base/declare",
             });
 
             router.register('/bookmarks/:base64', function(evt) {
-                console.log('url name ', evt.params.base64, BASE64.decode(evt.params.base64));
                 self.openBookmark(BASE64.decode(evt.params.base64), evt.params.base64);
             });
 
@@ -175,17 +169,13 @@ define(["dojo/_base/declare",
         },
         
         openBookmark: function(name, base64) {
-            console.log('Bookmark collection tab? ', name, base64);
             
             if (dojo.query('[data-tab-pane-base64="'+base64+'"]').length === 0) {
-                console.log('## CREO NUOVO TAB ');
                 var bmTab = new BookmarkCollectionTab({
                     name: name,
                     base64: base64
                 }).placeAt(dojo.byId('ask-tab-content'));
             }
-            _on = on;
-            console.log('Mostro tab ......... '+base64);
             dojo.query('[data-target-collection="'+base64+'"]').tab('show');
         },
         

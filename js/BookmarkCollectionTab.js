@@ -37,25 +37,13 @@ define(["dojo/_base/declare",
                 dojo.query('[data-tab-pane-base64="'+ self.base64 +'"]').addClass('active');
             });
  
- 
-            // Close tab button: removes pill + tab content, unregistering
-            // the dojo's widgets
+            // Close tab button: removes pill + tab content
             on(dojo.query('button[data-collection-target="'+ self.name +'"]'), 'click', function(e) {
-
                 router.go('/bookmarks/');
 
-                /*
-                var node = dojo.query('#notebook-tab-'+self.notebookId)[0];
-
-                dijit.registry.forEach(function(w){ 
-                    if (w.id === 'notebook-tab-'+self.notebookId) 
-                        w.destroyRecursive();
-                });
-
-                dojo.destroy(dojo.query('#tab-'+self.notebookId)[0].parentNode);
+                var node = dojo.query('[data-tab-pane-base64="'+ self.base64 +'"]')[0];
+                dojo.destroy(dojo.query('a[data-target-collection="'+self.base64+'"]')[0].parentNode);
                 dojo.destroy(node);
-                */
-                
             });
      
         }, // startup
