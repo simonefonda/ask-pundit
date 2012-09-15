@@ -6,13 +6,14 @@ define(["dojo/_base/declare",
 	
 	return declare("ask.NotebookItem", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
+        name: '',
+        annotationNum: '',
         templateString: notebookItemTemplate,
         postMixInProperties: function() {
             this.inherited(arguments);
         },
         startup: function() {
             this.inherited(arguments);
-            
         }
 	});
 

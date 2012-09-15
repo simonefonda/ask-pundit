@@ -1,1 +1,12 @@
-<a class="btn" href='#/notebooks/${notebookId}'>${notebookId}</a>
+<div class="well span4 nb-item">
+    <div class="row span3" id="nb-item-${notebookId}">
+        <blockquote>
+            <p>${notebookId}: ${name}</p>
+            <small>${notebookId}: ${annotationNum}</small>
+        </blockquote>
+        <div style="display:none"></div>
+    </div>
+    <div class="span3">
+    	<a class="btn btn-warning" href='#/notebooks/${notebookId}'>Browse</a>
+    </div>
+</div>
