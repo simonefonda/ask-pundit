@@ -6,6 +6,11 @@ define(["dojo/_base/declare",
 	
 	return declare("ask.NotebookItemAnnotationContent", [_WidgetBase, _TemplatedMixin], {
         subject: '',
-        templateString: notebookItemAnnotationContentTemplate
+        subject_enc: '',
+        templateString: notebookItemAnnotationContentTemplate,
+        postMixInProperties: function() {
+            this.inherited(arguments);
+            this.subject_enc = BASE64.encode(this.subject);
+        }
 	});
 });

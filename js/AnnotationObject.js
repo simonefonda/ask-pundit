@@ -3,12 +3,18 @@ define(["dojo/_base/declare",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
     function(declare, annotationObjectTemplate, _WidgetBase, _TemplatedMixin) {
-	
+    
 	return declare("ask.AnnotationObject", [_WidgetBase, _TemplatedMixin], {
         annotationId: '',
-        uri: '',
+        object_uri: '',
+        object_uri_enc: '',
+        object_value: '',
+        
         templateString: annotationObjectTemplate,
-        startup: function() { }
+        postMixInProperties: function() {
+            this.inherited(arguments);
+            this.object_uri_enc = BASE64.encode(this.object_uri);
+        }
 	});
 
 });

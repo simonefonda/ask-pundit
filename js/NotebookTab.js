@@ -8,18 +8,21 @@ define(["dojo/_base/declare",
         "ask/NotebookItemAnnotation",
         "ask/NotebookItemAnnotationContent",
         "ask/NotebookItemAnnotationTarget",
+
         "ask/AnnotationPredicate",
+        "ask/AnnotationObject",
         "ask/AnnotationItemTextFragment",
         "ask/AnnotationItemGeneric",
         "ask/AnnotationItemPredicate",
+        
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
     function(declare, request, domConstruct, on, router,
                 notebookTabTemplate, NotebookItemMetadata, NotebookItemAnnotation, 
-                NotebookItemAnnotationContent, NotebookItemAnnotationTarget, AnnotationPredicate, 
-                AnnotationItemTextFragment, AnnotationItemGeneric, AnnotationItemPredicate,
+                NotebookItemAnnotationContent, NotebookItemAnnotationTarget, 
+                AnnotationPredicate, AnnotationObject, nnotationItemTextFragment, AnnotationItemGeneric, AnnotationItemPredicate,
                 TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
 	
 	return declare("ask.NotebookTab", [_WidgetBase, _TemplatedMixin], {
@@ -157,7 +160,6 @@ define(["dojo/_base/declare",
                             annotationId: annotationId
                         }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationContent')[0]);
                         
-                        console.log('piazzato il content');
                         if (dojo.indexOf(self.itemsURIs, subject) === -1)
                             self.itemsURIs.push(subject);
                         
@@ -167,34 +169,21 @@ define(["dojo/_base/declare",
                             var pre = new AnnotationPredicate({
                                 annotationId: annotationId,
                                 uri: predicate
-                            }).placeAt(dojo.query('.annotation-'+annotationId+' [about="accordion-'+annotationId+'-'+subject+'"]')[0]);
+                            }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
 
                             if (dojo.indexOf(self.itemsURIs, predicate) === -1)
                                 self.itemsURIs.push(predicate);
-                                
-                            console.log('####annotation-'+annotationId+' [about=accordion-'+annotationId+'-'+subject+']');
-                            
+                                                            
                             for (var object in data[subject][predicate]) {
 
                                 var object_value = data[subject][predicate][object].value;
-
-                                console.log('onject ', object_value);
-
+                                
                                 var pre = new AnnotationObject({
                                     annotationId: annotationId,
-                                    uri: object,
-                                    value: object
-                                }).placeAt(dojo.query('.annotation-'+annotationId+' [about="accordion-'+annotationId+'-'+predicate+'"]')[0]);
-
-                                /*
-                                ann = new NotebookItemAnnotationContent({
-                                    subject: subject,
-                                    predicate: predicate,
-                                    object: object_value
-                                }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationContent')[0]);
-                                */
-                                    
-                                    
+                                    object_uri: object,
+                                    object_value: object_value
+                                }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-object-'+annotationId+'-'+BASE64.encode(predicate)+'"]')[0]);
+                                
                                 if (dojo.indexOf(self.itemsURIs, object_value) === -1)
                                     if (data[subject][predicate][object].type === "uri")
                                         self.itemsURIs.push(object_value);
