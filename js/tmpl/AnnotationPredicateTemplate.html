@@ -1,12 +1,12 @@
 <div class="accordion-group">
     <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" href="[about='accordion-${annotationId}-pred-${uri_enc}']">
-            <span class="replace-me-${uri_enc}">${uri}</span>
+        <a class="accordion-toggle" data-toggle="collapse" href="[about='accordion-${annotationId}-${subject_enc}-${uri_enc}']">
+            ${uri}
         </a>
     </div>
                         
-    <div about="accordion-${annotationId}-pred-${uri_enc}" class="accordion-body collapse">
-        <div class="accordion-inner" about="insert-object-${annotationId}-${uri_enc}">
+    <div about="accordion-${annotationId}-${subject_enc}-${uri_enc}" class="accordion-body collapse">
+        <div class="accordion-inner" about="insert-object-${annotationId}-${subject_enc}-${uri_enc}">
             <!-- will contain objects -->
         </div>
     </div>

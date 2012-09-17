@@ -29,8 +29,11 @@ define(["dojo/_base/declare",
         parentTabContainer: '',
         notebookId: '',
         itemsURIs: [],
+        renderedItemsURIs: [],
         label: '',
         templateString: notebookTabTemplate,
+        // number of chars to display in the title of the annotation
+        titleChars: 50,
         constructor: function() {
             this.inherited(arguments);
         },
@@ -74,17 +77,17 @@ define(["dojo/_base/declare",
                 handleAs: "json"
             }).then(
                 function(data){
-                    for (var i in data) {
+                    for (var ann in data) {
                         var foo = new NotebookItemMetadata({
-                            visibility: data[i]['http://open.vocab.org/terms/visibility'][0].value,
-                            createdBy: data[i]['http://purl.org/dc/terms/creator'][0].value,
-                            createdAt: data[i]['http://purl.org/dc/terms/created'][0].value,
-                            label: data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
-                            includes: data[i]['http://purl.org/pundit/ont/ao#includes'] || 0
+                            visibility: data[ann]['http://open.vocab.org/terms/visibility'][0].value,
+                            createdBy: data[ann]['http://purl.org/dc/terms/creator'][0].value,
+                            createdAt: data[ann]['http://purl.org/dc/terms/created'][0].value,
+                            label: data[ann]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
+                            includes: data[ann]['http://purl.org/pundit/ont/ao#includes'] || 0
                         });
                         foo.placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-metadata')[0]);
 
-                        self.label = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value;
+                        self.label = data[ann]['http://www.w3.org/2000/01/rdf-schema#label'][0].value;
                         dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
                         dojo.query('#tab-'+self.notebookId).innerHTML("N: "+ self.label);
                     }
@@ -105,19 +108,19 @@ define(["dojo/_base/declare",
                 function(data){
                         
                     // TODO: sanitize data[i][][].[].... if it exists ..
-                    for (var i in data) {
+                    for (var nb_ann in data) {
 
-                        var body = data[i]['http://www.openannotation.org/ns/hasBody'][0].value,
-                            targets = data[i]['http://www.openannotation.org/ns/hasTarget'],
-                            annotationId = data[i]['http://purl.org/pundit/ont/ao#id'][0].value, 
+                        var body = data[nb_ann]['http://www.openannotation.org/ns/hasBody'][0].value,
+                            targets = data[nb_ann]['http://www.openannotation.org/ns/hasTarget'],
+                            annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value, 
                             meta, tar;
 
-                        // Annotatio item
+                        // Annotation item
                         meta = new NotebookItemAnnotation({
                             annotationId: annotationId,
-                            createdBy: data[i]['http://purl.org/dc/terms/creator'][0].value,
-                            createdAt: data[i]['http://purl.org/dc/terms/created'][0].value,
-                            pageContext: data[i]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
+                            createdBy: data[nb_ann]['http://purl.org/dc/terms/creator'][0].value,
+                            createdAt: data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
+                            pageContext: data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
                             body: body
                         }).placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0]);
 
@@ -144,35 +147,46 @@ define(["dojo/_base/declare",
             
         }, // loadNotebookAnnotations()
 
-        // Will build the main annotation content 
+        // Will build the main annotation content:
+        // grouped by annotation id, grouped by subject, grouped by predicate
         loadAnnotationContent: function(annotationId) {
             var self = this;
+
+            // if (annotationId !== "85354f2b") return;
+
+            self.itemsURIs[annotationId] = [];
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/content", {
                 handleAs: "json"
             }).then(
                 function(data){
+
+                    console.log('@@@@@@@ ', annotationId);
                     
                     for (var subject in data) {
+                        
+                        console.log('sub ', subject);
                         
                         var ann = new NotebookItemAnnotationContent({
                             subject: subject,
                             annotationId: annotationId
                         }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationContent')[0]);
                         
-                        if (dojo.indexOf(self.itemsURIs, subject) === -1)
-                            self.itemsURIs.push(subject);
-                        
+                        if (dojo.indexOf(self.itemsURIs[annotationId], subject) === -1) 
+                            self.itemsURIs[annotationId].push(subject);
                         
                         for (var predicate in data[subject]) {
                             
+                            console.log('pred: ', predicate);
+                            
                             var pre = new AnnotationPredicate({
                                 annotationId: annotationId,
+                                subject_enc: BASE64.encode(subject),
                                 uri: predicate
                             }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
 
-                            if (dojo.indexOf(self.itemsURIs, predicate) === -1)
-                                self.itemsURIs.push(predicate);
+                            if (dojo.indexOf(self.itemsURIs[annotationId], predicate) === -1) 
+                                self.itemsURIs[annotationId].push(predicate);
                                                             
                             for (var object in data[subject][predicate]) {
 
@@ -182,14 +196,16 @@ define(["dojo/_base/declare",
                                     annotationId: annotationId,
                                     object_uri: object,
                                     object_value: object_value
-                                }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-object-'+annotationId+'-'+BASE64.encode(predicate)+'"]')[0]);
+                                }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-object-'+annotationId+'-'+BASE64.encode(subject)+'-'+BASE64.encode(predicate)+'"]')[0]);
                                 
-                                if (dojo.indexOf(self.itemsURIs, object_value) === -1)
+                                if (dojo.indexOf(self.itemsURIs[annotationId], object_value) === -1)
                                     if (data[subject][predicate][object].type === "uri")
-                                        self.itemsURIs.push(object_value);
+                                        self.itemsURIs[annotationId].push(object_value);
                             }
                         }
                     }
+                    
+                    console.log('@@@@@@@ ///////////////////////', annotationId);
 
                     // Once we have the triples, get the item descriptions
                     self.loadAnnotationItems(annotationId);
@@ -202,49 +218,79 @@ define(["dojo/_base/declare",
             
         }, // loadAnnotationContent()
 
-
         // As we get informations for the items, we will build their
         // widget guessing their type, replacing the placeholders
         loadAnnotationItems: function(annotationId) {
             var self = this;
-
+            
+            console.log('IIIIIIIIIIIIIIIII ', annotationId);
+            
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/items", {
                 handleAs: "json"
             }).then(
                 function(data){
                     
+                    console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRR ', annotationId);
+                    
                     // TODO: use a namespace helper or something smarter!
                     var _type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                         _tf = "http://purl.org/pundit/ont/ao#text-fragment",
-                        _prop = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property";
-
+                        _prop = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+                        _lab = "http://www.w3.org/2000/01/rdf-schema#label",
+                        _desc = "http://purl.org/dc/elements/1.1/description";
+                    
+                        if (annotationId === "dbd8b735")
+                            console.log("òòòòòòòòòòòòòòòòòòòòòòòò ", data, self.itemsURIs[annotationId], self.itemsURIs[annotationId].length);
                     
                     // Look for items starting from itemsURIs
-                    for (var i in self.itemsURIs) {
-                        var uri = self.itemsURIs[i];
+                    for (var current in self.itemsURIs[annotationId]) {
+                        
+                        var uri = self.itemsURIs[annotationId][current];
+
+                        // This function will get called n times, but as soon as we render an
+                        // item we can forget about it and avoid rendering it twice or more
+                        //if (dojo.indexOf(self.renderedItemsURIs, annotationId+"-"+uri) !== -1) {
+                        //    console.log('ALREADY SEEN SEEN ', uri);
+                        //    continue;
+                        //}
                         
                         if (uri in data) {
+
+                            console.log('FOUND ITEMz: ', uri);
+                            
                             if (_type in data[uri]) {
                                 
-                                // Look for each container about this URI, empty it,
-                                // create a proper item widget and put it in the emptied space
-                                dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' [about="'+uri+'"]')
-                                .empty().forEach(function(__e) {
-                                    if (data[uri][_type][0].value === _tf)
-                                        new AnnotationItemTextFragment({uri: uri, data: data}).placeAt(__e);
-                                    else if (data[uri][_type][0].value === _prop) 
-                                        new AnnotationItemPredicate({uri: uri, data: data}).placeAt(__e);
-                                    else
-                                        new AnnotationItemGeneric({uri: uri, data: data}).placeAt(__e);
-                                });
+                                var uri_enc = BASE64.encode(uri),
+                                    label = data[uri][_lab][0].value,
+                                    label_short = label.length > 50 ? label.substr(0, self.titleChars)+' ..' : label,
+                                    desc = "";
+                                    
+                                if (typeof(data[uri][_desc]) !== "undefined")
+                                    desc = data[uri][_desc][0].value;
+
+                                // First step: put the titles
+                                dojo.query('.annotation-'+annotationId+' [data-replace-me-title="'+uri_enc+'"]')
+                                    .forEach(function(__e) {
+                                        console.log('Rimpiazzo short ', label_short);
+                                        dojo.query(__e).empty().innerHTML(label_short);
+                                    });
+
+                                dojo.query('.annotation-'+annotationId+' [data-replace-me="'+uri_enc+'"]')
+                                    .forEach(function(__e) {
+                                        console.log('Rimpiazzo LONG', desc);
+                                        dojo.query(__e).empty().innerHTML(desc);
+                                    });
                                 
-                            } else {                        
-                        
-                                console.log('Found NO RDF TYPE '+ uri);
-                                
+                            } else {
+                                alert('omagad no type');
                             }
+                            
+                            
+                        } else { // if uri in data 
+                            console.log('uri not in data __'+ uri +'__', data, typeof(data[uri]), typeof(uri));
                         }
-                    }
+                       
+                    } // for i in self.itemsURIs
                     
                 }, 
                 function(error) {
@@ -253,7 +299,6 @@ define(["dojo/_base/declare",
             );
             
         } // loadAnnotationItems()
-        
         
 	});
 

@@ -5,6 +5,7 @@ define(["dojo/_base/declare",
     function(declare, notebookItemAnnotationContentTemplate, _WidgetBase, _TemplatedMixin) {
 	
 	return declare("ask.NotebookItemAnnotationContent", [_WidgetBase, _TemplatedMixin], {
+        annotationId: '',
         subject: '',
         subject_enc: '',
         templateString: notebookItemAnnotationContentTemplate,

@@ -1,17 +1,17 @@
 <div class="askNotebookItemAnnotationContent-content">
 
     <div class="row span12 well clearfix">
-        <legend data-toggle="collapse" data-target="[about='accordion-${annotationId}-${subject_enc}']">
-            <span class="replace-me-title-${subject_enc}">Subject o prime venti letterine ...</span>
+        <legend data-replace-me-title="${subject_enc}" data-toggle="collapse" data-target="[about='accordion-${annotationId}-${subject_enc}']">
+            ${subject}
         </legend>
 
         <div class="collapse" about="accordion-${annotationId}-${subject_enc}">
             <div class="row">
-                <div class="span9 replace-me-${subject_enc}">
+                <div class="span9" data-replace-me="${subject_enc}">
                     Subject content
                 </div>
                 <div class="span2">
-                    meta 
+                    id: ${annotationId}
                     <button class="btn btn-warning">Bookmark!</button>
                 </div>
             </div>

@@ -9,6 +9,7 @@ define(["dojo/_base/declare",
         annotationId: '',
         uri: '',
         uri_enc: '',
+        subject_enc: '',
         templateString: annotationPredicateTemplate,
         postMixInProperties: function() {
             this.inherited(arguments);

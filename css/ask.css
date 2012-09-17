@@ -32,7 +32,6 @@ legend.interactive:hover {
     padding: 0px;
 	overflow: hidden;
 	*zoom: 1;
-	border-bottom: 1px dashed #aaa;
 }
 
 .very-hidden { display: none; }
