@@ -1,14 +1,22 @@
-<div>
+<div class='row'>
     <div class="span5">
         <blockquote>
             <p>${name}</p>
             <small>${description}</small>
         </blockquote>
     </div>
-    <div class="span1">        
-		<button type="button" class="subscribeCollection btn btn-warning" 
+    
+    <div class="span2 ${showJoinLeave.join}">
+		<button type="button" class="joinCollection btn btn-warning btn-mini" 
             data-collection-base64="${base64}" data-collection-name="${name}" 
-            data-loading-text="Wait a second...">Subscribe</button>
-        <a class="btn btn-success" href="#/bookmarks/${base64}">Browse</a>
+            data-loading-text="Wait a second...">Join</button>
+        <a class="btn btn-success btn-mini" href="#/bookmarks/${base64}">Browse</a>
     </div>
+    <div class="span2 ${showJoinLeave.leave}">
+		<button type="button" class="leaveCollection btn btn-warning btn-mini" 
+            data-collection-base64="${base64}" data-collection-name="${name}" 
+            data-loading-text="Wait a second...">Leave</button>
+        <a class="btn btn-success btn-mini" href="#/bookmarks/${base64}">Browse</a>
+    </div>
+    
 </div>

@@ -8,6 +8,7 @@ define(["dojo/_base/declare",
         "ask/NotebookItemAnnotation",
         "ask/NotebookItemAnnotationContent",
         "ask/NotebookItemAnnotationTarget",
+        "ask/AnnotationPredicate",
         "ask/AnnotationItemTextFragment",
         "ask/AnnotationItemGeneric",
         "ask/AnnotationItemPredicate",
@@ -17,7 +18,7 @@ define(["dojo/_base/declare",
         "dijit/_TemplatedMixin"], 
     function(declare, request, domConstruct, on, router,
                 notebookTabTemplate, NotebookItemMetadata, NotebookItemAnnotation, 
-                NotebookItemAnnotationContent, NotebookItemAnnotationTarget, 
+                NotebookItemAnnotationContent, NotebookItemAnnotationTarget, AnnotationPredicate, 
                 AnnotationItemTextFragment, AnnotationItemGeneric, AnnotationItemPredicate,
                 TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
 	
@@ -65,7 +66,7 @@ define(["dojo/_base/declare",
         
         loadNotebookMetadata: function() {
             var self = this;
-            
+
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ self.notebookId +"/metadata", {
                 handleAs: "json"
             }).then(
@@ -77,7 +78,8 @@ define(["dojo/_base/declare",
                             createdAt: data[i]['http://purl.org/dc/terms/created'][0].value,
                             label: data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
                             includes: data[i]['http://purl.org/pundit/ont/ao#includes'] || 0
-                        }).placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-metadata')[0]);
+                        });
+                        foo.placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-metadata')[0]);
 
                         self.label = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value;
                         dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
@@ -107,7 +109,7 @@ define(["dojo/_base/declare",
                             annotationId = data[i]['http://purl.org/pundit/ont/ao#id'][0].value, 
                             meta, tar;
 
-                        // Annotation metadata: write it now
+                        // Annotatio item
                         meta = new NotebookItemAnnotation({
                             annotationId: annotationId,
                             createdBy: data[i]['http://purl.org/dc/terms/creator'][0].value,
@@ -120,11 +122,14 @@ define(["dojo/_base/declare",
                         self.loadAnnotationContent(annotationId);
                         
                         // Lay down the targets of this annotation
+                        // TODO: put this somewhere else in the future?
+                        /*
                         for (var t in targets) {
                             tar = new NotebookItemAnnotationTarget({
                                 uri: targets[t].value
                             }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationTarget')[0]);
                         }
+                        */
                         
                     } // for
 
@@ -146,21 +151,49 @@ define(["dojo/_base/declare",
                 function(data){
                     
                     for (var subject in data) {
+                        
+                        var ann = new NotebookItemAnnotationContent({
+                            subject: subject,
+                            annotationId: annotationId
+                        }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationContent')[0]);
+                        
+                        console.log('piazzato il content');
+                        if (dojo.indexOf(self.itemsURIs, subject) === -1)
+                            self.itemsURIs.push(subject);
+                        
+                        
                         for (var predicate in data[subject]) {
+                            
+                            var pre = new AnnotationPredicate({
+                                annotationId: annotationId,
+                                uri: predicate
+                            }).placeAt(dojo.query('.annotation-'+annotationId+' [about="accordion-'+annotationId+'-'+subject+'"]')[0]);
+
+                            if (dojo.indexOf(self.itemsURIs, predicate) === -1)
+                                self.itemsURIs.push(predicate);
+                                
+                            console.log('####annotation-'+annotationId+' [about=accordion-'+annotationId+'-'+subject+']');
+                            
                             for (var object in data[subject][predicate]) {
 
-                                var object_value = data[subject][predicate][object].value,
-                                    ann = new NotebookItemAnnotationContent({
+                                var object_value = data[subject][predicate][object].value;
+
+                                console.log('onject ', object_value);
+
+                                var pre = new AnnotationObject({
+                                    annotationId: annotationId,
+                                    uri: object,
+                                    value: object
+                                }).placeAt(dojo.query('.annotation-'+annotationId+' [about="accordion-'+annotationId+'-'+predicate+'"]')[0]);
+
+                                /*
+                                ann = new NotebookItemAnnotationContent({
                                     subject: subject,
                                     predicate: predicate,
                                     object: object_value
                                 }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationContent')[0]);
-                                
-                                if (dojo.indexOf(self.itemsURIs, subject) === -1)
-                                    self.itemsURIs.push(subject);
+                                */
                                     
-                                if (dojo.indexOf(self.itemsURIs, predicate) === -1)
-                                    self.itemsURIs.push(predicate);
                                     
                                 if (dojo.indexOf(self.itemsURIs, object_value) === -1)
                                     if (data[subject][predicate][object].type === "uri")

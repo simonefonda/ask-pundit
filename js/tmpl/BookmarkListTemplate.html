@@ -33,9 +33,9 @@
             </div>
             
             <div class="row well span5">
-                <legend data-toggle="collapse" data-target="#subscribedContent" class="interactive">Subscribed collections</legend>
-                <div id="subscribedContent" class="collapse in">
-                    estiquaatsi
+                <legend data-toggle="collapse" data-target="#joinedContent" class="interactive">Joined collections</legend>
+                <div id="joinedContent" class="collapse in">
+                    <!-- will contain joined collections -->
                 </div>
             </div>
 
@@ -43,21 +43,20 @@
 
     </div>
 
-    <div class="modal hide fade" id="subscribeCollectionModal" tabindex="-1" role="dialog" aria-labelledby="scmLabel" aria-hidden="true">
+    <div class="modal hide fade" id="joinCollectionModal" tabindex="-1" role="dialog" aria-labelledby="scmLabel" aria-hidden="true">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="scmLabel">Please</h3>
         </div>
-        <form id="subscribeCollectionForm">
+        <form id="joinCollectionForm">
             <div class="modal-body">
                 <p>Insert "<strong><span class='text-info'></span></strong>" collection password</p>
-                <input type="hidden" id="subscribeCollectionHiddenName" value="">
-                <input type="password" id="subscribeCollectionPassword" class="span6" placeholder="Password" required>
+                <input type="hidden" id="joinCollectionHiddenName" value="">
+                <input type="password" autofocus id="joinCollectionPassword" class="span6" placeholder="Password" required>
             </div>
             <div class="modal-footer">
                 <span class="label pull-left">Check</span>
+                <button type="submit" class="btn btn-primary">join</button>
                 <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                <button type="submit" class="btn btn-primary">Subscribe</button>
             </div>
         </form>
     </div>

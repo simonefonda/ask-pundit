@@ -6,8 +6,6 @@ define(["dojo/_base/declare",
 	
 	return declare("ask.NotebookItemAnnotationContent", [_WidgetBase, _TemplatedMixin], {
         subject: '',
-        predicate: '',
-        object: '',
         templateString: notebookItemAnnotationContentTemplate
 	});
 });

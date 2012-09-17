@@ -26,6 +26,7 @@ legend.interactive:hover {
 	font-family: 'Lato', sans-serif;
 }
 
+
 .askNotebookItemAnnotation {
     margin: 0px;
     padding: 0px;
@@ -34,6 +35,9 @@ legend.interactive:hover {
 	border-bottom: 1px dashed #aaa;
 }
 
+.very-hidden { display: none; }
+
+/*
 .askNotebookItemAnnotationTarget {
 	margin: 0px;
 	margin-top: 20px; 
@@ -100,3 +104,4 @@ legend.interactive:hover {
 	margin-top: 20px;
 }
 
+*/

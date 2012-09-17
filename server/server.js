@@ -4,8 +4,12 @@ var nStore = require('nstore'), collections;
 nStore = nStore.extend(require('nstore/query')());
     
 collections = nStore.new('data/collections.db', function () {
-    console.log('DB ready.');
+    console.log('Collections ready.');
 });
+bookmarks = nStore.new('data/bookmarks.db', function () {
+    console.log('Bookmarks ready.');
+});
+
 
 console.log('Launching socket.io server on port '+dojoConfig.ask.nodeServerPort);
 
@@ -60,20 +64,41 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on('subscribe collection', function(data) {
+    socket.on('join collection', function(data) {
         collections.get(data.name, function(err, doc, key) {
             if (err) {
                 console.log('err reading :(', err, doc, key);
-                socket.emit('res subscribe collection ko', {err: err, doc: doc, key: key, name: data.name});
+                socket.emit('res join collection ko', {err: err, doc: doc, key: key, name: data.name});
             } else {
                 if (doc.password !== data.password) {
                     console.log('## WRONG PASS! help', err, doc, key);
-                    socket.emit('res subscribe collection ko', {err: err, doc: doc, key: key, name: data.name});
+                    socket.emit('res join collection ko', {err: err, doc: doc, key: key, name: data.name});
                 } else {
                     console.log('Password match yay!', err, doc, key);
-                    socket.emit('res subscribe collection ok', {err: err, doc: doc, key: key});
+                    socket.emit('res join collection ok', {err: err, doc: doc, key: key});
                 }
             }
+        });
+    });
+
+    socket.on('new bookmark', function(data) {
+
+        collections.save(data.name, data, function (err) {
+            if (err) { 
+                throw err;
+            } else {
+                console.log("add bookmark", data);
+                socket.emit('res new bookmark ok', data);
+            }
+        });
+
+    });
+
+
+    socket.on('get bookmark collections', function() {
+        collections.all(function(err, result) {
+            console.log('All collections ', err, result);
+            socket.emit('res bookmarks', result);
         });
     });
 

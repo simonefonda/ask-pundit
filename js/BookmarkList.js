@@ -2,7 +2,8 @@ define(["dojo/_base/declare",
         "dojo/request", 
         "dojo/dom-construct",
         "dojo/on", 
-        "dojo/router", 
+        "dojo/router",
+        "dojo/json",
         "dojo/text!ask/tmpl/BookmarkListTemplate.html", 
         "ask/CollectionItem",
         "bootstrap/Button",
@@ -10,7 +11,7 @@ define(["dojo/_base/declare",
         "dijit/layout/ContentPane", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, on, router,
+    function(declare, request, domConstruct, on, router, json,
                 bookmarkTabTemplate, CollectionItem, BButton,
                 TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
 	
@@ -18,6 +19,8 @@ define(["dojo/_base/declare",
         socketHelper: 'x',
         newNotebookTimer: '',
         notebookTimerLength: 400,
+        collections: {},
+        localStoreKey: 'ask-pundit-joined-collections',
         templateString: bookmarkTabTemplate,
 
         postMixInProperties: function() {
@@ -31,17 +34,13 @@ define(["dojo/_base/declare",
 
         },
 
-        constructor: function() {
-
-        },
-
         startup: function() {
             var self = this;
             
-            self.loadBookmarks();
+            self.loadBookmarkCollections();
             
             on(dojo.byId('bookmarksRefresh'), 'click', function(e) {
-                self.loadBookmarks();
+                self.loadBookmarkCollections();
             });
 
             on(dojo.byId('bookmarksNewName'), 'keyup', function(e) {
@@ -88,7 +87,7 @@ define(["dojo/_base/declare",
             
             // "new collection ok" response, reset the form
             s.on('res new collection ok', function(data) {
-                self.loadBookmarks();
+                self.loadBookmarkCollections();
                 dojo.query('#bookmarksCreateNew')
                     .button('complete')
                     .addClass('btn-success');
@@ -101,63 +100,121 @@ define(["dojo/_base/declare",
                 }, 3000);
             });
                
-            // Response from subscribe collection modal      
-            on(dojo.byId('subscribeCollectionForm'), 'submit', function(e) {
+            // Response from join collection modal      
+            on(dojo.byId('joinCollectionForm'), 'submit', function(e) {
 
-                self.subscribeCollection(
-                    dojo.query('#subscribeCollectionHiddenName')[0].value,
-                    dojo.query('#subscribeCollectionPassword')[0].value);
-
-                    console.log('Subsss ', dojo.query('#subscribeCollectionHiddenName')[0].value, dojo.query('#subscribeCollectionPassword')[0].value);
-                    
+                self.joinCollection(
+                    dojo.query('#joinCollectionHiddenName')[0].value,
+                    dojo.query('#joinCollectionPassword')[0].value);
+                
                 return false;
             });
-            
-            s.on('res subscribe collection ko', function(data) {
-                dojo.query('#subscribeCollectionForm .modal-footer span.label')
+
+            // Responses from the join collection commands
+            s.on('res join collection ko', function(data) {
+                dojo.query('#joinCollectionForm .modal-footer span.label')
                     .removeClass('label-info')
                     .addClass('label-important')
                     .innerHTML('The password was wrong, try again!');
-                dojo.query('#subscribeCollectionPassword')[0].value = '';
-                console.log('wrong pass');
-            });
-            s.on('res subscribe collection ok', function(data) {
-                console.log('pass was right, good boy', data);
-                dojo.query('#subscribeCollectionModal').modal('hide');
-                
+                dojo.query('#joinCollectionPassword')[0].value = '';
             });
             
+            s.on('res join collection ok', function(data) {
+                dojo.query('#joinCollectionModal').modal('hide');
+                self.addJoinedCollection(data.doc.name);
+            });
             
+            // If there's no info in the local storage, initialize it
+            if (typeof(localStorage[self.localStoreKey]) === "undefined") {
+                localStorage[self.localStoreKey] = json.stringify({"colls": []});
+            }
             
-                        
         }, // startup
+        
+        joinCollection: function(name, password) {
+            this.socketHelper.socket.emit('join collection', {name: name, password: password});
+        },
+        
+        loadBookmarkCollections: function() {
+            this.socketHelper.socket.emit('get bookmark collections');
+        },
+
+        addJoinedCollection: function(name) {
+            var self = this,
+                colls = json.parse(localStorage[self.localStoreKey]).colls;
+            
+            if (dojo.indexOf(colls, name) === -1) {
+                colls.push(name);
+                localStorage[self.localStoreKey] = json.stringify({"colls": colls});
+            }
+            
+            self.loadBookmarkCollections();
+        },
+
+        removeJoinedCollection: function(name) {
+            var self = this,
+                colls = json.parse(localStorage[self.localStoreKey]).colls,
+                index = dojo.indexOf(colls, name);
+            
+            if (index === -1) 
+                return;
+                
+            colls.splice(index, 1);
+            
+            localStorage[self.localStoreKey] = json.stringify({"colls": colls});
+            
+            self.loadBookmarkCollections();
+        }, // removeJoinedCollection()
 
         
-        subscribeCollection: function(name, password) {
-            console.log('sticazzi? ', arguments);
-            this.socketHelper.socket.emit('subscribe collection', {name: name, password: password});
-        },
-        loadBookmarks: function() {
-            this.socketHelper.socket.emit('get bookmarks');
-        },
+        displayJoinedCollections: function() {
+            var self = this,
+                colls = json.parse(localStorage[self.localStoreKey]).colls;
+            
+            dojo.query('#joinedContent').empty();
+            
+            for (var i in colls) {
+                var name = colls[i],
+                    c = self.collections[name];
+
+                var x = new CollectionItem({
+                    listReference: self,
+                    joined: true,
+                    name: c.name,
+                    base64: BASE64.encode(c.name),
+                    description: c.description
+                }).placeAt(dojo.query('#joinedContent')[0]);
+                x.startup();
+            }
+        }, // displayJoinedCollections()
+        
 
         displayBookmarks: function(data) {
-            var self = this;
-            
-            dojo.place('<p>List list list</p>', dojo.query('#bookmarksContainer .bookmarks')[0]);
+            var self = this,
+                colls = json.parse(localStorage[self.localStoreKey]).colls;
             
             dojo.query('#bookmarksContainer .bookmarks').empty();
             for (var name in data) {
-                var x = new CollectionItem({
-                    name: name,
-                    base64: BASE64.encode(name),
-                    description: data[name].description
-                }).placeAt(dojo.query('#bookmarksContainer .bookmarks')[0]);
-                x.startup();
+                
+                self.collections[name] = data[name];
+                
+                if (dojo.indexOf(colls, name) === -1) {
+                    var x = new CollectionItem({
+                        listReference: self,
+                        joined: false,
+                        name: name,
+                        base64: BASE64.encode(name),
+                        description: data[name].description
+                    }).placeAt(dojo.query('#bookmarksContainer .bookmarks')[0]);
+                    x.startup();
+                }
             }
-        }
+            // When we loaded the collections, we can display the joined
+            // TODO: move that code inside here?
+            self.displayJoinedCollections();
+            
+        } // displayBookmarks()
 
-        
 	});
 
 });
