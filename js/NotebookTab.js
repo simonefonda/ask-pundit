@@ -6,6 +6,7 @@ define(["dojo/_base/declare",
 
         "dojo/text!ask/tmpl/NotebookTabTemplate.html", 
         "bootstrap/Collapse",
+        "bootstrap/Dropdown",
 
         "ask/NotebookItemMetadata",
         "ask/NotebookItemAnnotation",
@@ -19,7 +20,7 @@ define(["dojo/_base/declare",
         "dijit/_TemplatedMixin"], 
     function(declare, request, domConstruct, on, router, 
         
-                notebookTabTemplate, BCollapse,
+                notebookTabTemplate, BCollapse, BDropdown,
                 
                 NotebookItemMetadata, NotebookItemAnnotation, NotebookItemAnnotationContent,
                 AnnotationPredicate, AnnotationObject,
@@ -111,22 +112,20 @@ define(["dojo/_base/declare",
                     // TODO: sanitize data[i][][].[].... if it exists ..
                     for (var nb_ann in data) {
 
-                        var body = data[nb_ann]['http://www.openannotation.org/ns/hasBody'][0].value,
-                            targets = data[nb_ann]['http://www.openannotation.org/ns/hasTarget'],
-                            annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value, 
-                            meta, tar;
+                        var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value;
 
                         // Annotation item
-                        meta = new NotebookItemAnnotation({
-                            annotationId: annotationId,
-                            createdBy: data[nb_ann]['http://purl.org/dc/terms/creator'][0].value,
-                            createdAt: data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
-                            pageContext: data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
-                            body: body
+                        new NotebookItemAnnotation({
+                            annotationId: annotationId
                         }).placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0]);
 
                         // Given the annotation ID, get the content
-                        self.loadAnnotationContent(annotationId);
+                        self.loadAnnotationContent({
+                            annotationId: annotationId,
+                            createdBy: data[nb_ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
+                            createdAt: data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
+                            pageContext: data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value
+                        });
 
                     } // for
 
@@ -140,8 +139,9 @@ define(["dojo/_base/declare",
 
         // Will build the main annotation content:
         // grouped by annotation id, grouped by subject, grouped by predicate
-        loadAnnotationContent: function(annotationId) {
-            var self = this;
+        loadAnnotationContent: function(annotationMeta) {
+            var self = this,
+                annotationId = annotationMeta.annotationId;
 
             // if (annotationId !== "85354f2b") return;
 
@@ -159,6 +159,9 @@ define(["dojo/_base/declare",
                         console.log('sub ', subject);
                         
                         var ann = new NotebookItemAnnotationContent({
+                            createdBy: annotationMeta.createdBy,
+                            createdAt: annotationMeta.createdAt,
+                            pageContext: annotationMeta.pageContext,
                             subject: subject,
                             annotationId: annotationId
                         }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationContent')[0]);

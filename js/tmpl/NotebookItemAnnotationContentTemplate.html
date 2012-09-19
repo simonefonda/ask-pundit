@@ -10,12 +10,31 @@
                 <div class="span9" data-replace-me="${subject_enc}">
                     Subject content
                 </div>
-                <div class="span2">
-                    id: ${annotationId}
-                    <button class="btn btn-warning">Bookmark!</button>
+                <div class="span3">
+                    <em> <i class="icon-user"></i> ${createdBy}</em><br />
+                    <i class="icon-calendar"></i> ${createdAt} <br/ >
+                    <i class="icon-bookmark"></i> <a href="${pageContext}">Page context</a><br />
+
+                    <br />
+                    
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle btn-warning btn-mini" data-toggle="dropdown">
+                            Save annotation to
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a>Collection 1</a></li>
+                            <li><a>Collection 2</a></li>
+                            <li class="divider"></li>
+                            <li><a>Collection 3 .. </a></li>
+                        </ul>
+                    </div>
+                    
                 </div>
             </div>
-        
+            
+            <br /><br />
+            
             <div class="row">
                 <div class="accordion span12" about="insert-predicate-${annotationId}-${subject_enc}">
                     <!-- will contain accordion bodies with predicates -->
