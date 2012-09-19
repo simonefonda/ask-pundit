@@ -3,26 +3,27 @@ define(["dojo/_base/declare",
         "dojo/dom-construct",
         "dojo/on", 
         "dojo/router", 
+
         "dojo/text!ask/tmpl/NotebookTabTemplate.html", 
+        "bootstrap/Collapse",
+
         "ask/NotebookItemMetadata",
         "ask/NotebookItemAnnotation",
         "ask/NotebookItemAnnotationContent",
-        "ask/NotebookItemAnnotationTarget",
-
         "ask/AnnotationPredicate",
         "ask/AnnotationObject",
-        "ask/AnnotationItemTextFragment",
-        "ask/AnnotationItemGeneric",
-        "ask/AnnotationItemPredicate",
         
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, on, router,
-                notebookTabTemplate, NotebookItemMetadata, NotebookItemAnnotation, 
-                NotebookItemAnnotationContent, NotebookItemAnnotationTarget, 
-                AnnotationPredicate, AnnotationObject, nnotationItemTextFragment, AnnotationItemGeneric, AnnotationItemPredicate,
+    function(declare, request, domConstruct, on, router, 
+        
+                notebookTabTemplate, BCollapse,
+                
+                NotebookItemMetadata, NotebookItemAnnotation, NotebookItemAnnotationContent,
+                AnnotationPredicate, AnnotationObject,
+                
                 TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
 	
 	return declare("ask.NotebookTab", [_WidgetBase, _TemplatedMixin], {
@@ -126,17 +127,7 @@ define(["dojo/_base/declare",
 
                         // Given the annotation ID, get the content
                         self.loadAnnotationContent(annotationId);
-                        
-                        // Lay down the targets of this annotation
-                        // TODO: put this somewhere else in the future?
-                        /*
-                        for (var t in targets) {
-                            tar = new NotebookItemAnnotationTarget({
-                                uri: targets[t].value
-                            }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationTarget')[0]);
-                        }
-                        */
-                        
+
                     } // for
 
                 }, 
@@ -192,6 +183,8 @@ define(["dojo/_base/declare",
 
                                 var object_value = data[subject][predicate][object].value;
                                 
+                                console.log('Object: ' + object_value);
+                                
                                 var pre = new AnnotationObject({
                                     annotationId: annotationId,
                                     object_uri: object,
@@ -201,9 +194,10 @@ define(["dojo/_base/declare",
                                 if (dojo.indexOf(self.itemsURIs[annotationId], object_value) === -1)
                                     if (data[subject][predicate][object].type === "uri")
                                         self.itemsURIs[annotationId].push(object_value);
-                            }
-                        }
-                    }
+
+                            } // for object in data[subject][predicate]
+                        } // for predicate in data[subject]
+                    } // for subject and data
                     
                     console.log('@@@@@@@ ///////////////////////', annotationId);
 
@@ -223,14 +217,10 @@ define(["dojo/_base/declare",
         loadAnnotationItems: function(annotationId) {
             var self = this;
             
-            console.log('IIIIIIIIIIIIIIIII ', annotationId);
-            
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/items", {
                 handleAs: "json"
             }).then(
                 function(data){
-                    
-                    console.log('RRRRRRRRRRRRRRRRRRRRRRRRRRR ', annotationId);
                     
                     // TODO: use a namespace helper or something smarter!
                     var _type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
@@ -239,24 +229,12 @@ define(["dojo/_base/declare",
                         _lab = "http://www.w3.org/2000/01/rdf-schema#label",
                         _desc = "http://purl.org/dc/elements/1.1/description";
                     
-                        if (annotationId === "dbd8b735")
-                            console.log("òòòòòòòòòòòòòòòòòòòòòòòò ", data, self.itemsURIs[annotationId], self.itemsURIs[annotationId].length);
-                    
                     // Look for items starting from itemsURIs
                     for (var current in self.itemsURIs[annotationId]) {
                         
                         var uri = self.itemsURIs[annotationId][current];
-
-                        // This function will get called n times, but as soon as we render an
-                        // item we can forget about it and avoid rendering it twice or more
-                        //if (dojo.indexOf(self.renderedItemsURIs, annotationId+"-"+uri) !== -1) {
-                        //    console.log('ALREADY SEEN SEEN ', uri);
-                        //    continue;
-                        //}
                         
                         if (uri in data) {
-
-                            console.log('FOUND ITEMz: ', uri);
                             
                             if (_type in data[uri]) {
                                 
@@ -271,23 +249,21 @@ define(["dojo/_base/declare",
                                 // First step: put the titles
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me-title="'+uri_enc+'"]')
                                     .forEach(function(__e) {
-                                        console.log('Rimpiazzo short ', label_short);
                                         dojo.query(__e).empty().innerHTML(label_short);
                                     });
 
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me="'+uri_enc+'"]')
                                     .forEach(function(__e) {
-                                        console.log('Rimpiazzo LONG', desc);
                                         dojo.query(__e).empty().innerHTML(desc);
                                     });
                                 
                             } else {
-                                alert('omagad no type');
+                                console.log('ERROR? No type: this should NOT happen.');
                             }
                             
                             
                         } else { // if uri in data 
-                            console.log('uri not in data __'+ uri +'__', data, typeof(data[uri]), typeof(uri));
+                            console.log('ERROR? Uri not in data __'+ uri +'__', data, typeof(data[uri]), typeof(uri));
                         }
                        
                     } // for i in self.itemsURIs
