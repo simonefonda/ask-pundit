@@ -9,12 +9,7 @@ define(["dojo/_base/declare",
         object_uri: '',
         object_uri_enc: '',
         object_value: '',
-        
-        templateString: annotationObjectTemplate,
-        postMixInProperties: function() {
-            this.inherited(arguments);
-            this.object_uri_enc = BASE64.encode(this.object_uri);
-        }
+        templateString: annotationObjectTemplate
 	});
 
 });

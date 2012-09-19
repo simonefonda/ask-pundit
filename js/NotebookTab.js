@@ -1,6 +1,7 @@
 define(["dojo/_base/declare", 
         "dojo/request", 
         "dojo/dom-construct",
+        "dojo/dom-attr",
         "dojo/on", 
         "dojo/router", 
 
@@ -18,7 +19,7 @@ define(["dojo/_base/declare",
         "dijit/layout/ContentPane", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, on, router, 
+    function(declare, request, domConstruct, domAttr, on, router, 
         
                 notebookTabTemplate, BCollapse, BDropdown,
                 
@@ -152,11 +153,7 @@ define(["dojo/_base/declare",
             }).then(
                 function(data){
 
-                    console.log('@@@@@@@ ', annotationId);
-                    
                     for (var subject in data) {
-                        
-                        console.log('sub ', subject);
                         
                         var ann = new NotebookItemAnnotationContent({
                             createdBy: annotationMeta.createdBy,
@@ -171,12 +168,11 @@ define(["dojo/_base/declare",
                         
                         for (var predicate in data[subject]) {
                             
-                            console.log('pred: ', predicate);
-                            
                             var pre = new AnnotationPredicate({
                                 annotationId: annotationId,
                                 subject_enc: BASE64.encode(subject),
-                                uri: predicate
+                                uri: predicate,
+                                objects_num: data[subject][predicate].length
                             }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
 
                             if (dojo.indexOf(self.itemsURIs[annotationId], predicate) === -1) 
@@ -186,12 +182,11 @@ define(["dojo/_base/declare",
 
                                 var object_value = data[subject][predicate][object].value;
                                 
-                                console.log('Object: ' + object_value);
-                                
                                 var pre = new AnnotationObject({
                                     annotationId: annotationId,
                                     object_uri: object,
-                                    object_value: object_value
+                                    object_value: object_value,
+                                    object_uri_enc: BASE64.encode(object_value)
                                 }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-object-'+annotationId+'-'+BASE64.encode(subject)+'-'+BASE64.encode(predicate)+'"]')[0]);
                                 
                                 if (dojo.indexOf(self.itemsURIs[annotationId], object_value) === -1)
@@ -202,8 +197,6 @@ define(["dojo/_base/declare",
                         } // for predicate in data[subject]
                     } // for subject and data
                     
-                    console.log('@@@@@@@ ///////////////////////', annotationId);
-
                     // Once we have the triples, get the item descriptions
                     self.loadAnnotationItems(annotationId);
 
@@ -249,15 +242,33 @@ define(["dojo/_base/declare",
                                 if (typeof(data[uri][_desc]) !== "undefined")
                                     desc = data[uri][_desc][0].value;
 
+                                console.log('Found for replace: ', label_short, desc);
+
                                 // First step: put the titles
-                                dojo.query('.annotation-'+annotationId+' [data-replace-me-title="'+uri_enc+'"]')
+                                dojo.query('.annotation-'+annotationId+' [data-replace-me-as-title="'+uri_enc+'"]')
                                     .forEach(function(__e) {
                                         dojo.query(__e).empty().innerHTML(label_short);
                                     });
 
-                                dojo.query('.annotation-'+annotationId+' [data-replace-me="'+uri_enc+'"]')
+                                dojo.query('.annotation-'+annotationId+' [data-replace-me-as-subject="'+uri_enc+'"]')
                                     .forEach(function(__e) {
                                         dojo.query(__e).empty().innerHTML(desc);
+                                    });
+
+                                dojo.query('.annotation-'+annotationId+' [data-replace-me-as-predicate="'+uri_enc+'"]')
+                                    .forEach(function(__e) {
+                                        var num = domAttr.get(__e, 'data-objects-num'),
+                                            content = num > 1 ? label + ' ('+num+')' : label;
+                                        dojo.query(__e).empty().innerHTML(content);
+                                    });
+
+                                // TODO : create a new template and use it to render an item with a bit more
+                                // details .. 
+                                dojo.query('.annotation-'+annotationId+' [data-replace-me-as-object="'+uri_enc+'"]')
+                                    .forEach(function(__e) {
+                                        var content = label + (desc !== "" ? "<br/><br/>"+desc : "");
+                                        content += "<br/><a href='"+uri+"'>More info ..</a>";
+                                        dojo.query(__e).empty().innerHTML(content);
                                     });
                                 
                             } else {
