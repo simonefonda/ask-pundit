@@ -5,6 +5,7 @@
 	top: 50px;
 }
 
+
 #ask-pills {
 	width: 100%;
 	position: fixed;
@@ -15,92 +16,18 @@
     z-index: 1000;
 }
 
+
 legend.interactive:hover {
     cursor: pointer;
     color: #FAA732;
 }
 
-
-
 #askTabContainer {
 	font-family: 'Lato', sans-serif;
 }
 
-
-.askNotebookItemAnnotation {
-    margin: 0px;
-    padding: 0px;
-	overflow: hidden;
-	*zoom: 1;
-}
-
 .very-hidden { display: none; }
 
-/*
-.askNotebookItemAnnotationTarget {
-	margin: 0px;
-	margin-top: 20px; 
-	padding: 10px;
-   	width: 200px;
-    min-height: 200px;
-    border: 0px;
-    background: #444;
-    border-radius: 3px;
-    float: left;
-    color: #cfc;
-	box-shadow: 0px 3px 16px #444;
+div.accordion-heading {
+    background-color: #eee;
 }
-
-.askNotebookItemAnnotationMeta {
-    border-radius: 3px;
-	margin: 30px 70px 10px 220px;
-	padding: 15px;
-	box-shadow: 0px 3px 6px #444;
-	background: #eee;
-	color: #666;
-}
-
-.askNotebookItemAnnotationContent {
-    border-radius: 3px;
-	padding: 10px;
-	margin-left: 230px; 
-	background: #663636;
-	color: #bbb;
-	margin-bottom: 50px;
-	box-shadow: 3px 3px 16px #444;
-}
-
-.askNotebookItemAnnotationContent .annotation-item-content {
-	border-bottom: 1px dashed #aaa;
-	margin: 10px;
-	padding: 5px;	
-}
-
-.askNotebookItemAnnotationContent-subject {
-}
-.askNotebookItemAnnotationContent-predicate {
-	padding-left: 80px;
-	font-size: 2em;
-}
-.askNotebookItemAnnotationContent-object {
-	padding-left: 160px;
-}
-.askNotebookItemAnnotationContent-subject h1,
-.askNotebookItemAnnotationContent-predicate h1,
-.askNotebookItemAnnotationContent-object h1 {
-	font-size: 2em;
-	color: white;
-	margin-top: 5px;
-	margin-bottom: 15px;
-	text-shadow: 5px 3px 5px #333;
-}
-
-.askNotebookItemAnnotationTarget h1 {
-	font-weight: 900;
-	font-size: 1.25em;	
-	color: white;
-	margin-bottom: 10px;
-	margin-top: 20px;
-}
-
-*/
