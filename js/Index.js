@@ -64,23 +64,32 @@ define(["dojo/_base/declare",
                     router.go('/notebooks/'+ id.substr(-8, 8));
             });
             
+            // Handle search input 
             on(dojo.byId('tabNotebooksSearchInput'), 'keyup', function(e) {
-                    
-                clearTimeout(self.liveSearchTimer);
-                self.liveSearchTimer = setTimeout(function() {
-                    var s = dojo.query('#tabNotebooksSearchInput')[0].value;
-                    dojo.query('div.nb-item').style('display', 'none');
-                    dojo.query('div.nb-item:contains("'+s+'")').style('display', 'block');
-                }, self.liveSearchTimerLength);
 
+                if (e.keyCode === 13) {
+                    self.filterNotebooks()
+                } else {
+                    clearTimeout(self.liveSearchTimer);
+                    self.liveSearchTimer = setTimeout(function() {
+                        self.filterNotebooks();
+                    }, self.liveSearchTimerLength);
+                }
+                return false;
             });
             
+            // Reset search
             on(dojo.byId('tabNotebooksSearchButton'), 'click', function() {
                 dojo.query('div.nb-item').style('display', 'block');
                 return false;
             });
             
-            
+        },
+        
+        filterNotebooks: function() {
+            var s = dojo.query('#tabNotebooksSearchInput')[0].value.toLowerCase();
+            dojo.query('div.nb-item').style('display', 'none');
+            dojo.query('div.nb-item:contains("'+s+'")').style('display', 'block');
         },
         
         setupRouter: function() {
