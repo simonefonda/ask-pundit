@@ -154,8 +154,6 @@ define(["dojo/_base/declare",
                     
                     for (var i in data) {
                         
-                        if (id === 'fa3b35a5') console.log('data ', id, data, data[i]['http://purl.org/pundit/ont/ao#includes']);
-                        
                         var name = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
                             annotationNum = 0,
                             createdAt = data[i]['http://purl.org/dc/terms/created'][0].value,
