@@ -151,12 +151,25 @@ define(["dojo/_base/declare",
                 handleAs: "json"
             }).then(
                 function(data){
+                    
                     for (var i in data) {
                         
-                        self.name = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value;
-                        dojo.query('#nb-item-'+id+' p').innerHTML(self.name);
-                        dojo.query('#nb-item-'+id+' div').innerHTML(self.name.toLowerCase());
-                        dojo.query('#nb-item-'+id+' small').innerHTML((data[i]['http://purl.org/pundit/ont/ao#includes'].length || "0") + " annotations");
+                        if (id === 'fa3b35a5') console.log('data ', id, data, data[i]['http://purl.org/pundit/ont/ao#includes']);
+                        
+                        var name = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
+                            annotationNum = 0,
+                            createdAt = data[i]['http://purl.org/dc/terms/created'][0].value,
+                            createdBy = data[i]['http://purl.org/dc/terms/creator'][0].value;
+                        
+                        if (typeof(data[i]['http://purl.org/pundit/ont/ao#includes']) !== "undefined") {
+                            annotationNum = data[i]['http://purl.org/pundit/ont/ao#includes'].length;
+                            dojo.query('#nb-item-'+id+' small.annotationNum').innerHTML(annotationNum + " annotations");
+                        }
+                            
+                        dojo.query('#nb-item-'+id+' p').innerHTML(name);
+                        dojo.query('#nb-item-'+id+' div').innerHTML(name.toLowerCase());
+                        dojo.query('#nb-item-'+id+' small.id-createdAt-createdBy').innerHTML(createdAt);
+                        
                     }
 
                 }, 
