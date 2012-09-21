@@ -7,12 +7,14 @@ define(["dojo/_base/declare",
         "dojo/router", 
 
         "dojo/text!ask/tmpl/TimelineTabTemplate.html", 
+
+        "ask/TimelineGraph",
         
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
     function(declare, request, domConstruct, domClass, domStyle, on, router, 
         
-                timelineTabTemplate, 
+                timelineTabTemplate, TimelineGraph,
                 
                 _WidgetBase, _TemplatedMixin) {
 	
@@ -185,6 +187,26 @@ define(["dojo/_base/declare",
             dojo.query('#timeline-tab-'+self.notebookId+' div.progress')
                 .removeClass('active progress-warning')
                 .addClass('progress-success');
+                
+            self.showGraph();
+        },
+        
+        showGraph: function() {
+            var self = this;
+            
+            console.log('faccio timeline');
+            
+            var foo = new TimelineGraph({
+                notebookId: self.notebookId
+            });
+            
+            console.log('xyz');
+            
+            foo.placeAt(dojo.query('.raphael-graph-container-'+self.notebookId)[0]);
+            
+            console.log('done graph');
+            // foo.placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-metadata')[0]);
+
         }
         
 	});
