@@ -31,3 +31,9 @@ legend.interactive:hover {
 div.accordion-heading {
     background-color: #eee;
 }
+
+.progress-percentage {
+    display: block;
+    margin: 10px;
+    text-align: center;
+}

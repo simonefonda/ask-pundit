@@ -56,7 +56,6 @@ define(["dojo/_base/declare",
             // Close tab button: removes pill + tab content, unregistering
             // the dojo's widgets
             on(dojo.byId('nb-tab-close-'+ self.notebookId), 'click', function(e) {
-
                 router.go('/notebooks/');
 
                 var node = dojo.query('#notebook-tab-'+self.notebookId)[0];
@@ -68,9 +67,8 @@ define(["dojo/_base/declare",
 
                 dojo.destroy(dojo.query('#tab-'+self.notebookId)[0].parentNode);
                 dojo.destroy(node);
-                
             });
-     
+            
         }, // startup
         
         loadNotebookMetadata: function() {
@@ -144,8 +142,6 @@ define(["dojo/_base/declare",
             var self = this,
                 annotationId = annotationMeta.annotationId;
 
-            // if (annotationId !== "85354f2b") return;
-
             self.itemsURIs[annotationId] = [];
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/content", {
@@ -154,7 +150,7 @@ define(["dojo/_base/declare",
                 function(data){
 
                     for (var subject in data) {
-                        
+                                                
                         var ann = new NotebookItemAnnotationContent({
                             createdBy: annotationMeta.createdBy,
                             createdAt: annotationMeta.createdAt,
@@ -167,7 +163,7 @@ define(["dojo/_base/declare",
                             self.itemsURIs[annotationId].push(subject);
                         
                         for (var predicate in data[subject]) {
-                            
+
                             var pre = new AnnotationPredicate({
                                 annotationId: annotationId,
                                 subject_enc: BASE64.encode(subject),
@@ -175,9 +171,6 @@ define(["dojo/_base/declare",
                                 objects_num: data[subject][predicate].length
                             }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
 
-                            if (dojo.indexOf(self.itemsURIs[annotationId], predicate) === -1) 
-                                self.itemsURIs[annotationId].push(predicate);
-                                                            
                             for (var object in data[subject][predicate]) {
 
                                 var object_value = data[subject][predicate][object].value;
@@ -199,7 +192,7 @@ define(["dojo/_base/declare",
                     
                     // Once we have the triples, get the item descriptions
                     self.loadAnnotationItems(annotationId);
-
+                    
                 }, 
                 function(error) {
                     console.log('error :|');
@@ -217,7 +210,7 @@ define(["dojo/_base/declare",
                 handleAs: "json"
             }).then(
                 function(data){
-                    
+                                        
                     // TODO: use a namespace helper or something smarter!
                     var _type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                         _tf = "http://purl.org/pundit/ont/ao#text-fragment",
