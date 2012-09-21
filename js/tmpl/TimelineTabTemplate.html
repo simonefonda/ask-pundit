@@ -1,14 +1,37 @@
-<div class="tab-pane" id="timeline-panel-${notebookId}">
+<div class="tab-pane">
 
     <div class="page-header">
       <h1><span id="nb-header-${notebookId}">Timeline</span> <small>${notebookId}</small></h1>
     </div>
 
-    <div>
+    <div class="row">
         <p>
-            <button type="button" class="btn btn-large btn-info" data-loading-text="Loading...">Refresh</button>
             <button type="button" class="btn btn-large btn-danger pull-right" id="time-tab-close-${notebookId}">Close</button>
         </p>
+    </div>
+    
+    <br />
+    
     <div>
+
+        <div class="progress progress-warning progress-striped active">
+          <div class="bar" style="width: 0%"></div>
+        </div>
+        <div class="progress-percentage">Loading ...</div>
+    </div>
+
+    <br />
+    
+    <div class="row">
+        <div class="timeline hero-unit">
+            <h1>Timeline goes here</h1>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="annotations hero-unit">
+            <h2>Annotations goes here</h2>
+        </div>
+    </div>
         
 </div>
