@@ -1,4 +1,16 @@
+/* @override 
+	http://localhost/ask-dojo/css/ask.css */
+
 @import 'http://fonts.googleapis.com/css?family=Lato:400,900';
+
+body, html {
+	font-family: 'Rockwell', sans-serif;
+}
+
+@font-face {
+	font-family: "Rockwell", sans-serif;
+	src:  "css/Rockwell";
+}
 
 #askTabContainer .tab-content {
 	position: relative;
@@ -37,3 +49,175 @@ div.accordion-heading {
     margin: 10px;
     text-align: center;
 }
+
+
+.timeline-container {
+	
+}
+
+
+/* PEOPLE COLUMN */
+
+.ti-people {
+	width: 175px;
+	display: block;
+	margin: 0px;
+	padding: 0px;
+	float: left;
+}
+
+.ti-people ul {
+	list-style: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.ti-people-title {
+	background-color: black;
+	color: white;
+	text-align: middle;
+}
+
+.ti-people li div {
+	float: left;
+	height: 50px;
+	border: 0px;
+	margin-bottom: 5px;
+}
+.ti-people-color {
+	width: 10px;
+	background-color: #fc0;
+}
+.ti-people-picture {
+	width: 50px;
+}
+.ti-people-name {
+	width: 115px;
+	background-color: red;
+}
+.ti-people-name p {
+	padding: 5px;
+}
+
+
+/* TIMELINE */ 
+
+.ti-timeline {
+	margin-left: 260px;
+	background-color: yellow;
+	height: 235px;
+}
+
+.ti-timeline-title {
+	height: 25px;
+	background-color: black;
+}
+.ti-title-name {
+	display: inline;
+	color:  red;
+	float: left;
+}
+.ti-timeline-title ul {
+	list-style: none;
+	float: right;
+}
+.ti-timeline-title ul li {
+	display: inline;
+	color: white;	
+}
+.ti-timeline-title ul li.selected {
+	color: red;
+}
+
+
+/* TAGS */
+
+.ti-tags {
+	float: left;
+	padding: 5px;
+	background: green;
+	border: 0px solid black;
+	width: 165px;
+}
+.ti-tags a {
+	float: right;
+	background-color: yellow;
+	padding: 0px 5px;
+}
+.ti-title {
+	display: block;
+}
+.ti-tag {
+	display: inline-block;
+	padding: 3px;
+	background-color: white;
+	margin: 3px;
+}
+.ti-tag.selected {
+	background-color: red;
+}
+
+
+/* ANNOTATIONS */
+
+.ti-annotations {
+	margin-left: 260px;
+	background-color: cyan;
+}
+
+.ti-ann-item.collapsed {
+	width: 20px;
+}
+.ti-ann-item.collapsed .box {
+	display: block;
+	width: 20px;
+	height: 20px;
+}
+
+
+.ti-ann-content {
+	width: 250px;
+	height: 400px;
+	background: #666;
+}
+.ti-ann-content-picture {
+	width: 50px;
+	height: 50px;
+	border: 1px solid white;
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+.ti-ann-content-name {
+	margin-left: 50px;
+	color: red;
+}
+.ti-ann-content-text {
+	padding: 5px;
+	color: yellow;
+}
+.ti-ann-content-source {
+	color: red;
+}
+.ti-ann-content-date {
+	color: green;
+}
+
+
+.ti-ann-content.color-1 {
+	border-left: 20px solid red;
+}
+.box.day {
+	background-color: white;
+	text-align: center
+}
+.box.color-1 {
+	background-color: red;
+}
+.box.color-2 {
+	background-color: blue;
+}
+.box.color-3 {
+	background-color: green;
+}
+
