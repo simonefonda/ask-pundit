@@ -45,10 +45,10 @@ window.onload = function () {
 
     var startYear = 2012;
 	var endYear = 2012;
-	var startMonth = 7;
-	var endMonth = 7;
+	var startMonth = 9;
+	var endMonth = 9;
 	var startDay = 2;
-	var endDay = 31;
+	var endDay = 20;
 
 	var normStartMonth = formatNumber(startMonth);
 	var normEndMonth = formatNumber(endMonth);
