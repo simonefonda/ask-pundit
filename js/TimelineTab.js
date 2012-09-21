@@ -5,15 +5,7 @@ define(["dojo/_base/declare",
         "dojo/on", 
         "dojo/router", 
 
-        "dojo/text!ask/tmpl/NotebookTabTemplate.html", 
-        "bootstrap/Collapse",
-        "bootstrap/Dropdown",
-
-        "ask/NotebookItemMetadata",
-        "ask/NotebookItemAnnotation",
-        "ask/NotebookItemAnnotationContent",
-        "ask/AnnotationPredicate",
-        "ask/AnnotationObject",
+        "dojo/text!ask/tmpl/TimelineTabTemplate.html", 
         
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane", 
@@ -21,56 +13,67 @@ define(["dojo/_base/declare",
         "dijit/_TemplatedMixin"], 
     function(declare, request, domConstruct, domAttr, on, router, 
         
-                notebookTabTemplate, BCollapse, BDropdown,
-                
-                NotebookItemMetadata, NotebookItemAnnotation, NotebookItemAnnotationContent,
-                AnnotationPredicate, AnnotationObject,
+                timelineTabTemplate, 
                 
                 TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
 	
-	return declare("ask.NotebookTab", [_WidgetBase, _TemplatedMixin], {
-        parentTabContainer: '',
+	return declare("ask.TimelineTab", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
-        itemsURIs: [],
-        renderedItemsURIs: [],
-        label: '',
-        templateString: notebookTabTemplate,
-        // number of chars to display in the title of the annotation
-        titleChars: 50,
+        name: '',
+        notebookRawData: {
+            items: {},
+            triples: {}
+        },
+        templateString: timelineTabTemplate,
         constructor: function() {
             this.inherited(arguments);
+        },
+        postMixInProperties: function() {
+            this.inherited(arguments);
+            this.name = this.notebookId;
         },
         startup: function() {
             var self = this;
             self.inherited(arguments);
 
             // place the tab button
-            var b = "<li><a href='#notebook-tab-"+this.notebookId+
-                    "' data-toggle='tab' id='tab-"+this.notebookId+
-                    "'>N: "+this.notebookId+"</a></li>";
+            var b = "<li><a href='#/timeline/"+this.notebookId+"'" +
+                    "' data-toggle='tab' id='tab-time-"+self.notebookId+
+                    "'>T: "+this.name+"</a></li>";
+
             dojo.place(b, "ask-pills");
 
-            self.loadNotebookMetadata();
+            // self.loadNotebookMetadata();
             self.loadNotebookAnnotations();
+            
+            on(dojo.query('#tab-time-'+self.notebookId), 'show', function(e) {
+                console.log('Timeline on show', self.notebookId);
+                dojo.query('#ask-tab-content .tab-pane').removeClass('active');
+                dojo.query('#timeline-tab-'+self.notebookId).addClass('active');
+            });
+            
      
             // Close tab button: removes pill + tab content, unregistering
             // the dojo's widgets
-            on(dojo.byId('nb-tab-close-'+ self.notebookId), 'click', function(e) {
+            on(dojo.byId('time-tab-close-'+ self.notebookId), 'click', function(e) {
+
                 router.go('/notebooks/');
 
-                var node = dojo.query('#notebook-tab-'+self.notebookId)[0];
+                var node = dojo.query('#timeline-tab-'+self.notebookId)[0];
 
-                dijit.registry.forEach(function(w){ 
-                    if (w.id === 'notebook-tab-'+self.notebookId) 
+                dijit.registry.forEach(function(w) { 
+                    if (w.id === 'timeline-tab-'+self.notebookId) 
                         w.destroyRecursive();
                 });
 
-                dojo.destroy(dojo.query('#tab-'+self.notebookId)[0].parentNode);
+                dojo.destroy(dojo.query('#tab-time-'+self.notebookId)[0].parentNode);
                 dojo.destroy(node);
+                
             });
-            
+     
         }, // startup
         
+        /*
         loadNotebookMetadata: function() {
             var self = this;
 
@@ -99,6 +102,7 @@ define(["dojo/_base/declare",
                 }
             ); // then
         },
+        */
         
         loadNotebookAnnotations: function() {
             var self = this;
@@ -112,11 +116,13 @@ define(["dojo/_base/declare",
                     for (var nb_ann in data) {
 
                         var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value;
-
+                        
+                        /*
                         // Annotation item
                         new NotebookItemAnnotation({
                             annotationId: annotationId
                         }).placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0]);
+                        */
 
                         // Given the annotation ID, get the content
                         self.loadAnnotationContent({
@@ -150,7 +156,12 @@ define(["dojo/_base/declare",
                 function(data){
 
                     for (var subject in data) {
-                                                
+                        
+                        // Save content for later visualization of this notebook
+                        if (typeof(self.notebookRawData.triples[subject]) === 'undefined') 
+                            self.notebookRawData.triples[subject] = {};
+
+                        /*
                         var ann = new NotebookItemAnnotationContent({
                             createdBy: annotationMeta.createdBy,
                             createdAt: annotationMeta.createdAt,
@@ -161,9 +172,15 @@ define(["dojo/_base/declare",
                         
                         if (dojo.indexOf(self.itemsURIs[annotationId], subject) === -1) 
                             self.itemsURIs[annotationId].push(subject);
+                        */
                         
                         for (var predicate in data[subject]) {
 
+                            // Save content for later visualization of this notebook
+                            if (typeof(self.notebookRawData.triples[subject][predicate]) === 'undefined') 
+                                self.notebookRawData.triples[subject][predicate] = [];
+                            
+                            /*
                             var pre = new AnnotationPredicate({
                                 annotationId: annotationId,
                                 subject_enc: BASE64.encode(subject),
@@ -171,8 +188,15 @@ define(["dojo/_base/declare",
                                 objects_num: data[subject][predicate].length
                             }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
 
+                            if (dojo.indexOf(self.itemsURIs[annotationId], predicate) === -1) 
+                                self.itemsURIs[annotationId].push(predicate);
+                            */
+                                                            
                             for (var object in data[subject][predicate]) {
 
+                                self.notebookRawData.triples[subject][predicate].push(data[subject][predicate][object]);
+                                
+                                /*
                                 var object_value = data[subject][predicate][object].value;
                                 
                                 var pre = new AnnotationObject({
@@ -185,7 +209,8 @@ define(["dojo/_base/declare",
                                 if (dojo.indexOf(self.itemsURIs[annotationId], object_value) === -1)
                                     if (data[subject][predicate][object].type === "uri")
                                         self.itemsURIs[annotationId].push(object_value);
-
+                                */
+                                
                             } // for object in data[subject][predicate]
                         } // for predicate in data[subject]
                     } // for subject and data
@@ -211,6 +236,13 @@ define(["dojo/_base/declare",
             }).then(
                 function(data){
                                         
+                    // Saving items for later visualizations
+                    for (var j in data) {
+                        if (typeof(self.notebookRawData.items[j]) === "undefined")
+                            self.notebookRawData.items[j] = data[j];
+                    }
+                    
+                    /*
                     // TODO: use a namespace helper or something smarter!
                     var _type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
                         _tf = "http://purl.org/pundit/ont/ao#text-fragment",
@@ -272,6 +304,8 @@ define(["dojo/_base/declare",
                         }
                        
                     } // for i in self.itemsURIs
+                    */
+                    console.log('final items ', self.notebookRawData.items);
                     
                 }, 
                 function(error) {

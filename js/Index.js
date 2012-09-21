@@ -9,6 +9,7 @@ define(["dojo/_base/declare",
         "dijit/_TemplatedMixin",
         "ask/NotebookItem",
         "ask/NotebookTab",
+        "ask/TimelineTab",
         "ask/BookmarkCollectionTab",
         "ask/BookmarkList",
         "ask/IOHelper",
@@ -17,7 +18,7 @@ define(["dojo/_base/declare",
         "dijit/layout/ContentPane"], 
     function(declare, router, on, request, config, encode,
         indexTemplate, _WidgetBase, _TemplatedMixin, 
-        NotebookItem, NotebookTab, BookmarkCollectionTab, BookmarkList, IOHelper, BTab, TabContainer, 
+        NotebookItem, NotebookTab, TimelineTab, BookmarkCollectionTab, BookmarkList, IOHelper, BTab, TabContainer, 
         ContentPane) {
 	
 	return declare("ask.Index", [_WidgetBase, _TemplatedMixin], {
@@ -59,6 +60,9 @@ define(["dojo/_base/declare",
                 } else if (id === "#tab-notebooks") {
                     router.go('/notebooks/');
                 } else if (id.match(/\/bookmarks\//) !== null) {
+                    router.go(id);
+                } else if (id.match(/\/timeline\//) !== null) {
+                    console.log('Router going id ', id);
                     router.go(id);
                 } else 
                     router.go('/notebooks/'+ id.substr(-8, 8));
@@ -109,6 +113,10 @@ define(["dojo/_base/declare",
 
             router.register('/notebooks/:id', function(evt) {
                 self.openNotebook(evt.params.id);
+            });
+
+            router.register('/timeline/:id', function(evt) {
+                self.openTimeline(evt.params.id);
             });
     
             router.startup();
@@ -211,6 +219,24 @@ define(["dojo/_base/declare",
             
             dojo.query("#tab-"+id).tab('show');
         },
+        
+        openTimeline: function(id) {
+            var self = this;
+            
+            console.log('Opening timeline ', id);
+            
+            // if the tab doesnt exist, create it
+            if (dojo.query("#timeline-tab-"+ id).length === 0) {
+                console.log('NEW NEW timeline ', id);
+                var nbTab = new TimelineTab({
+                    notebookId: id,
+                    id: 'timeline-tab-'+ id
+                }).placeAt(dojo.byId('ask-tab-content'));
+            }
+            
+            dojo.query("#tab-time-"+id).tab('show');
+            
+        }
                 
 	});
 
