@@ -43,12 +43,31 @@ window.onload = function () {
         };
     }
 
+    var startYear = 2012;
+	var endYear = 2012;
+	var startMonth = 7;
+	var endMonth = 7;
+	var startDay = 2;
+	var endDay = 31;
+
+	var normStartMonth = formatNumber(startMonth);
+	var normEndMonth = formatNumber(endMonth);
+	var normStartDay = formatNumber(startDay);
+	var normEndDay = formatNumber(endDay);
+	
+	var startDate = startYear + "-" + normStartMonth + "-" + normStartDay;
+	
+	
+	var endDate = endYear + "-" + normEndMonth + "-" + normEndDay;
+	
+	
+
 	require(["dojo/io/script", "dojo/dom", "dojo/string", "dojo/domReady!"], function(dom, string){
 	  	dojo.io.script.get({
 		      callbackParamName: "callback",
-		      url: "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=prodottiprotettitrentino&apikey=61f623f3-04ba-4c71-ba8e-acc5e88b8202&query=select%20*%20from%20%60data%60%20limit%2010",
+		      url: "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=stoxxeu600&apikey=e378a695-41ce-48ba-8a6b-ca77fbd06cf3&query=SELECT%20*%20FROM%20swdata%20WHERE%20date%20BETWEEN%20%22" + startDate + "%22%20AND%20%22" + endDate + "%22",
 		      load: function(r) {
-		      	plotData(r);
+		      	plotData(r, startYear, endYear, startMonth, endMonth, startDay, endDay);
 		      },
 	        	error: function(error) {
 	          }
@@ -56,12 +75,79 @@ window.onload = function () {
 		});
 	});
 
-	function plotData(r) {
+
+	function formatNumber(num) {
+		var result = "";
+		if (num > 9) {
+			result = num;
+		} else {
+			result = "0" + num;
+		}
+		return result;
+	}
+
+	function normalise(min, max, number) {
+		var range = max - min;
+		return ((number - min) / range);
+	}
+
+	function plotData(r, startYear, endYear, startMonth, endMonth, startDay, endDay) {
 		
+		var labels = [];
+		var data = [];
+		var originalData = [];
 		
+		var map = {};
+		for (item in r) {
+			map[r[item].date]=r[item].value;
+		}
 		
-		var labels = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","20","21","22","23","24","25","26","27","28","29","30"],
-	        data = ["23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34"];
+		var max = 0;
+		var min = 0;
+		var pos = 0;
+		var previousValue;
+		for (i=startDay;i<=endDay;i++) {
+			var key = startYear + "-" + formatNumber(startMonth) + "-" + formatNumber(i);
+			labels[pos] = i;
+			if (map[key] === undefined) {
+				if (previousValue === undefined) {
+					map[key] = "0";
+					originalData[pos] = "0";
+				} else {
+					map[key] = previousValue;
+					originalData[pos] = previousValue + "";
+				}
+				
+			} else {
+				originalData[pos] = map[key] + "";
+			}
+			pos++;
+			
+			if (previousValue === undefined) {
+				max = map[key];
+				min = map[key];
+			} else {
+				if (max < map[key]) {
+					max = map[key];
+				}
+				if (min > map[key]) {
+					min = map[key];
+				}
+			}
+			
+			previousValue = map[key];
+			
+		}
+		
+		var range = max - min;
+		
+		for (j in originalData) {
+			data[j] = ((originalData[j] - min) / range) + 0.5;
+		}
+		
+		// labels = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","20","21","22","23","24","25","26","27","28","29","30"],
+	    //    data = ["23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34","23","56","34"];
+		
 		/*	
 	    $("#data tfoot th").each(function () {
 	        labels.push($(this).html());
@@ -96,8 +182,8 @@ window.onload = function () {
 	        leave_timer,
 	        blanket = r.set();
 	    
-		label.push(r.text(60, 12, "24 hits").attr(txt));
-	    label.push(r.text(60, 27, "22 September 2008").attr(txt1).attr({fill: color}));
+		label.push(r.text(60, 12, data[0]).attr(txt));
+	    label.push(r.text(60, 27, "22" + "-" + startMonth + "-" + startYear).attr(txt1).attr({fill: color}));
 	    label.hide();
 	
 	    var frame = r.popup(100, 100, label, "right").attr({fill: "#000", stroke: "#666", "stroke-width": 2, "fill-opacity": .7}).hide();
@@ -139,8 +225,9 @@ window.onload = function () {
 	                lx = label[0].transform()[0][1] + ppp.dx;
 	                ly = label[0].transform()[0][2] + ppp.dy;
 	                frame.show().stop().animate(anim);
-	                label[0].attr({text: data + " hit" + (data == 1 ? "" : "s")}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
-	                label[1].attr({text: lbl + " September 2008"}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
+					var showdata = (data - 0.5) * range + min;	
+	                label[0].attr({text: showdata + " " + (showdata == 1 ? "" : "")}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
+	                label[1].attr({text: lbl + "-" + startMonth + "-" + startYear}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
 	                dot.attr("r", 6);
 	                is_label_visible = true;
 	            }, function () {
