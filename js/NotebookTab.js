@@ -242,8 +242,6 @@ define(["dojo/_base/declare",
                                 if (typeof(data[uri][_desc]) !== "undefined")
                                     desc = data[uri][_desc][0].value;
 
-                                console.log('Found for replace: ', label_short, desc);
-
                                 // First step: put the titles
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me-as-title="'+uri_enc+'"]')
                                     .forEach(function(__e) {
