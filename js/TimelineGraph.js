@@ -2,10 +2,18 @@ define(["dojo/_base/declare",
         "dojo/io/script",
         "dojo/text!ask/tmpl/TimelineGraphTemplate.html", 
         "dijit/_WidgetBase", 
-        "dijit/_TemplatedMixin"], 
-    function(declare, ioscript, timelineGraphTemplate, _WidgetBase, _TemplatedMixin) {
+        "dijit/_TemplatedMixin","dojo/date","dojo/date/stamp"], 
+    function(declare, ioscript, timelineGraphTemplate, _WidgetBase, _TemplatedMixin, date, stamp) {
 	
 	return declare("ask.TimelineGraph", [_WidgetBase, _TemplatedMixin], {
+		apiUrl: "https://api.scraperwiki.com/api/1.0/datastore/sqlite",
+		apiFormat: "jsondict",
+		apiKey: "e378a695-41ce-48ba-8a6b-ca77fbd06cf3",
+		startDate: new Date (2012, 8, 2),
+		endDate: new Date (2012, 8, 21),
+		indicators: {
+			stoxxeu600: true,
+		},
         notebookId: '',
         templateString: timelineGraphTemplate,
         postMixInProperties: function() {
@@ -13,112 +21,88 @@ define(["dojo/_base/declare",
             console.log('gra startin up post mixin', this.notebookId);
         },
         startup: function() {
+	
+			indicatorsParameters = {
+				stoxxeu600 : {
+					table: "swdata",
+				}
+			};
+			
             var self = this;
             
-            // self.inherited(arguments);
-            
-            console.log('very nice');
-            
-            var startYear = 2012,
-                endYear = 2012,
-                startMonth = 9,
-                endMonth = 9,
-                startDay = 2,
-                endDay = 20;
-            
-            console.log('22 ---------');
-            
-        	var normStartMonth = self.formatNumber(startMonth);
-        	var normEndMonth = self.formatNumber(endMonth);
-        	var normStartDay = self.formatNumber(startDay);
-        	var normEndDay = self.formatNumber(endDay);
-	
-            console.log('22');
-    
-        	var startDate = startYear + "-" + normStartMonth + "-" + normStartDay;
-	
-        	var endDate = endYear + "-" + normEndMonth + "-" + normEndDay;
+            self.inherited(arguments);
 
-            console.log('3333');
-
-            ioscript.get({
+			var isoStartDate = dojo.date.stamp.toISOString(self.startDate, {selector: "date"});
+			var isoEndDate = dojo.date.stamp.toISOString(self.endDate, {selector: "date"});
+			
+			// TODO: support a number of indicators using the "indicators" parameter.
+			var callUrl = self.apiUrl + "?format=" + self.apiFormat + "&name=" + "stoxxeu600" + "&apikey=" + self.apiKey + "&query=SELECT%20*%20FROM%20swdata%20WHERE%20date%20BETWEEN%20%22" + isoStartDate + "%22%20AND%20%22" + isoEndDate + "%22";
+			
+			ioscript.get({
                 callbackParamName: "callback",
-                url: "https://api.scraperwiki.com/api/1.0/datastore/sqlite?format=jsondict&name=stoxxeu600&apikey=e378a695-41ce-48ba-8a6b-ca77fbd06cf3&query=SELECT%20*%20FROM%20swdata%20WHERE%20date%20BETWEEN%20%22" + startDate + "%22%20AND%20%22" + endDate + "%22",
+                url: callUrl,
                 load: function(r) {
                     console.log('Plotting ... now!');
-                    self.plotData(r, startYear, endYear, startMonth, endMonth, startDay, endDay);
+                    self.plotData(r, self.startDate, self.endDate);
                 },
                 error: function(error) {
                 }
        		});
             
-            console.log('ti graph startup done');
         }, // startup()
         
 
-    	plotData: function(r, startYear, endYear, startMonth, endMonth, startDay, endDay) {
+    	plotData: function(r, startDate, endDate) {
 		    
-            console.log('startin plot');
             var self = this;
             
     		var labels = [];
     		var data = [];
-    		var originalData = [];
+    		var inData = [];
 		
-    		var map = {};
-    		for (var item in r) {
-    			map[r[item].date]=r[item].value;
-    		}
+			var daysRange = dojo.date.difference(startDate, endDate);
 		
-    		var max = 0;
+			var max = 0;
     		var min = 0;
-    		var pos = 0;
-    		var previousValue;
-            
-            console.log('wtf 111');
-            
-            
-    		for (i=startDay;i<=endDay;i++) {
-    			var key = startYear + "-" + self.formatNumber(startMonth) + "-" + self.formatNumber(i);
-    			labels[pos] = i;
-    			if (map[key] === undefined) {
-    				if (previousValue === undefined) {
-    					map[key] = "0";
-    					originalData[pos] = "0";
-    				} else {
-    					map[key] = previousValue;
-    					originalData[pos] = previousValue + "";
+		
+			var cDate = startDate;
+			var prevValue;
+			var j = 0;
+			for (i=0; i<daysRange; i++) {
+				labels[i] = cDate.getDate() + "/" + (cDate.getMonth() + 1);
+				var date = dojo.date.stamp.fromISOString(r[j].date);
+				//if this day is missing in the data received.. 
+				if (date.toISOString() !== cDate.toISOString()) {
+					//...put the value of the day before if available...or the value of the next day if previous is unavailable
+					if (typeof(prevValue) === "undefined") {
+						inData[i] = r[j].value;
+					} else {
+						inData[i] = prevValue;
+					}
+				} else {
+					inData[i] = r[j].value;
+					j++;
+				}
+				if (typeof(prevValue) === "undefined") {
+					max = inData[i];
+					min = inData[i];
+				} else {
+					if (max < inData[i]) {
+    					max = inData[i];
     				}
+    				if (min > inData[i]) {
+    					min = inData[i];
+    				}
+				}
 				
-    			} else {
-    				originalData[pos] = map[key] + "";
-    			}
-    			pos++;
-			
-    			if (previousValue === undefined) {
-    				max = map[key];
-    				min = map[key];
-    			} else {
-    				if (max < map[key]) {
-    					max = map[key];
-    				}
-    				if (min > map[key]) {
-    					min = map[key];
-    				}
-    			}
-			
-    			previousValue = map[key];
-			
-    		}
-		
-        
-    		var range = max - min;
+				cDate = dojo.date.add(cDate, "day", 1);
+				prevValue = inData[i];
+			}
 
-            console.log('wtf 222', min, max, range);
+    		var range = max - min;
 		
-    		for (var j in originalData) {
-    			data[j] = ((originalData[j] - min) / range) + 0.5;
-                console.log('original data?')
+    		for (var j in inData) {
+    			data[j] = ((inData[j] - min) / range) + 0.5;
     		}
 
     	    // Draw
@@ -138,13 +122,7 @@ define(["dojo/_base/declare",
     	        max = Math.max.apply(Math, data),
     	        Y = (height - bottomgutter - topgutter) / max;
 
-            console.log('wtf 333');
-                
-
     	    r.drawGrid(leftgutter + X * .5 + .5, topgutter + .5, width - leftgutter - X, height - topgutter - bottomgutter, 10, 10, "#000");
-
-            console.log('wtf 4444');
-
 
     	    var path = r.path().attr({stroke: color, "stroke-width": 4, "stroke-linejoin": "round"}),
     	        bgp = r.path().attr({stroke: "none", opacity: .3, fill: color}),
@@ -153,23 +131,16 @@ define(["dojo/_base/declare",
     	        is_label_visible = false,
     	        leave_timer,
     	        blanket = r.set();
-                
-            console.log('wtf label? ', labels);
 	    
     		label.push(r.text(60, 12, data[0]).attr(txt));
-    	    label.push(r.text(60, 27, "22" + "-" + startMonth + "-" + startYear).attr(txt1).attr({fill: color}));
+    	    label.push(r.text(60, 27, labels[0]).attr(txt1).attr({fill: color}));
     	    label.hide();
-	
-            console.log('wtf 2');
     
     	    var frame = r.popup(100, 100, label, "right").attr({fill: "#000", stroke: "#666", "stroke-width": 2, "fill-opacity": .7}).hide();
 
-            console.log('wtf 343143141341');
-
     	    var p, bgpp;
     	    for (var i = 0, ii = labels.length; i < ii; i++) {
-                
-                console.log('## for head ', i, ii, data[i]);
+
                 
     	        var y = Math.round(height - bottomgutter - Y * data[i]),
     	            x = Math.round(leftgutter + X * (i + .5)),
@@ -179,8 +150,7 @@ define(["dojo/_base/declare",
     	            p = ["M", x, y, "C", x, y];
     	            bgpp = ["M", leftgutter + X * .5, height - bottomgutter, "L", x, y, "C", x, y];
     	        }
-                
-                console.log('### not here please');
+               
 
     	        if (i && i < ii - 1) {
     	            var Y0 = Math.round(height - bottomgutter - Y * data[i - 1]),
@@ -192,14 +162,11 @@ define(["dojo/_base/declare",
     	            bgpp = bgpp.concat([a.x1, a.y1, x, y, a.x2, a.y2]);
     	        }
                 
-                console.log('## wtf for for ', i, ii);
-                
                 
     	        var dot = r.circle(x, y, 4).attr({fill: "#333", stroke: color, "stroke-width": 2});
     	        blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
     	        var rect = blanket[blanket.length - 1];
 
-                console.log('## HIER?');
 
     	        (function (x, y, data, lbl, dot) {
     	            var timer, i = 0;
@@ -216,15 +183,13 @@ define(["dojo/_base/declare",
     	                        path: ppp.path,
     	                        transform: ["t", ppp.dx, ppp.dy]
     	                    }, 200 * is_label_visible);
-                            
-                        console.log('inner inner ', i);
                         
     	                lx = label[0].transform()[0][1] + ppp.dx;
     	                ly = label[0].transform()[0][2] + ppp.dy;
     	                frame.show().stop().animate(anim);
     					var showdata = (data - 0.5) * range + min;	
     	                label[0].attr({text: showdata + " " + (showdata == 1 ? "" : "")}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
-    	                label[1].attr({text: lbl + "-" + startMonth + "-" + startYear}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
+    	                label[1].attr({text: lbl}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
     	                dot.attr("r", 6);
     	                is_label_visible = true;
     	            }, function () {
@@ -238,10 +203,8 @@ define(["dojo/_base/declare",
     	            });
     	        })(x, y, data[i], labels[i], dot);
                 
-                console.log('## dafuq for end', i, ii);
     	    }
-            
-            console.log('MAI GOD');
+
             
     	    p = p.concat([x, y, x, y]);
     	    bgpp = bgpp.concat([x, y, x, y, "L", x, height - bottomgutter, "z"]);
