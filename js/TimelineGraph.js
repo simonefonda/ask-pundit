@@ -58,6 +58,7 @@ define(["dojo/_base/declare",
     		var labels = [];
     		var data = [];
     		var inData = [];
+			var dates = [];
 		
 			var daysRange = dojo.date.difference(startDate, endDate);
 		
@@ -69,9 +70,9 @@ define(["dojo/_base/declare",
 			var j = 0;
 			for (i=0; i<daysRange; i++) {
 				labels[i] = cDate.getDate() + "/" + (cDate.getMonth() + 1);
-				var date = dojo.date.stamp.fromISOString(r[j].date);
+				dates[i] = dojo.date.stamp.fromISOString(r[j].date);
 				//if this day is missing in the data received.. 
-				if (date.toISOString() !== cDate.toISOString()) {
+				if (dates[i].toISOString() !== cDate.toISOString()) {
 					//...put the value of the day before if available...or the value of the next day if previous is unavailable
 					if (typeof(prevValue) === "undefined") {
 						inData[i] = r[j].value;
@@ -167,7 +168,7 @@ define(["dojo/_base/declare",
     	        var rect = blanket[blanket.length - 1];
 
 
-    	        (function (x, y, data, lbl, dot) {
+    	        (function (x, y, data, date, dot) {
     	            var timer, i = 0;
                     
                     
@@ -188,7 +189,7 @@ define(["dojo/_base/declare",
     	                frame.show().stop().animate(anim);
     					var showdata = (data - 0.5) * range + min;	
     	                label[0].attr({text: showdata + " " + (showdata == 1 ? "" : "")}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
-    	                label[1].attr({text: lbl}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
+    	                label[1].attr({text: date.toDateString()}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
     	                dot.attr("r", 6);
     	                is_label_visible = true;
     	            }, function () {
@@ -200,7 +201,7 @@ define(["dojo/_base/declare",
     	                    is_label_visible = false;
     	                }, 1);
     	            });
-    	        })(x, y, data[i], labels[i], dot);
+    	        })(x, y, data[i], dates[i], dot);
                 
     	    }
 
@@ -255,5 +256,7 @@ define(["dojo/_base/declare",
 		}
         
 	});
+	
+	
 
-});
+	});
