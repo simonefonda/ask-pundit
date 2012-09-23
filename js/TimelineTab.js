@@ -5,16 +5,20 @@ define(["dojo/_base/declare",
         "dojo/dom-style",
         "dojo/on", 
         "dojo/router", 
+        "dojo/date",
+        "dojo/date/stamp",
 
         "dojo/text!ask/tmpl/TimelineTabTemplate.html", 
 
         "ask/TimelineGraph",
+        "ask/TimelineAnnotation",
+        "ask/TimelineQuotedPerson",
         
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, domClass, domStyle, on, router, 
+    function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, dojoStamp,
         
-                timelineTabTemplate, TimelineGraph,
+                timelineTabTemplate, TimelineGraph, TimelineAnnotation, TimelineQuotedPerson,
                 
                 _WidgetBase, _TemplatedMixin) {
 	
@@ -27,13 +31,31 @@ define(["dojo/_base/declare",
         },
         progressTotal: 0,
         progressCounter: 0,
+        annotations: [],
+        persons: [],
+        usedColors: 0,
+        usedColorsHash: {},
+        startDate: '',
+        endDate: '',
+        startDateString: '',
+        endDateString: '',
         templateString: timelineTabTemplate,
         constructor: function() {
             this.inherited(arguments);
         },
         postMixInProperties: function() {
-            this.inherited(arguments);
-            this.name = this.notebookId;
+            var self = this;
+            
+            self.inherited(arguments);
+            self.name = this.notebookId;
+            
+            self.endDate = new Date();
+            self.startDate = dojoDate.add(self.endDate, 'day', -31);
+            
+            // TODO : date format ? 
+            self.endDateString = self.endDate.toDateString();
+            self.startDateString = self.startDate.toDateString();
+            
         },
         startup: function() {
             var self = this;
@@ -45,8 +67,6 @@ define(["dojo/_base/declare",
                     "'>T: "+this.name+"</a></li>";
 
             dojo.place(b, "ask-pills");
-
-            self.loadNotebookAnnotations();
             
             on(dojo.query('#tab-time-'+self.notebookId), 'show', function(e) {
                 dojo.query('#ask-tab-content .tab-pane').removeClass('active');
@@ -70,6 +90,8 @@ define(["dojo/_base/declare",
                 dojo.destroy(node);
                 
             });
+
+            self.loadNotebookAnnotations();
      
         }, // startup
         
@@ -189,25 +211,88 @@ define(["dojo/_base/declare",
                 .addClass('progress-success');
                 
             self.showGraph();
-        },
+            self.showAnnotations();
+            
+        }, // onLoadingDone()
         
         showGraph: function() {
             var self = this;
             
-            console.log('faccio timeline');
-            
-            var foo = new TimelineGraph({
+            new TimelineGraph({
                 notebookId: self.notebookId
-            });
-            
-            console.log('xyz');
-            
-            foo.placeAt(dojo.query('.raphael-graph-container-'+self.notebookId)[0]);
-            
-            console.log('done graph');
-            // foo.placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-metadata')[0]);
+            }).placeAt(dojo.query('.raphael-graph-container-'+self.notebookId)[0]);
 
-        }
+        }, // showGraph()
+        
+        // Gives out colors to the quoted persons, creating them as 
+        // well. They will be appended when all annotations are loaded
+        getColor: function(quotedPerson) {
+            var self = this;
+            
+            if (quotedPerson in self.usedColorsHash)
+                return self.usedColorsHash[quotedPerson];
+            
+            self.usedColorsHash[quotedPerson] = self.usedColors++;
+            
+            self.persons.push(new TimelineQuotedPerson({
+                notebookId: self.notebookId,
+                parentTimeline: self,
+                perUri: quotedPerson
+            }));
+            
+            return self.usedColorsHash[quotedPerson];
+            
+        },
+        
+        showAnnotations: function() {
+            var self = this;
+                        
+            for (var sub in self.notebookRawData.triples) {
+                var candidate = self.notebookRawData.triples[sub],
+                    date, 
+                    _date = "http://purl.org/dc/elements/1.1/date";
+
+                if (typeof(candidate[_date]) === 'undefined') {
+                    console.log('No date, discarding ', candidate);
+                    continue;
+                }
+                
+                date = new Date(candidate[_date][0].value);
+                if (date.toDateString() === "Invalid Date") {
+                    console.log('Invalid date, discarding ', candidate, date, candidate[_date][0].value);
+                    continue;
+                }
+                
+                // TODO: more consinstency checks:
+                // - quoted object is a person ? 
+
+                self.annotations.push(new TimelineAnnotation({
+                    notebookId: self.notebookId,
+                    subject: sub,
+                    annotation: candidate,
+                    parentTimeline: self
+                }));
+            } // for sub in notebookRawData
+            
+            console.log('Shown annotations: ', self.annotations);
+            
+            // Append persons to the people box
+            for (var p in self.persons) 
+                self.persons[p].placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-people ul')[0]);
+            
+            // Append annotation in the right slot
+            for (var a in self.annotations) {
+                var ann = self.annotations[a],
+                    slot;
+                
+                // TODO : compute the slot wrt start and end date, avoid appending
+                // annotations out of range
+                slot = ann.annDay;
+                
+                ann.placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-annotations .slot-'+slot)[0]);
+                
+            }
+        }, // showAnnotations()
         
 	});
 

@@ -1,9 +1,12 @@
 define(["dojo/_base/declare", 
         "dojo/io/script",
+        "dojo/date",
+        "dojo/date/stamp",
         "dojo/text!ask/tmpl/TimelineGraphTemplate.html", 
         "dijit/_WidgetBase", 
-        "dijit/_TemplatedMixin","dojo/date","dojo/date/stamp"], 
-    function(declare, ioscript, timelineGraphTemplate, _WidgetBase, _TemplatedMixin, date, stamp) {
+        "dijit/_TemplatedMixin"
+], 
+    function(declare, ioscript, date, stamp, timelineGraphTemplate, _WidgetBase, _TemplatedMixin) {
 	
 	return declare("ask.TimelineGraph", [_WidgetBase, _TemplatedMixin], {
 		apiUrl: "https://api.scraperwiki.com/api/1.0/datastore/sqlite",

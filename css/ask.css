@@ -3,13 +3,14 @@
 
 @import 'http://fonts.googleapis.com/css?family=Lato:400,900';
 
-body, html {
-	font-family: 'Rockwell', sans-serif;
-}
 
 @font-face {
 	font-family: "Rockwell", sans-serif;
-	src:  "css/Rockwell";
+	src:  "Rockwell";
+}
+
+body, html {
+	font-family: 'Rockwell', 'verdana', sans-serif;
 }
 
 #askTabContainer .tab-content {
@@ -54,7 +55,13 @@ div.accordion-heading {
 .timeline-container {
 	
 }
-
+.timeline-pane {
+    background-color: rgb(66, 66, 66);
+}
+.timeline-pane h1 {
+    color: white;
+    padding: 6px 10px;
+}
 
 /* PEOPLE COLUMN */
 
@@ -72,10 +79,13 @@ div.accordion-heading {
 	padding: 0px;
 }
 
-.ti-people-title {
-	background-color: black;
+.ti-people-title,
+.ti-tags .ti-title span,
+.ti-timeline-title {
+    font-size: 1.2em;
+    font-weight: bold;
 	color: white;
-	text-align: middle;
+    padding: 3px 6px;
 }
 
 .ti-people li div {
@@ -86,14 +96,13 @@ div.accordion-heading {
 }
 .ti-people-color {
 	width: 10px;
-	background-color: #fc0;
 }
 .ti-people-picture {
 	width: 50px;
 }
 .ti-people-name {
 	width: 115px;
-	background-color: red;
+    background-color: rgb(222, 222, 222);
 }
 .ti-people-name p {
 	padding: 5px;
@@ -104,17 +113,14 @@ div.accordion-heading {
 
 .ti-timeline {
 	margin-left: 260px;
-	background-color: #666;
 	height: 290px;
 }
 
 .ti-timeline-title {
 	height: 25px;
-	background-color: black;
 }
 .ti-title-name {
 	display: inline;
-	color:  red;
 	float: left;
 }
 .ti-timeline-title ul {
@@ -123,38 +129,47 @@ div.accordion-heading {
 }
 .ti-timeline-title ul li {
 	display: inline;
-	color: white;	
+	color: #aaa;
 }
 .ti-timeline-title ul li.selected {
-	color: red;
+	color: white;
 }
 
 
 /* TAGS */
 
 .ti-tags {
-	float: left;
+    position: absolute;
+    float: left;
 	padding: 5px;
-	background: green;
 	border: 0px solid black;
 	width: 165px;
+    margin-top: 50px;
+    color: white;
 }
 .ti-tags a {
 	float: right;
-	background-color: yellow;
 	padding: 0px 5px;
+    color: #aaa;
+    text-decoration: underline;
+}
+.ti-tags a:hover {
+    background-color: #aaa;
+    color: black;
+    cursor: pointer;
 }
 .ti-title {
 	display: block;
 }
 .ti-tag {
 	display: inline-block;
-	padding: 3px;
+	padding: 1px 7px;
 	background-color: white;
 	margin: 3px;
+    color: black;
 }
 .ti-tag.selected {
-	background-color: red;
+	background-color: rgb(151, 151, 151);
 }
 
 
@@ -162,24 +177,106 @@ div.accordion-heading {
 
 .ti-annotations {
 	margin-left: 260px;
-	background-color: cyan;
+    height: 400px;
 }
+
+.ti-annotations .slot {
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+}
+.ti-annotations .slot-1 { margin-left: 20px; }
+.ti-annotations .slot-2 { margin-left: 40px; }
+.ti-annotations .slot-3 { margin-left: 60px; }
+.ti-annotations .slot-4 { margin-left: 80px; }
+.ti-annotations .slot-5 { margin-left: 100px; }
+.ti-annotations .slot-6 { margin-left: 120px; }
+.ti-annotations .slot-7 { margin-left: 140px; }
+.ti-annotations .slot-8 { margin-left: 160px; }
+.ti-annotations .slot-9 { margin-left: 180px; }
+.ti-annotations .slot-10 { margin-left: 200px; }
+.ti-annotations .slot-11 { margin-left: 220px; }
+.ti-annotations .slot-12 { margin-left: 240px; }
+.ti-annotations .slot-13 { margin-left: 260px; }
+.ti-annotations .slot-14 { margin-left: 280px; }
+.ti-annotations .slot-15 { margin-left: 300px; }
+.ti-annotations .slot-16 { margin-left: 320px; }
+.ti-annotations .slot-17 { margin-left: 340px; }
+.ti-annotations .slot-18 { margin-left: 360px; }
+.ti-annotations .slot-19 { margin-left: 380px; }
+.ti-annotations .slot-20 { margin-left: 400px; }
+.ti-annotations .slot-21 { margin-left: 420px; }
+.ti-annotations .slot-22 { margin-left: 440px; }
+.ti-annotations .slot-23 { margin-left: 460px; }
+.ti-annotations .slot-24 { margin-left: 480px; }
+.ti-annotations .slot-25 { margin-left: 500px; }
+.ti-annotations .slot-26 { margin-left: 520px; }
+.ti-annotations .slot-27 { margin-left: 540px; }
+.ti-annotations .slot-28 { margin-left: 560px; }
+.ti-annotations .slot-29 { margin-left: 580px; }
+.ti-annotations .slot-30 { margin-left: 600px; }
+
 
 .ti-ann-item.collapsed {
 	width: 20px;
 }
 .ti-ann-item.collapsed .box {
 	display: block;
-	width: 20px;
-	height: 20px;
+	width: 19px;
+	height: 19px;
 }
 
+.ti-ann-item.collapsed:hover {
+    z-index: 1000;
+}
+
+.ti-ann-item.collapsed .box:hover {
+    -webkit-transition: 
+        width 0.3s,
+        height 0.3s,
+        margin 0.3s;
+    
+    z-index: 1000;
+    width: 29px;
+    height: 29px;
+    margin-left: -6px;
+    margin-right: -3px;
+    margin-top: -6px;
+    margin-bottom: -6px;
+    border: 1px solid rgb(66, 66, 66);
+}
+
+
+.ti-ann-item { z-index: 10; position: relative; }
+.ti-ann-item.collapsed { z-index: 0; }
+
+.ti-ann-item .ti-ann-content { display: block; } 
+.ti-ann-item .ti-boxes { display: none; }
+
+.ti-ann-item.collapsed .ti-ann-content { display: none; }
+.ti-ann-item.collapsed .ti-boxes { display: block; }
 
 .ti-ann-content {
 	width: 250px;
-	height: 400px;
-	background: #666;
+	background: rgb(222, 222, 222);
 }
+.ti-ann-close {
+    position: absolute;
+    left: 0px;
+    border: 0px;
+    width: 20px;
+    height: 20px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+.ti-ann-close:hover {
+    background-color: rgba(255,255,255, 0.5);
+    color: #666;
+    cursor: pointer;
+}
+
 .ti-ann-content-picture {
 	width: 50px;
 	height: 50px;
@@ -190,34 +287,56 @@ div.accordion-heading {
 }
 .ti-ann-content-name {
 	margin-left: 50px;
-	color: red;
+	color: black;
+    font-weight: bold;
 }
 .ti-ann-content-text {
 	padding: 5px;
-	color: yellow;
+	color: black;
+    max-height: 200px;
+    overflow: auto;
 }
 .ti-ann-content-source {
-	color: red;
+	color: #666;
+    font-style: italic;
 }
 .ti-ann-content-date {
-	color: green;
+	color: #666;
 }
 
 
-.ti-ann-content.color-1 {
-	border-left: 20px solid red;
+.ti-boxes {
+    border-bottom: 1px solid rgb(66, 66, 66);
+    border-right: 1px solid rgb(66, 66, 66);
+    cursor: pointer;
 }
-.box.day {
-	background-color: white;
-	text-align: center
-}
-.box.color-1 {
-	background-color: red;
-}
-.box.color-2 {
-	background-color: blue;
-}
-.box.color-3 {
-	background-color: green;
+.ti-ann-content {
+	border-left: 20px solid;
+    margin-bottom: 1px;
 }
 
+/* Boxes COLORS */
+.ti-ann-content.color-0 { border-color: rgb(106, 188, 209); }
+.box.color-0 { background-color: rgb(106, 188, 209); }
+.ti-people-color.color-0 { background-color: rgb(106, 188, 209); }
+
+.ti-ann-content.color-1 { border-color: rgb(166, 83, 75); }
+.box.color-1 { background-color: rgb(166, 83, 75); }
+.ti-people-color.color-1 { background-color: rgb(166, 83, 75); }
+
+.ti-ann-content.color-2 { border-color: rgb(243, 206, 127); }
+.box.color-2 { background-color: rgb(243, 206, 127); }
+.ti-people-color.color-2 { background-color: rgb(243, 206, 127); }
+
+.ti-ann-content.color-3 { border-color: rgb(93, 132, 118); }
+.box.color-3 { background-color: rgb(93, 132, 118); }
+.ti-people-color.color-3 { background-color: rgb(93, 132, 118); }
+
+.ti-ann-content.color-4 { border-color: rgb(202, 111, 71); }
+.box.color-4 { background-color: rgb(202, 111, 71); }
+.ti-people-color.color-4 { background-color: rgb(202, 111, 71); }
+
+
+.box.color-5 { background-color: #3c3; }
+.box.color-6 { background-color: #09c; }
+.box.color-7 { background-color: #fc6; }
