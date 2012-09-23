@@ -50,7 +50,7 @@ define(["dojo/_base/declare",
             self.name = this.notebookId;
             
             self.endDate = new Date();
-            self.startDate = dojoDate.add(self.endDate, 'day', -31);
+            self.startDate = dojoDate.add(self.endDate, 'day', -30);
             
             // TODO : date format ? 
             self.endDateString = self.endDate.toDateString();
@@ -91,6 +91,7 @@ define(["dojo/_base/declare",
                 
             });
 
+            self.showGraph();
             self.loadNotebookAnnotations();
      
         }, // startup
@@ -210,7 +211,6 @@ define(["dojo/_base/declare",
                 .removeClass('active progress-warning')
                 .addClass('progress-success');
                 
-            self.showGraph();
             self.showAnnotations();
             
         }, // onLoadingDone()
@@ -219,7 +219,9 @@ define(["dojo/_base/declare",
             var self = this;
             
             new TimelineGraph({
-                notebookId: self.notebookId
+                notebookId: self.notebookId,
+                startDate: self.startDate,
+                endDate: self.endDate
             }).placeAt(dojo.query('.raphael-graph-container-'+self.notebookId)[0]);
 
         }, // showGraph()
@@ -287,10 +289,21 @@ define(["dojo/_base/declare",
                 
                 // TODO : compute the slot wrt start and end date, avoid appending
                 // annotations out of range
+                console.log(ann.annDate);
                 slot = ann.annDay;
                 
-                ann.placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-annotations .slot-'+slot)[0]);
+                console.log('day, diff', ann.annDay, slot, self.startDate, new Date(ann.annDate));
+                // DEBUG: why it's not a date? :|
+                slot = dojoDate.difference(self.startDate, new Date(ann.annDate));
                 
+                console.log('si ma slot? ', slot);
+                    
+                if (slot < 0) {
+                    console.log('WHAT A SLOT?  '+slot+'  Annotation date: ', self.startDate+" - "+ann.annDate);
+                } else
+                    ann.placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-annotations .slot-'+slot)[0]);
+                console.log('PLEISD');
+
             }
         }, // showAnnotations()
         

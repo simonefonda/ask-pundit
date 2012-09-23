@@ -35,12 +35,15 @@ define(["dojo/_base/declare",
             
             self.inherited(arguments);
 
+            console.log('self.startDate', self.startDate.getDate());
+
 			var isoStartDate = dojo.date.stamp.toISOString(self.startDate, {selector: "date"});
 			var isoEndDate = dojo.date.stamp.toISOString(self.endDate, {selector: "date"});
 			
 			// TODO: support a number of indicators using the "indicators" parameter.
 			var callUrl = self.apiUrl + "?format=" + self.apiFormat + "&name=" + "stoxxeu600" + "&apikey=" + self.apiKey + "&query=SELECT%20*%20FROM%20swdata%20WHERE%20date%20BETWEEN%20%22" + isoStartDate + "%22%20AND%20%22" + isoEndDate + "%22";
 			
+            
 			ioscript.get({
                 callbackParamName: "callback",
                 url: callUrl,
@@ -62,8 +65,10 @@ define(["dojo/_base/declare",
     		var inData = [];
 			var dates = [];
 		
-			var daysRange = dojo.date.difference(startDate, endDate);
+			var daysRange = dojo.date.difference(startDate, endDate) - 1;
 		
+            console.log('days range ', daysRange);
+        
 			var max = 0;
     		var min = 0;
 		
@@ -108,17 +113,19 @@ define(["dojo/_base/declare",
 
     		var range = max - min;
 			
-			console.log("Data range:" + range);
+			console.log("Data range:" + range, inData.length);
 		
     		for (var j in inData) {
     			data[j] = ((inData[j] - min) / range) + 0.5;
     		}
 
+            console.log('indata ', inData, min, max, data.length);
+
     	    // Draw
-    	    var width = 800,
+    	    var width = 600,
     	        height = 250,
-    	        leftgutter = 30,
-    	        bottomgutter = 20,
+    	        leftgutter = 0, // DEBUG: 30,
+    	        bottomgutter = 0, // DEBUG: 20,
     	        topgutter = 20,
     	        colorhue = 0.6 || Math.random(),
     	        color = "hsl(" + [colorhue, .5, .5] + ")",
