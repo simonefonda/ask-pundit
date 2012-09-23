@@ -12,8 +12,8 @@ define(["dojo/_base/declare",
 		apiUrl: "https://api.scraperwiki.com/api/1.0/datastore/sqlite",
 		apiFormat: "jsondict",
 		apiKey: "e378a695-41ce-48ba-8a6b-ca77fbd06cf3",
-		startDate: new Date (2012, 8, 2),
-		endDate: new Date (2012, 8, 21),
+		startDate: new Date (2012, 7, 23),
+		endDate: new Date (2012, 8, 10),
 		indicators: {
 			stoxxeu600: true,
 		},
@@ -58,23 +58,28 @@ define(["dojo/_base/declare",
 		    
             var self = this;
             
-    		var labels = [];
     		var data = [];
     		var inData = [];
+			var dates = [];
 		
 			var daysRange = dojo.date.difference(startDate, endDate);
 		
 			var max = 0;
     		var min = 0;
 		
-			var cDate = startDate;
+			// filling the array with all the dates within hte range...
+			dates[0] = startDate;
+			for (i=1; i<=daysRange; i++) {
+				dates[i] = dojo.date.add(dates[i-1], "day", 1);
+			}
 			var prevValue;
 			var j = 0;
-			for (i=0; i<daysRange; i++) {
-				labels[i] = cDate.getDate() + "/" + (cDate.getMonth() + 1);
-				var date = dojo.date.stamp.fromISOString(r[j].date);
+			for (i=0; i<=daysRange; i++) {
+				if (r[j] !== undefined) {
+					inDate = dojo.date.stamp.fromISOString(r[j].date);	
+				}
 				//if this day is missing in the data received.. 
-				if (date.toISOString() !== cDate.toISOString()) {
+				if (dates[i].toISOString() !== inDate.toISOString()) {
 					//...put the value of the day before if available...or the value of the next day if previous is unavailable
 					if (typeof(prevValue) === "undefined") {
 						inData[i] = r[j].value;
@@ -97,11 +102,13 @@ define(["dojo/_base/declare",
     				}
 				}
 				
-				cDate = dojo.date.add(cDate, "day", 1);
+				
 				prevValue = inData[i];
 			}
 
     		var range = max - min;
+			
+			console.log("Data range:" + range);
 		
     		for (var j in inData) {
     			data[j] = ((inData[j] - min) / range) + 0.5;
@@ -120,10 +127,11 @@ define(["dojo/_base/declare",
     	        txt = {font: '12px Helvetica, Arial', fill: "#fff"},
     	        txt1 = {font: '10px Helvetica, Arial', fill: "#fff"},
     	        txt2 = {font: '12px Helvetica, Arial', fill: "#000"},
-    	        X = (width - leftgutter) / labels.length,
+    	        X = (width - leftgutter) / data.length,
     	        max = Math.max.apply(Math, data),
     	        Y = (height - bottomgutter - topgutter) / max;
 
+			// The grid behind the plot ON/OFF ...	
     	    //r.drawGrid(leftgutter + X * .5 + .5, topgutter + .5, width - leftgutter - X, height - topgutter - bottomgutter, 10, 10, "#fff");
 
     	    var path = r.path().attr({stroke: color, "stroke-width": 4, "stroke-linejoin": "round"}),
@@ -135,18 +143,18 @@ define(["dojo/_base/declare",
     	        blanket = r.set();
 	    
     		label.push(r.text(60, 12, data[0]).attr(txt));
-    	    label.push(r.text(60, 27, labels[0]).attr(txt1).attr({fill: color}));
+    	    label.push(r.text(60, 27, dates[0].toDateString()).attr(txt1).attr({fill: color}));
     	    label.hide();
     
     	    var frame = r.popup(100, 100, label, "right").attr({fill: "#000", stroke: "#666", "stroke-width": 2, "fill-opacity": .7}).hide();
 
     	    var p, bgpp;
-    	    for (var i = 0, ii = labels.length; i < ii; i++) {
+    	    for (var i = 0, ii = data.length; i < ii; i++) {
 
-                
+				// t is the label appearing on the X axis ...
     	        var y = Math.round(height - bottomgutter - Y * data[i]),
     	            x = Math.round(leftgutter + X * (i + .5)),
-    	            t = r.text(x, height - 6, labels[i]).attr(txt).toBack();
+    	            t = r.text(x, height - 6, dates[i].getDate()).attr(txt).toBack();
 
     	        if (!i) {
     	            p = ["M", x, y, "C", x, y];
@@ -166,11 +174,20 @@ define(["dojo/_base/declare",
                 
                 
     	        var dot = r.circle(x, y, 4).attr({fill: "#333", stroke: color, "stroke-width": 2});
-    	        blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
+
+				if (dates[i] !== undefined && dates[i-1] !== undefined && dates[i].getMonth() !== dates[i-1].getMonth()) {
+					blanket.push(r.rect(leftgutter + X * i , 0, X - 2, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
+					blanket.push(r.rect(leftgutter + X * i , 0, 2, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 100}));	
+				} else {
+					blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));	
+				}
+				
+
+				
     	        var rect = blanket[blanket.length - 1];
 
 
-    	        (function (x, y, data, lbl, dot) {
+    	        (function (x, y, data, date, dot) {
     	            var timer, i = 0;
                     
                     
@@ -191,7 +208,7 @@ define(["dojo/_base/declare",
     	                frame.show().stop().animate(anim);
     					var showdata = (data - 0.5) * range + min;	
     	                label[0].attr({text: showdata + " " + (showdata == 1 ? "" : "")}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
-    	                label[1].attr({text: lbl}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
+    	                label[1].attr({text: date.toDateString()}).show().stop().animateWith(frame, anim, {transform: ["t", lx, ly]}, 200 * is_label_visible);
     	                dot.attr("r", 6);
     	                is_label_visible = true;
     	            }, function () {
@@ -203,7 +220,7 @@ define(["dojo/_base/declare",
     	                    is_label_visible = false;
     	                }, 1);
     	            });
-    	        })(x, y, data[i], labels[i], dot);
+    	        })(x, y, data[i], dates[i], dot);
                 
     	    }
 
@@ -258,5 +275,7 @@ define(["dojo/_base/declare",
 		}
         
 	});
+	
+	
 
-});
+	});
