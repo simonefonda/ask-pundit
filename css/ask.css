@@ -55,7 +55,7 @@ div.accordion-heading {
 /* PEOPLE COLUMN */
 .ti-people {
   /* width: 175px; */
-  border: 1px solid red; }
+  /*border: 1px solid red;*/ }
 
 .ti-people ul {
   list-style: none;
