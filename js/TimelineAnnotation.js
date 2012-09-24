@@ -22,6 +22,7 @@ define(["dojo/_base/declare",
         annQuotationFrom: '',
         annDepiction: '',
         annSource: 'SOURCE?',
+		annWebPage: '',
         
         templateString: timelineAnnotationTemplate,
         postMixInProperties: function() {
@@ -33,6 +34,7 @@ define(["dojo/_base/declare",
                 _label = "http://www.w3.org/2000/01/rdf-schema#label",
                 _depic = "http://xmlns.com/foaf/0.1/depiction",
                 _source = "http://purl.org/dc/elements/1.1/source",
+				_pageContext = "http://purl.org/pundit/ont/ao#hasPageContext",
                 foo;
             
             self.inherited(arguments);
@@ -41,6 +43,7 @@ define(["dojo/_base/declare",
             
             // TODO: validate all of these items for missing [0].value
             self.annContent = items[self.subject][_desc][0].value;
+			self.annWebPage = items[self.subject][_pageContext][0].value;
 
             self.annDate = self.annotation[_date][0].value;
             self.annDay = dateStamp.fromISOString(self.annDate).getDate();

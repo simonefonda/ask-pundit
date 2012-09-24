@@ -291,7 +291,7 @@ define(["dojo/_base/declare",
                 // TODO : avoid appending annotations out of range
                 
                 // DEBUG: why it's not a date? :|
-                slot = dojoDate.difference(self.startDate, dateStamp.fromISOString(ann.annDate));
+                slot = dojoDate.difference(self.startDate, dateStamp.fromISOString(ann.annDate)) + 1;
                 
                 // If an annotation day is before startDate, dont append it 
                 // TODO: same when it's beyond endDate

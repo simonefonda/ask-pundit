@@ -83,8 +83,9 @@ define(["dojo/_base/declare",
 				if (r[j] !== undefined) {
 					inDate = dateStamp.fromISOString(r[j].date);	
 				}
-				//if this day is missing in the data received.. 
-				if (dates[i].toISOString() !== inDate.toISOString()) {
+				//if this day is missing in the data received..
+				// Note we are using toDateString as we do not care about hours and minutes (granularity is DAY!) 
+				if (dates[i].toDateString() !== inDate.toDateString()) {
 					//...put the value of the day before if available...or the value of the next day if previous is unavailable
 					if (typeof(prevValue) === "undefined") {
 						inData[i] = r[j].value;
@@ -183,8 +184,8 @@ define(["dojo/_base/declare",
     	        var dot = r.circle(x, y, 4).attr({fill: "#333", stroke: color, "stroke-width": 2});
 
 				if (dates[i] !== undefined && dates[i-1] !== undefined && dates[i].getMonth() !== dates[i-1].getMonth()) {
-					blanket.push(r.rect(leftgutter + X * i , 0, X - 2, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
 					blanket.push(r.rect(leftgutter + X * i , 0, 2, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 100}));	
+					blanket.push(r.rect(leftgutter + X * i , 0, X - 2, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
 				} else {
 					blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));	
 				}

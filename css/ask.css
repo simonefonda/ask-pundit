@@ -348,6 +348,12 @@ div.accordion-heading {
   max-height: 200px;
   overflow: auto; }
 
+.ti-ann-content-link {
+  padding: 5px;
+  color: black;
+  max-height: 200px;
+  overflow: auto; }
+
 .ti-ann-content-source {
   color: #666;
   font-style: italic; }
