@@ -227,6 +227,7 @@ define(["dojo/_base/declare",
             self.showAnnotations();
             self.showPersons();
             self.showTags();
+            dojo.query('.ti-invisible').removeClass('ti-invisible');
             
         }, // onLoadingDone()
         

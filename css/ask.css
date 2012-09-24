@@ -163,6 +163,12 @@ div.accordion-heading {
   .ti-tag.active {
     background-color: white; }
 
+.ti-annotations, .ti-left-col {
+  -webkit-transition: opacity 2s;
+  opacity: 1.0; }
+  .ti-annotations.ti-invisible, .ti-left-col.ti-invisible {
+    opacity: 0; }
+
 /* ANNOTATIONS */
 .ti-annotations {
   margin-left: 260px;
