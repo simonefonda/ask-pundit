@@ -16,7 +16,7 @@ define(["dojo/_base/declare",
         
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, dojoStamp,
+    function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, dateStamp,
         
                 timelineTabTemplate, TimelineGraph, TimelineAnnotation, TimelineQuotedPerson,
                 
@@ -258,8 +258,8 @@ define(["dojo/_base/declare",
                     console.log('No date, discarding ', candidate);
                     continue;
                 }
-                
-                date = new Date(candidate[_date][0].value);
+                                
+                date = dateStamp.fromISOString(candidate[_date][0].value);
                 if (date.toDateString() === "Invalid Date") {
                     console.log('Invalid date, discarding ', candidate, date, candidate[_date][0].value);
                     continue;
@@ -274,6 +274,7 @@ define(["dojo/_base/declare",
                     annotation: candidate,
                     parentTimeline: self
                 }));
+                
             } // for sub in notebookRawData
             
             console.log('Shown annotations: ', self.annotations);
@@ -287,22 +288,18 @@ define(["dojo/_base/declare",
                 var ann = self.annotations[a],
                     slot;
                 
-                // TODO : compute the slot wrt start and end date, avoid appending
-                // annotations out of range
-                console.log(ann.annDate);
-                slot = ann.annDay;
+                // TODO : avoid appending annotations out of range
                 
-                console.log('day, diff', ann.annDay, slot, self.startDate, new Date(ann.annDate));
                 // DEBUG: why it's not a date? :|
-                slot = dojoDate.difference(self.startDate, new Date(ann.annDate));
+                slot = dojoDate.difference(self.startDate, dateStamp.fromISOString(ann.annDate));
                 
-                console.log('si ma slot? ', slot);
-                    
+                // If an annotation day is before startDate, dont append it 
+                // TODO: same when it's beyond endDate
                 if (slot < 0) {
-                    console.log('WHAT A SLOT?  '+slot+'  Annotation date: ', self.startDate+" - "+ann.annDate);
-                } else
+                    console.log('Out of range: '+slot+' Annotation date: ', self.startDate+" - "+ann.annDate);
+                } else {
                     ann.placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-annotations .slot-'+slot)[0]);
-                console.log('PLEISD');
+                }
 
             }
         }, // showAnnotations()

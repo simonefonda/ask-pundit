@@ -89,7 +89,7 @@ div.accordion-heading {
     padding: 3px 6px;
 }
 
-.ti-people li div {
+.ti-people li>div {
 	float: left;
 	height: 50px;
 	border: 0px;
@@ -98,12 +98,35 @@ div.accordion-heading {
 .ti-people-color {
 	width: 10px;
 }
+
+$pep-bg: rgb(222, 222, 222);
+$pep-pic-height: 50px;
+$pep-pic-width: 50px;
 .ti-people-picture {
-	width: 50px;
+	width: $pep-pic-width;
+	height: $pep-pic-height;
+    text-align: center;
+    background-color: $pep-bg;
+
+    div {
+        
+    	width: $pep-pic-width;
+    	height: $pep-pic-height;
+        min-height: $pep-pic-height;
+        display: table-cell;
+        vertical-align: middle;
+
+        img {
+            max-height: $pep-pic-height;
+            max-width: $pep-pic-width;
+            vertical-align: middle;
+        }
+    }    
 }
+
 .ti-people-name {
 	width: 115px;
-    background-color: rgb(222, 222, 222);
+    background-color: $pep-bg;
 }
 .ti-people-name p {
 	padding: 5px;
@@ -279,14 +302,33 @@ div.accordion-heading {
     cursor: pointer;
 }
 
+
+$ann-pic-height: 50px;
+$ann-pic-width: 50px;
 .ti-ann-content-picture {
-	width: 50px;
-	height: 50px;
-	border: 1px solid white;
+	width: $ann-pic-width;
+	height: $ann-pic-height;
 	float: left;
 	margin-right: 5px;
 	margin-bottom: 5px;
+    text-align: center;
+    
+    div {
+    	width: $ann-pic-width;
+    	height: $ann-pic-height;
+        min-height: $ann-pic-height;
+        display: table-cell;
+        vertical-align: middle;
+
+        img {
+            margin: 1px;
+            max-height: $ann-pic-height;
+            max-width: $ann-pic-width;
+            vertical-align: middle;
+        }
+    }    
 }
+
 .ti-ann-content-name {
 	margin-left: 50px;
 	color: black;

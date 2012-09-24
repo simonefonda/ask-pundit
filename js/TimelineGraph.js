@@ -6,14 +6,14 @@ define(["dojo/_base/declare",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"
 ], 
-    function(declare, ioscript, date, stamp, timelineGraphTemplate, _WidgetBase, _TemplatedMixin) {
+    function(declare, ioscript, date, dateStamp, timelineGraphTemplate, _WidgetBase, _TemplatedMixin) {
 	
 	return declare("ask.TimelineGraph", [_WidgetBase, _TemplatedMixin], {
 		apiUrl: "https://api.scraperwiki.com/api/1.0/datastore/sqlite",
 		apiFormat: "jsondict",
 		apiKey: "e378a695-41ce-48ba-8a6b-ca77fbd06cf3",
-		startDate: new Date (2012, 7, 23),
-		endDate: new Date (2012, 8, 10),
+		startDate: dateStamp.fromISOString("2012-08-23"),
+		endDate: dateStamp.fromISOString("2012-09-10"),
 		indicators: {
 			stoxxeu600: true,
 		},
@@ -37,8 +37,8 @@ define(["dojo/_base/declare",
 
             console.log('self.startDate', self.startDate.getDate());
 
-			var isoStartDate = dojo.date.stamp.toISOString(self.startDate, {selector: "date"});
-			var isoEndDate = dojo.date.stamp.toISOString(self.endDate, {selector: "date"});
+			var isoStartDate = dateStamp.toISOString(self.startDate, {selector: "date"});
+			var isoEndDate = dateStamp.toISOString(self.endDate, {selector: "date"});
 			
 			// TODO: support a number of indicators using the "indicators" parameter.
 			var callUrl = self.apiUrl + "?format=" + self.apiFormat + "&name=" + "stoxxeu600" + "&apikey=" + self.apiKey + "&query=SELECT%20*%20FROM%20swdata%20WHERE%20date%20BETWEEN%20%22" + isoStartDate + "%22%20AND%20%22" + isoEndDate + "%22";
@@ -81,7 +81,7 @@ define(["dojo/_base/declare",
 			var j = 0;
 			for (i=0; i<=daysRange; i++) {
 				if (r[j] !== undefined) {
-					inDate = dojo.date.stamp.fromISOString(r[j].date);	
+					inDate = dateStamp.fromISOString(r[j].date);	
 				}
 				//if this day is missing in the data received.. 
 				if (dates[i].toISOString() !== inDate.toISOString()) {

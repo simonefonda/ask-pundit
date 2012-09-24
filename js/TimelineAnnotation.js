@@ -1,9 +1,10 @@
 define(["dojo/_base/declare", 
         "dojo/on", 
+        "dojo/date/stamp",
         "dojo/text!ask/tmpl/TimelineAnnotationTemplate.html", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, on, timelineAnnotationTemplate, _WidgetBase, _TemplatedMixin) {
+    function(declare, on, dateStamp, timelineAnnotationTemplate, _WidgetBase, _TemplatedMixin) {
 	
 	return declare("ask.TimelineAnnotation", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
@@ -42,8 +43,8 @@ define(["dojo/_base/declare",
             self.annContent = items[self.subject][_desc][0].value;
 
             self.annDate = self.annotation[_date][0].value;
-            self.annDay = (new Date(self.annDate)).getDate();
-
+            self.annDay = dateStamp.fromISOString(self.annDate).getDate();
+            
             foo = self.annotation[_source][0].value;
 
             if (foo in items)
