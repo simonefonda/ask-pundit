@@ -27,12 +27,12 @@ define(["dojo/_base/declare",
             console.log('ANN tag post', self.label);
             
         },
-        /*
+        
         startup: function() {
-            //var self = this;
-            //self.inherited(arguments);
+            var self = this;
+            self.inherited(arguments);
         }
-        */
+        
 	});
 
 });

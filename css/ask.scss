@@ -186,11 +186,19 @@ $pep-pic-width: 50px;
     	float: right;
     	padding: 0px 5px;
         color: #aaa;
-        text-decoration: underline;
-        &:hover {
+        display: none;
+        
+        &.active {
+            -webkit-transition: background-color 0.6s;
+            display: inline;
+            color: #444;
             background-color: #aaa;
-            color: black;
-            cursor: pointer;
+            
+            &:hover {
+                color: white;
+                cursor: pointer;
+                text-decoration: none;
+            }
         }
     }
 }
@@ -201,14 +209,16 @@ $pep-pic-width: 50px;
 .ti-tag {
 	display: inline-block;
 	padding: 1px 7px;
-	background-color: white;
 	margin: 3px;
     color: black;
-}
-.ti-tag.selected {
+    cursor: pointer;
+    -webkit-transition: background-color 0.6s;
 	background-color: rgb(151, 151, 151);
-}
 
+    &.active {
+    	background-color: white;
+    }
+}
 
 /* ANNOTATIONS */
 
@@ -270,49 +280,60 @@ $pep-pic-width: 50px;
 .ti-annotations .slot-30 { margin-left: 600px; }
 
 
-.ti-ann-item.collapsed {
-	width: 20px;
-}
-.ti-ann-item.collapsed .box {
-	display: block;
-	width: 19px;
-	height: 19px;
-}
-
-.ti-ann-item.collapsed:hover {
-    z-index: 1000;
-}
-
-.ti-ann-item.collapsed .box:hover {
-    -webkit-transition: 
-        width 0.3s,
-        height 0.3s,
-        margin 0.3s;
+.ti-ann-item {
     
-    z-index: 1000;
-    width: 29px;
-    height: 29px;
-    margin-left: -6px;
-    margin-right: -3px;
-    margin-top: -6px;
-    margin-bottom: -6px;
-    border: 1px solid rgb(66, 66, 66);
-}
+    -webkit-transition: opacity 0.6s;
+    z-index: 10; position: relative;
+    
+    &.collapsed {
+	    width: 20px;
+        z-index: 0;
+        
+        &:hover {
+            z-index: 1000;
+        }
+        .box {
+        	display: block;
+        	width: 19px;
+        	height: 19px;
+            &:hover {
+                -webkit-transition: 
+                    width 0.3s,
+                    height 0.3s,
+                    margin 0.3s,
+                    border 0.3s;
+    
+                z-index: 1000;
+                width: 29px;
+                height: 29px;
+                margin-left: -6px;
+                margin-right: -3px;
+                margin-top: -6px;
+                margin-bottom: -6px;
+                border: 1px solid rgb(66, 66, 66);
+                opacity: 1.0;
+            }
+        }
+
+        .ti-boxes { display: block; }
+        .ti-ann-content { display: none; }
+    } /* &.collapsed */
+    .ti-boxes { display: none; }
+    .ti-ann-content { 
+        display: block; 
+    	width: 250px;
+    	background: rgb(222, 222, 222);
+    }
 
 
-.ti-ann-item { z-index: 10; position: relative; }
-.ti-ann-item.collapsed { z-index: 0; }
+    &.collapsed.deactive {
+        opacity: 0.15;
+    }
+    &.active.collapsed .box {
+        opacity: 1.0;
+    }
+} /* .ti-ann-item */
 
-.ti-ann-item .ti-ann-content { display: block; } 
-.ti-ann-item .ti-boxes { display: none; }
-
-.ti-ann-item.collapsed .ti-ann-content { display: none; }
-.ti-ann-item.collapsed .ti-boxes { display: block; }
-
-.ti-ann-content {
-	width: 250px;
-	background: rgb(222, 222, 222);
-}
 .ti-ann-close {
     position: absolute;
     left: 0px;
@@ -322,11 +343,12 @@ $pep-pic-width: 50px;
     color: white;
     font-weight: bold;
     text-align: center;
-}
-.ti-ann-close:hover {
-    background-color: rgba(255,255,255, 0.5);
-    color: #666;
-    cursor: pointer;
+    
+    &:hover {
+        background-color: rgba(255,255,255, 0.5);
+        color: #666;
+        cursor: pointer;
+    }
 }
 
 

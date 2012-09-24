@@ -95,6 +95,14 @@ define(["dojo/_base/declare",
                 dojo.destroy(node);
                 
             });
+            
+            on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
+                if (!self.areAllAnnActive()) {
+                    self.activateAllAnn();
+                    self.updateResetButton();
+                }
+                return false;
+            });
 
             self.showGraph();
             self.loadNotebookAnnotations();
@@ -294,10 +302,77 @@ define(["dojo/_base/declare",
                     parentTimeline: self
                 });
                 foo.placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags')[0]);
+                
+                on(dojo.query('.ti-tags .ti-tag[data-tag-uri="'+t+'"]')[0], 'click', (function(uri) {
+                    return function(e) {
+                        self.toggleTag(uri);
+                    }
+                })(t));
+                
             }
-            
-            console.log('show tagz DONEDONEODONEDONEDEON');
+            // console.log('show ended, ', self.tagsObjects);
                         
+        },
+
+        toggleTag: function(tag) {
+            var self = this;
+            
+            // If they are all active, deactivate all but the clicked
+            // else just activate the clicked one
+            if (self.areAllTagsActive()) {
+                // Update tag buttons and annotations
+                dojo.query('.ti-tags .ti-tag').removeClass('active');
+                self.deactivateAllAnn();
+                self.activateAnnByTag(tag);
+            } else {
+                self.activateAnnByTag(tag);
+            }
+            dojo.query('.ti-tags .ti-tag[data-tag-uri="'+tag+'"]').addClass('active');
+            
+        },
+        
+        areAllTagsActive: function() {
+            return dojo.query('.ti-tags .ti-tag.active').length === dojo.query('.ti-tags .ti-tag').length;
+        },
+        activateAnnByTag: function(tag) {
+            var self = this;
+            
+            dojo.query('.ti-ann-item .ti-tag[data-tag-uri="'+tag+'"]')
+                .parents('.ti-ann-item')
+                .addClass('active')
+                .removeClass('deactive');
+    
+            self.updateResetButton();
+        },
+        activateAllTags: function() {
+            dojo.query('.ti-tags .ti-tag')
+                .addClass('active')
+                .removeClass('deactive');
+        },
+        areAllAnnActive: function() {
+            return dojo.query('.ti-ann-item.active').length === dojo.query('.ti-ann-item').length;
+        },
+        activateAllAnn: function() {
+            var self = this;
+            dojo.query('.ti-ann-item')
+                .removeClass('deactive')
+                .addClass('active');
+            self.activateAllTags();
+            self.updateResetButton();
+        },
+        deactivateAllAnn: function() {
+            var self = this;
+            dojo.query('.ti-ann-item')
+                .addClass('collapsed deactive')
+                .removeClass('active');
+            self.updateResetButton();
+        },
+        
+        updateResetButton: function() {
+            var self = this,
+                b = dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button');
+            if (!self.areAllAnnActive()) b.addClass('active');
+            else b.removeClass('active');
         },
         
         // Append persons to the people box

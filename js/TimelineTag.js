@@ -25,6 +25,9 @@ define(["dojo/_base/declare",
                 
             console.log('tag post', self.label);
             
+        }, 
+        startup: function() {
+            var self = this;
         }
 	});
 
