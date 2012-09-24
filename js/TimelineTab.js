@@ -14,12 +14,13 @@ define(["dojo/_base/declare",
         "ask/TimelineGraph",
         "ask/TimelineAnnotation",
         "ask/TimelineQuotedPerson",
+        "ask/TimelineTag",
         
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
     function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, dateStamp, dateLocale,
         
-                timelineTabTemplate, TimelineGraph, TimelineAnnotation, TimelineQuotedPerson,
+                timelineTabTemplate, TimelineGraph, TimelineAnnotation, TimelineQuotedPerson, TimelineTag,
                 
                 _WidgetBase, _TemplatedMixin) {
 	
@@ -32,10 +33,14 @@ define(["dojo/_base/declare",
         },
         progressTotal: 0,
         progressCounter: 0,
+
         annotations: [],
         persons: [],
         usedColors: 0,
         usedColorsHash: {},
+        tags: {},
+        tagWidgets: [],
+
         startDate: '',
         endDate: '',
         startDateString: '',
@@ -213,6 +218,8 @@ define(["dojo/_base/declare",
                 .addClass('progress-success');
                 
             self.showAnnotations();
+            self.showPersons();
+            self.showTags();
             
         }, // onLoadingDone()
         
@@ -250,15 +257,52 @@ define(["dojo/_base/declare",
                 return self.usedColorsHash[quotedPerson];
             
             self.usedColorsHash[quotedPerson] = self.usedColors++;
+            self.addPerson(quotedPerson);
+            
+            return self.usedColorsHash[quotedPerson];
+        },
+        
+        addPerson: function(person) {
+            var self = this;
             
             self.persons.push(new TimelineQuotedPerson({
                 notebookId: self.notebookId,
                 parentTimeline: self,
-                perUri: quotedPerson
+                perUri: person
             }));
+        },
+        
+        addTag: function(tag) {
+            var self = this;
             
-            return self.usedColorsHash[quotedPerson];
+            if (tag in self.tags)
+                self.tags[tag].n++;
+            else
+                self.tags[tag] = {n: 1}
             
+            console.log('ara che tags, ', self.tags);
+        },
+        
+        showTags: function() {
+            var self = this;
+
+            console.log('show tagz ');
+            for (var t in self.tags ) 
+                new TimelineTag({
+                    notebookId: self.notebookId,
+                    uri: t,
+                    parentTimeline: self
+                }).placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags')[0]);
+            
+            console.log('show tagz DONEDONEODONEDONEDEON');
+                        
+        },
+        
+        // Append persons to the people box
+        showPersons: function() {
+            var self = this;
+            for (var p in self.persons) 
+                self.persons[p].placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-people ul')[0]);
         },
         
         showAnnotations: function() {
@@ -291,10 +335,6 @@ define(["dojo/_base/declare",
                 }));
                 
             } // for sub in notebookRawData
-            
-            // Append persons to the people box
-            for (var p in self.persons) 
-                self.persons[p].placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-people ul')[0]);
             
             // Append annotation in the right slot
             for (var a in self.annotations) {

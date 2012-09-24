@@ -35,6 +35,7 @@ define(["dojo/_base/declare",
                 _depic = "http://xmlns.com/foaf/0.1/depiction",
                 _source = "http://purl.org/dc/elements/1.1/source",
 				_pageContext = "http://purl.org/pundit/ont/ao#hasPageContext",
+                _tag = "http://xmlns.com/foaf/0.1/primaryTopic",
                 foo;
             
             self.inherited(arguments);
@@ -58,9 +59,15 @@ define(["dojo/_base/declare",
             foo = self.annotation[_quotationFrom][0].value;
             self.colorClass = self.colorClassPrefix + self.parentTimeline.getColor(foo);
             self.annQuotationFrom = items[foo][_label][0].value;
-
             // From the URI of the quoted person, get also the color
             self.annDepiction = items[foo][_depic][0].value;
+            
+            // Add tags
+            if (_tag in self.annotation) {
+                foo = self.annotation[_tag];
+                for (var t = foo.length-1; t--;) 
+                    self.parentTimeline.addTag(foo[t].value);
+            }
             
         },
         startup: function() {
