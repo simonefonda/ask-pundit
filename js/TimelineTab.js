@@ -294,7 +294,8 @@ define(["dojo/_base/declare",
                 
                 console.log('day, diff', ann.annDay, slot, self.startDate, new Date(ann.annDate));
                 // DEBUG: why it's not a date? :|
-                slot = dojoDate.difference(self.startDate, new Date(ann.annDate));
+				// The + 1 is needed !!
+                slot = dojoDate.difference(self.startDate, new Date(ann.annDate)) + 1;
                 
                 console.log('si ma slot? ', slot);
                     

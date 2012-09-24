@@ -83,8 +83,9 @@ define(["dojo/_base/declare",
 				if (r[j] !== undefined) {
 					inDate = dojo.date.stamp.fromISOString(r[j].date);	
 				}
-				//if this day is missing in the data received.. 
-				if (dates[i].toISOString() !== inDate.toISOString()) {
+				//if this day is missing in the data received..
+				// Note we are using toDateString as we do not care about hours and minutes (granularity is DAY!) 
+				if (dates[i].toDateString() !== inDate.toDateString()) {
 					//...put the value of the day before if available...or the value of the next day if previous is unavailable
 					if (typeof(prevValue) === "undefined") {
 						inData[i] = r[j].value;
