@@ -21,7 +21,7 @@ define(["dojo/_base/declare",
         annDay: '',
         annQuotationFrom: '',
         annDepiction: '',
-        annSource: 'SOURCE?',
+        annSource: '',
 		annWebPage: '',
         
         templateString: timelineAnnotationTemplate,
@@ -47,11 +47,13 @@ define(["dojo/_base/declare",
 
             self.annDate = self.annotation[_date][0].value;
             self.annDay = dateStamp.fromISOString(self.annDate).getDate();
-            
-            foo = self.annotation[_source][0].value;
 
-            if (foo in items)
-                self.annSource = items[foo][_label][0].value;
+            // if there's a source, use it
+            if (_source in self.annotation) {
+                foo = self.annotation[_source][0].value;
+                if (foo in items)
+                    self.annSource = items[foo][_label][0].value;
+            }
 
             foo = self.annotation[_quotationFrom][0].value;
             self.colorClass = self.colorClassPrefix + self.parentTimeline.getColor(foo);

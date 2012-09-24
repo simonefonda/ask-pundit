@@ -5,13 +5,17 @@
 
 
 @font-face {
-	font-family: "Rockwell", sans-serif;
-	src:  "Rockwell.otf";
+	font-family: "Rockwell";
+	src: url("Rockwell.otf");
 }
-
-
+/*
 body, html {
 	font-family: 'Rockwell', 'verdana', sans-serif;
+}
+*/
+
+#ask_container {
+    font-family: 'Rockwell';
 }
 
 #askTabContainer .tab-content {
@@ -37,7 +41,7 @@ legend.interactive:hover {
 }
 
 #askTabContainer {
-	font-family: 'Lato', sans-serif;
+	/* font-family: 'Lato', sans-serif; */
 }
 
 .very-hidden { display: none; }
@@ -62,6 +66,7 @@ div.accordion-heading {
 .timeline-pane h1 {
     color: white;
     padding: 6px 10px;
+    font-weight: normal;
 }
 
 /* PEOPLE COLUMN */
@@ -83,10 +88,10 @@ div.accordion-heading {
 .ti-people-title,
 .ti-tags .ti-title span,
 .ti-timeline-title {
-    font-size: 1.2em;
-    font-weight: bold;
+    font-size: 1.5em;
 	color: white;
     padding: 3px 6px;
+    margin-bottom: 5px;
 }
 
 .ti-people li>div {
@@ -127,6 +132,7 @@ $pep-pic-width: 50px;
 .ti-people-name {
 	width: 115px;
     background-color: $pep-bg;
+    font-size: 1.25em;
 }
 .ti-people-name p {
 	padding: 5px;
