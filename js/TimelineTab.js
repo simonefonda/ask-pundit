@@ -56,7 +56,7 @@ define(["dojo/_base/declare",
             self.name = this.notebookId;
             
             self.endDate = new Date();
-            self.startDate = dojoDate.add(self.endDate, 'day', -30);
+            self.startDate = dojoDate.add(self.endDate, 'day', -29);
             
             // TODO : date format ? 
             self.endDateString = self.endDate.toDateString();
