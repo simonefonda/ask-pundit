@@ -65,7 +65,7 @@ define(["dojo/_base/declare",
     		var inData = [];
 			var dates = [];
 		
-			var daysRange = dojo.date.difference(startDate, endDate) - 1;
+			var daysRange = dojo.date.difference(startDate, endDate);
 		
             console.log('days range ', daysRange);
         
