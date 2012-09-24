@@ -287,7 +287,7 @@ define(["dojo/_base/declare",
             var self = this;
 
             console.log('show tagz ');
-            for (var t in self.tags ) 
+            for (var t in self.tags) 
                 new TimelineTag({
                     notebookId: self.notebookId,
                     uri: t,
@@ -310,8 +310,10 @@ define(["dojo/_base/declare",
                         
             for (var sub in self.notebookRawData.triples) {
                 var candidate = self.notebookRawData.triples[sub],
-                    date, 
-                    _date = "http://purl.org/dc/elements/1.1/date";
+                    date, person,
+                    _date = "http://purl.org/dc/elements/1.1/date",
+                    _quotationFrom = "http://purl.org/spar/cito/cites",
+                    _quotationFrom2 = "http://purl.org/spar/cito/includesQuotationFrom";
 
                 if (typeof(candidate[_date]) === 'undefined') {
                     console.log('No date, discarding ', candidate);
@@ -324,8 +326,20 @@ define(["dojo/_base/declare",
                     continue;
                 }
                 
+                if (_quotationFrom in candidate)
+                    person = candidate[_quotationFrom];
+                else if (_quotationFrom2 in candidate)
+                    person = candidate[_quotationFrom2];
+                
+                if (!person) {
+                    console.log('No quotationfrom, discarding ', candidate, person);
+                    continue;
+                }
+                
                 // TODO: more consinstency checks:
                 // - quoted object is a person ? 
+
+                console.log('New ann ', candidate);
 
                 self.annotations.push(new TimelineAnnotation({
                     notebookId: self.notebookId,

@@ -1,10 +1,13 @@
 define(["dojo/_base/declare", 
         "dojo/on", 
         "dojo/date/stamp",
+        "ask/TimelineAnnotationTag",
         "dojo/text!ask/tmpl/TimelineAnnotationTemplate.html", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, on, dateStamp, timelineAnnotationTemplate, _WidgetBase, _TemplatedMixin) {
+    function(declare, on, dateStamp, 
+        TimelineAnnotationTag, timelineAnnotationTemplate,
+        _WidgetBase, _TemplatedMixin) {
 	
 	return declare("ask.TimelineAnnotation", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
@@ -24,6 +27,8 @@ define(["dojo/_base/declare",
         annSource: '',
 		annWebPage: '',
         
+        tags: [],
+        
         templateString: timelineAnnotationTemplate,
         postMixInProperties: function() {
             var self = this,
@@ -31,6 +36,7 @@ define(["dojo/_base/declare",
                 _desc = "http://purl.org/dc/elements/1.1/description",
                 _date = "http://purl.org/dc/elements/1.1/date",
                 _quotationFrom = "http://purl.org/spar/cito/cites",
+                _quotationFrom2 = "http://purl.org/spar/cito/includesQuotationFrom",
                 _label = "http://www.w3.org/2000/01/rdf-schema#label",
                 _depic = "http://xmlns.com/foaf/0.1/depiction",
                 _source = "http://purl.org/dc/elements/1.1/source",
@@ -55,24 +61,46 @@ define(["dojo/_base/declare",
                 if (foo in items)
                     self.annSource = items[foo][_label][0].value;
             }
-
-            foo = self.annotation[_quotationFrom][0].value;
-            self.colorClass = self.colorClassPrefix + self.parentTimeline.getColor(foo);
-            self.annQuotationFrom = items[foo][_label][0].value;
-            // From the URI of the quoted person, get also the color
-            self.annDepiction = items[foo][_depic][0].value;
+            
+            foo = null;
+            if (_quotationFrom in self.annotation)
+                foo = self.annotation[_quotationFrom][0].value;
+            else if (_quotationFrom2 in self.annotation)
+                foo = self.annotation[_quotationFrom2][0].value;
+            
+            if (foo) {    
+                self.colorClass = self.colorClassPrefix + self.parentTimeline.getColor(foo);
+                self.annQuotationFrom = items[foo][_label][0].value;
+                // From the URI of the quoted person, get also the color
+                self.annDepiction = items[foo][_depic][0].value;
+            }
             
             // Add tags
             if (_tag in self.annotation) {
                 foo = self.annotation[_tag];
-                for (var t = foo.length-1; t--;) 
+                for (var t = foo.length-1; t--;) {
                     self.parentTimeline.addTag(foo[t].value);
-            }
+                    self.tags.push(new TimelineAnnotationTag({
+                        notebookId: self.notebookId,
+                        uri: foo[t].value,
+                        parentTimeline: self.parentTimeline
+                    }));
+                    
+                    console.log('found tag!', self.annQuotationFrom, self.annDate);
+                    
+                } // for t = foo.length
+            } // if _tag
             
         },
+        
         startup: function() {
             var self = this;
             self.inherited(arguments);
+
+            // Add tags to the annotation
+            for (var t in self.tags) {
+                
+            }
 
             // Close annotation icon
             on(dojo.query('.ti-ann-item[data-annotation="'+self.subject_enc+'"] .ti-ann-close'), 'click', function(e) {

@@ -72,11 +72,8 @@ div.accordion-heading {
 /* PEOPLE COLUMN */
 
 .ti-people {
-	width: 175px;
-	display: block;
-	margin: 0px;
-	padding: 0px;
-	float: left;
+	/* width: 175px; */
+border: 1px solid red;
 }
 
 .ti-people ul {
@@ -90,16 +87,26 @@ div.accordion-heading {
 .ti-timeline-title {
     font-size: 1.5em;
 	color: white;
-    padding: 3px 6px;
-    margin-bottom: 5px;
 }
 
-.ti-people li>div {
-	float: left;
-	height: 50px;
-	border: 0px;
-	margin-bottom: 5px;
+
+.ti-people {
+    li {
+        display: block;
+        height: 50px;
+    }
+    li>div {
+    	float: left;
+    	height: 50px;
+    	border: 0px;
+    	margin-bottom: 5px;
+    }
+    .ti-people-title {
+        height: 30px;
+    }
 }
+
+
 .ti-people-color {
 	width: 10px;
 }
@@ -166,17 +173,21 @@ $pep-pic-width: 50px;
 	color: white;
 }
 
+.ti-left-col {
+    width: 180px;
+    display: block;
+    float: left;
+}
+
 
 /* TAGS */
 
 .ti-tags {
-    position: absolute;
-    float: left;
-	padding: 5px;
-	border: 0px solid black;
-	width: 165px;
-    margin-top: 50px;
-    color: white;
+    /*
+	width: 175px;
+	display: block;
+	float: left;
+    */
 }
 .ti-tags a {
 	float: right;
@@ -189,6 +200,7 @@ $pep-pic-width: 50px;
     color: black;
     cursor: pointer;
 }
+
 .ti-title {
 	display: block;
 }
