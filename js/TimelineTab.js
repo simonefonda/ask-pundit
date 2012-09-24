@@ -7,6 +7,7 @@ define(["dojo/_base/declare",
         "dojo/router", 
         "dojo/date",
         "dojo/date/stamp",
+        "dojo/date/locale",
 
         "dojo/text!ask/tmpl/TimelineTabTemplate.html", 
 
@@ -16,7 +17,7 @@ define(["dojo/_base/declare",
         
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, dateStamp,
+    function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, dateStamp, dateLocale,
         
                 timelineTabTemplate, TimelineGraph, TimelineAnnotation, TimelineQuotedPerson,
                 
@@ -216,7 +217,21 @@ define(["dojo/_base/declare",
         }, // onLoadingDone()
         
         showGraph: function() {
-            var self = this;
+            var self = this,
+                foo = new Date(self.startDate.getFullYear(), self.startDate.getMonth()+1, 1),
+                diff = dojoDate.difference(self.startDate, foo) +1,
+                span = dojoDate.difference(self.startDate, self.endDate),
+                firstPerc = parseInt(100*diff/span, 10),
+                td1 = dojo.query('.ti-annotations .slots-header td')[0],
+                td2 = dojo.query('.ti-annotations .slots-header td')[1];
+                
+            // TODO : this works for just 1+1 months and 30 days as timespan
+            domStyle.set(td1, {width: firstPerc +'%'});
+            domStyle.set(td2, {width: (100-firstPerc) +'%'});
+            
+            var mNames = dateLocale.getNames("months", "wide");
+            dojo.query(td1).innerHTML(mNames[self.startDate.getMonth()] + ' ' + self.startDate.getFullYear());
+            dojo.query(td2).innerHTML(mNames[self.endDate.getMonth()] + ' ' + self.endDate.getFullYear());
             
             new TimelineGraph({
                 notebookId: self.notebookId,
@@ -276,8 +291,6 @@ define(["dojo/_base/declare",
                 }));
                 
             } // for sub in notebookRawData
-            
-            console.log('Shown annotations: ', self.annotations);
             
             // Append persons to the people box
             for (var p in self.persons) 

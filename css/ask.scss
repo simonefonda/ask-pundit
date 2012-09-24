@@ -209,7 +209,22 @@ $pep-pic-width: 50px;
 .ti-annotations {
 	margin-left: 260px;
     height: 400px;
+
+    .slots-header {
+	    width: 600px;
+        margin-top: -6px;
+        
+        table {
+        	width: 600px;
+        	text-align: center;
+            color: #dedede;
+            font-size:0.9em;
+            margin-bottom: 1px;
+            font-decoration: italic;
+        }
+    }
 }
+
 
 .ti-annotations .slot {
     display: block;
