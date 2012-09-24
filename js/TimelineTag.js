@@ -25,30 +25,6 @@ define(["dojo/_base/declare",
                 
             console.log('tag post', self.label);
             
-        },
-        startup: function() {
-            var self = this;
-            self.inherited(arguments);
-
-            /*
-            // Close annotation icon
-            on(dojo.query('.ti-ann-item[data-annotation="'+self.subject_enc+'"] .ti-ann-close'), 'click', function(e) {
-                dojo.query('.ti-ann-item[data-annotation="'+self.subject_enc+'"]').addClass('collapsed');
-            });
-
-            // Open annotation box
-            on(dojo.query('.box[data-target-annotation="'+self.subject_enc+'"]'), 'click', function(e) {
-                var foo = dojo.query('.ti-ann-item[data-annotation="'+self.subject_enc+'"]');
-                
-                // TODO: dojo .hasClass() ?
-                if (foo[0].className.match(/collapsed/) !== null) {
-                    dojo.query('.ti-ann-item').addClass('collapsed');
-                    foo.removeClass('collapsed');
-                } else {
-                    foo.addClass('collapsed');
-                }
-            });
-            */
         }
 	});
 

@@ -38,8 +38,7 @@ define(["dojo/_base/declare",
         persons: [],
         usedColors: 0,
         usedColorsHash: {},
-        tags: {},
-        tagWidgets: [],
+        tagsObjects: {},
 
         startDate: '',
         endDate: '',
@@ -275,24 +274,27 @@ define(["dojo/_base/declare",
         addTag: function(tag) {
             var self = this;
             
-            if (tag in self.tags)
-                self.tags[tag].n++;
+            if (tag in self.tagsObjects)
+                self.tagsObjects[tag].n++;
             else
-                self.tags[tag] = {n: 1}
+                self.tagsObjects[tag] = {n: 1}
             
-            console.log('ara che tags, ', self.tags);
+            console.log('--- timeline tags, added ', tag, self.tagsObjects);
         },
         
         showTags: function() {
-            var self = this;
+            var self = this,
+                foo;
 
-            console.log('show tagz ');
-            for (var t in self.tags) 
-                new TimelineTag({
+            console.log('show tagz ', self.tagsObjects);
+            for (var t in self.tagsObjects) {
+                foo = new TimelineTag({
                     notebookId: self.notebookId,
                     uri: t,
                     parentTimeline: self
-                }).placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags')[0]);
+                });
+                foo.placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags')[0]);
+            }
             
             console.log('show tagz DONEDONEODONEDONEDEON');
                         
@@ -339,14 +341,14 @@ define(["dojo/_base/declare",
                 // TODO: more consinstency checks:
                 // - quoted object is a person ? 
 
-                console.log('New ann ', candidate);
-
-                self.annotations.push(new TimelineAnnotation({
+                var foo_ = new TimelineAnnotation({
                     notebookId: self.notebookId,
                     subject: sub,
                     annotation: candidate,
                     parentTimeline: self
-                }));
+                });
+                self.annotations.push(foo_);
+                
                 
             } // for sub in notebookRawData
             

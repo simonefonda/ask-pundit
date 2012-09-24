@@ -27,7 +27,7 @@ define(["dojo/_base/declare",
         annSource: '',
 		annWebPage: '',
         
-        tags: [],
+       //  tagsWidgets: [],
         
         templateString: timelineAnnotationTemplate,
         postMixInProperties: function() {
@@ -80,15 +80,21 @@ define(["dojo/_base/declare",
                 foo = self.annotation[_tag];
                 for (var t = foo.length-1; t--;) {
                     self.parentTimeline.addTag(foo[t].value);
-                    self.tags.push(new TimelineAnnotationTag({
+                    var bar = new TimelineAnnotationTag({
                         notebookId: self.notebookId,
                         uri: foo[t].value,
                         parentTimeline: self.parentTimeline
-                    }));
+                    });
+                    if (typeof(self['tagsWidgets']) === 'undefined')
+                        self.tagsWidgets = [];
                     
-                    console.log('found tag!', self.annQuotationFrom, self.annDate);
+                    self.tagsWidgets.push(bar);
+                    
+                    console.log('found tag!', self.annQuotationFrom, self.annDate, foo[t].value, self.tagsWidgets);
                     
                 } // for t = foo.length
+            } else {
+                console.log('NO TAGS HERE', self.annQuotationFrom, self.annDate, self.tagsWidgets);
             } // if _tag
             
         },
@@ -96,11 +102,15 @@ define(["dojo/_base/declare",
         startup: function() {
             var self = this;
             self.inherited(arguments);
-
+            
+            console.log('startup stocazz', self.annDate, self.tagsWidgets);
+            
             // Add tags to the annotation
-            for (var t in self.tags) {
-                
+            for (var t in self.tagsWidgets) {
+                self.tagsWidgets[t].placeAt(dojo.query('.ti-ann-item[data-annotation="'+self.subject_enc+'"] .ti-ann-content-tags')[0]);
+                console.log('added tag? WUTEFAQ', t, self.subject, self.annDay);
             }
+            
 
             // Close annotation icon
             on(dojo.query('.ti-ann-item[data-annotation="'+self.subject_enc+'"] .ti-ann-close'), 'click', function(e) {
