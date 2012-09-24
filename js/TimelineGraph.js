@@ -184,8 +184,8 @@ define(["dojo/_base/declare",
     	        var dot = r.circle(x, y, 4).attr({fill: "#333", stroke: color, "stroke-width": 2});
 
 				if (dates[i] !== undefined && dates[i-1] !== undefined && dates[i].getMonth() !== dates[i-1].getMonth()) {
-					blanket.push(r.rect(leftgutter + X * i , 0, 2, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 100}));	
-					blanket.push(r.rect(leftgutter + X * i , 0, X - 2, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
+					blanket.push(r.rect(leftgutter + X * i , 0, 1, height - bottomgutter).attr({stroke: "none", fill: "#666", opacity: 100}));	
+					blanket.push(r.rect(leftgutter + X * i , 0, X - 1, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
 				} else {
 					blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));	
 				}
