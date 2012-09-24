@@ -70,10 +70,8 @@ div.accordion-heading {
 }
 
 /* PEOPLE COLUMN */
-
 .ti-people {
-	/* width: 175px; */
-/*border: 1px solid red;*/
+
 }
 
 .ti-people ul {
@@ -94,12 +92,12 @@ div.accordion-heading {
     li {
         display: block;
         height: 50px;
+        margin-bottom: 4px;
     }
     li>div {
     	float: left;
     	height: 50px;
     	border: 0px;
-    	margin-bottom: 5px;
     }
     .ti-people-title {
         height: 30px;
@@ -183,22 +181,18 @@ $pep-pic-width: 50px;
 /* TAGS */
 
 .ti-tags {
-    /*
-	width: 175px;
-	display: block;
-	float: left;
-    */
-}
-.ti-tags a {
-	float: right;
-	padding: 0px 5px;
-    color: #aaa;
-    text-decoration: underline;
-}
-.ti-tags a:hover {
-    background-color: #aaa;
-    color: black;
-    cursor: pointer;
+    margin-top: 15px;
+    a {
+    	float: right;
+    	padding: 0px 5px;
+        color: #aaa;
+        text-decoration: underline;
+        &:hover {
+            background-color: #aaa;
+            color: black;
+            cursor: pointer;
+        }
+    }
 }
 
 .ti-title {
