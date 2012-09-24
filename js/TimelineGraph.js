@@ -132,9 +132,9 @@ define(["dojo/_base/declare",
     	        color = "hsl(" + [colorhue, .5, .5] + ")",
                 ask_container = dojo.query('.raphael-graph-'+self.notebookId)[0],
     	        r = Raphael(ask_container, width, height),
-    	        txt = {font: '12px Helvetica, Arial', fill: "#fff"},
-    	        txt1 = {font: '10px Helvetica, Arial', fill: "#fff"},
-    	        txt2 = {font: '12px Helvetica, Arial', fill: "#000"},
+    	        txt = {font: '12px Rockwell, Helvetica, Arial', fill: "#999"},
+    	        txt1 = {font: '10px Rockwell, Helvetica, Arial', fill: "#fff"},
+    	        txt2 = {font: '12px Rockwell Helvetica, Arial', fill: "#000"},
     	        X = (width - leftgutter) / data.length,
     	        max = Math.max.apply(Math, data),
     	        Y = (height - bottomgutter - topgutter) / max;
@@ -183,12 +183,13 @@ define(["dojo/_base/declare",
                 
     	        var dot = r.circle(x, y, 4).attr({fill: "#333", stroke: color, "stroke-width": 2});
 
+				//This is the line dividing two months...
 				if (dates[i] !== undefined && dates[i-1] !== undefined && dates[i].getMonth() !== dates[i-1].getMonth()) {
-					blanket.push(r.rect(leftgutter + X * i , 0, 1, height - bottomgutter).attr({stroke: "none", fill: "#666", opacity: 100}));	
-					blanket.push(r.rect(leftgutter + X * i , 0, X - 1, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));
-				} else {
-					blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));	
-				}
+					blanket.push(r.rect(leftgutter + X * i , height - 20, 1, height - bottomgutter + 20).attr({stroke: "none", fill: "#999", opacity: 100}));	
+					
+				} 
+                blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));	
+
 				
 
 				
