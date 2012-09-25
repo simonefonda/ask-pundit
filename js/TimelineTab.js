@@ -73,44 +73,56 @@ define(["dojo/_base/declare",
             var self = this;
             self.inherited(arguments);
 
-            // place the tab button
-            var b = "<li><a href='#/timeline/"+this.notebookId+"'" +
-                    "' data-toggle='tab' id='tab-time-"+self.notebookId+
-                    "'>T: "+this.name+"</a></li>";
 
-            dojo.place(b, "ask-pills");
+            // If there's tabs ... 
+            if (dojo.byId('ask-pills')) {
+
+                // place the tab button
+                var b = "<li><a href='#/timeline/"+this.notebookId+"'" +
+                        "' data-toggle='tab' id='tab-time-"+self.notebookId+
+                        "'>T: "+this.name+"</a></li>";
+
+                dojo.place(b, "ask-pills");
             
-            on(dojo.query('#tab-time-'+self.notebookId), 'show', function(e) {
-                dojo.query('#ask-tab-content .tab-pane').removeClass('active');
-                dojo.query('#timeline-tab-'+self.notebookId).addClass('active');
-            });
-     
-            // Close tab button: removes pill + tab content, unregistering
-            // the dojo's widgets
-            on(dojo.byId('time-tab-close-'+ self.notebookId), 'click', function(e) {
+                on(dojo.query('#tab-time-'+self.notebookId), 'show', function(e) {
+                    dojo.query('#ask-tab-content .tab-pane').removeClass('active');
+                    dojo.query('#timeline-tab-'+self.notebookId).addClass('active');
+                });
+                
+                // Close tab button: removes pill + tab content, unregistering
+                // the dojo's widgets
+                on(dojo.byId('time-tab-close-'+ self.notebookId), 'click', function(e) {
 
-                router.go('/notebooks/');
+                    router.go('/notebooks/');
 
-                var node = dojo.query('#timeline-tab-'+self.notebookId)[0];
+                    var node = dojo.query('#timeline-tab-'+self.notebookId)[0];
 
-                dijit.registry.forEach(function(w) { 
-                    if (w.id === 'timeline-tab-'+self.notebookId) 
-                        w.destroyRecursive();
+                    dijit.registry.forEach(function(w) { 
+                        if (w.id === 'timeline-tab-'+self.notebookId) 
+                            w.destroyRecursive();
+                    });
+
+                    dojo.destroy(dojo.query('#tab-time-'+self.notebookId)[0].parentNode);
+                    dojo.destroy(node);
+                
+                });
+            
+                on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
+                    if (!self.areAllAnnActive()) {
+
+                        self.activateAllAnn();
+                        self.updateResetButton();
+                    }
+                    return false;
                 });
 
-                dojo.destroy(dojo.query('#tab-time-'+self.notebookId)[0].parentNode);
-                dojo.destroy(node);
+            } else { // if dojo.byId ask-pills
                 
-            });
-            
-            on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
-                if (!self.areAllAnnActive()) {
-
-                    self.activateAllAnn();
-                    self.updateResetButton();
-                }
-                return false;
-            });
+                dojo.query('.timeline-pane').addClass('active in');
+                domStyle.set(dojo.query('.timeline-pane .page-header')[0], 'display', 'none');
+                domStyle.set(dojo.query('#askTabContainer .tab-content')[0], 'top', '0px')
+                
+            } // if dojo.byId ask-pills
 
             self.showGraph();
             self.loadNotebookAnnotations();

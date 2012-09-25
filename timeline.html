@@ -35,14 +35,14 @@
 
 <script src="dojoConfig.js"></script>
 <script src="js/base64.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/socket.io.min.js"></script>
 <script src="dojo/dojo/dojo.js"></script>
  
 <script>
-    require(["ask/Index", "dojo/ready", "dijit/registry", "dojo/json", "dojo/_base/config", "dojo/parser", "dojo/domReady!"], function(Index, ready, registry, JSON, config, parser) {
+    require(["ask/IndexTimeline", "dojo/parser"], 
+        function(IndexTimeline, parser) {
         parser.parse();
 
-        var index = new Index().placeAt(dojo.byId('ask_container'));
+        var index = new IndexTimeline().placeAt(dojo.byId('ask_container'));
         index.startup();
     });
 </script>

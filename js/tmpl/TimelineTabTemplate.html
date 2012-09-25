@@ -31,17 +31,16 @@
 
     <div class="page-header">
       <h1><span id="nb-header-${notebookId}">Timeline</span> <small>${notebookId}</small></h1>
+
+      <div class="row">
+          <p>
+              <button type="button" class="btn btn-large btn-danger pull-right" id="time-tab-close-${notebookId}">Close</button>
+          </p>
+      </div>
+
     </div>
 
-    <div class="row">
-        <p>
-            <button type="button" class="btn btn-large btn-danger pull-right" id="time-tab-close-${notebookId}">Close</button>
-        </p>
-    </div>
-    
-    <br />
-    
-    <div class="ti-progress-${notebookId}">
+    <div class="ti-progress-container ti-progress-${notebookId}">
         <div class="progress progress-warning progress-striped active">
           <div class="bar" style="width: 0%"></div>
         </div>
