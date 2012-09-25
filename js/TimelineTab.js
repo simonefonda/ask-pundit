@@ -74,6 +74,17 @@ define(["dojo/_base/declare",
             self.inherited(arguments);
 
 
+			// This has been taken out from the "if there's tab below...
+			// .. so the reset works now ... correct?!!?
+            on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
+                if (!self.areAllAnnActive()) {
+
+                    self.activateAllAnn();
+                    self.updateResetButton();
+                }
+                return false;
+            });
+
             // If there's tabs ... 
             if (dojo.byId('ask-pills')) {
 
@@ -106,15 +117,7 @@ define(["dojo/_base/declare",
                     dojo.destroy(node);
                 
                 });
-            
-                on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
-                    if (!self.areAllAnnActive()) {
 
-                        self.activateAllAnn();
-                        self.updateResetButton();
-                    }
-                    return false;
-                });
 
             } else { // if dojo.byId ask-pills
                 
