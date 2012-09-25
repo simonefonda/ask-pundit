@@ -259,9 +259,11 @@ $pep-width: 50px;
             
             td.ti-month-0 {
                 background-color: rgba(255,255,255,0.1);
+                border-right: 1px solid rgb(66, 66, 66);
             }
             td.ti-month-1 {
                 background-color: rgba(255,255,255,0.15);
+                border-left: 1px solid rgb(66, 66, 66);
             }
             
         }

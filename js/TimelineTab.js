@@ -249,13 +249,17 @@ define(["dojo/_base/declare",
                 foo = new Date(self.startDate.getFullYear(), self.startDate.getMonth()+1, 1),
                 diff = dojoDate.difference(self.startDate, foo) +1,
                 span = dojoDate.difference(self.startDate, self.endDate),
-                firstPerc = parseInt(100*diff/span, 10),
+                firstPerc = 100*diff/span,
                 td1 = dojo.query('.ti-annotations .slots-header td')[0],
-                td2 = dojo.query('.ti-annotations .slots-header td')[1];
+                td2 = dojo.query('.ti-annotations .slots-header td')[1],
+                // TODO: switch to divs instead? TD are larger .. ? 
+                correction = 6;
                 
             // TODO : this works for just 1+1 months and 30 days as timespan
-            domStyle.set(td1, {width: firstPerc +'%'});
-            domStyle.set(td2, {width: (100-firstPerc) +'%'});
+            // domStyle.set(td1, {width: firstPerc +'%'});
+            // domStyle.set(td2, {width: (100-firstPerc) +'%'});
+            domStyle.set(td1, {width: 20*diff -correction +'px'});
+            domStyle.set(td2, {width: 20*(span-diff) -correction +'px'});
             
             var mNames = dateLocale.getNames("months", "wide");
             dojo.query(td1).innerHTML(mNames[self.startDate.getMonth()] + ' ' + self.startDate.getFullYear());
