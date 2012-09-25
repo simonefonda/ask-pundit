@@ -75,7 +75,8 @@ define(["dojo/_base/declare",
             var self = this;
 
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ self.notebookId +"/metadata", {
-                handleAs: "json"
+                handleAs: "json",
+				headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                     for (var ann in data) {
@@ -104,7 +105,8 @@ define(["dojo/_base/declare",
             var self = this;
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ self.notebookId, {
-                handleAs: "json"
+                handleAs: "json",
+				headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                         
@@ -145,7 +147,8 @@ define(["dojo/_base/declare",
             self.itemsURIs[annotationId] = [];
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/content", {
-                handleAs: "json"
+                handleAs: "json",
+				headers: { "Accept": "application/json" }
             }).then(
                 function(data){
 
@@ -207,7 +210,8 @@ define(["dojo/_base/declare",
             var self = this;
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/items", {
-                handleAs: "json"
+                handleAs: "json",
+				headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                                         

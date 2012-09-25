@@ -132,7 +132,8 @@ define(["dojo/_base/declare",
             var self = this;
 
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/public/", {
-                handleAs: "json"
+                handleAs: "json",
+				headers: { "Accept": "application/json" }
             }).then(
                 function(data) {
                     dojo.query('#notebooksContainer').empty();
@@ -156,7 +157,8 @@ define(["dojo/_base/declare",
             var self = this;
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ id +"/metadata", {
-                handleAs: "json"
+                handleAs: "json",
+				headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                     
