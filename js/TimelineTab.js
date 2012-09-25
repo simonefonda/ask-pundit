@@ -8,19 +8,26 @@ define(["dojo/_base/declare",
         "dojo/date",
         "dojo/date/stamp",
         "dojo/date/locale",
-
+        "dojo/fx/Toggler", 
+        "dojo/fx",
+        
         "dojo/text!ask/tmpl/TimelineTabTemplate.html", 
 
         "ask/TimelineGraph",
         "ask/TimelineAnnotation",
         "ask/TimelineQuotedPerson",
         "ask/TimelineTag",
+
+        "bootstrap/Modal",
         
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, dateStamp, dateLocale,
+    function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, 
+                dateStamp, dateLocale, fxToggler, dojoFx,
         
                 timelineTabTemplate, TimelineGraph, TimelineAnnotation, TimelineQuotedPerson, TimelineTag,
+                
+                BModal,
                 
                 _WidgetBase, _TemplatedMixin) {
 	
@@ -231,6 +238,8 @@ define(["dojo/_base/declare",
             self.showAnnotations();
             self.showPersons();
             self.showTags();
+            
+            dojoFx.wipeOut({node: dojo.query('.ti-progress-'+self.notebookId)[0]}).play();
             dojo.query('.ti-invisible').removeClass('ti-invisible');
             
         }, // onLoadingDone()

@@ -1,5 +1,31 @@
 <div class="tab-pane timeline-pane">
 
+    <!-- credits modal -->
+    <div class="modal hide fade" id="ti-credits-${notebookId}" tabindex="-1" role="dialog" aria-labelledby="ti-credits-label" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="ti-credits-label-${notebookId}">Credits</h3>
+      </div>
+      <div class="modal-body">
+        <p>
+            This demo tool has been developed at <a href="http://okfestival.org" target="_blank">OKFest</a>
+            2012, during the <a href="http://okfestival.org/hs-open-datajournalism-hackathon/" target="_blank">HS Open Data Journalism Hackathon</a>
+            by Susanna Ånäs, Christian Morbidoni, Michele Barbera and Simone Fonda.
+            <br /><br />
+            The quotes are collected on the web using <a href="http://thepund.it/" target="_blank">Pundit</a>,
+            an open source semantic annotation tool, and automatically displayed.
+        </p>
+        <p>
+            Save your own quotes and
+            <a href="http://thepund.it/journalism-how-to.php">try it out for yourself</a> now!
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-small" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
+
+
     <div class="page-header">
       <h1><span id="nb-header-${notebookId}">Timeline</span> <small>${notebookId}</small></h1>
     </div>
@@ -12,8 +38,7 @@
     
     <br />
     
-    <div>
-
+    <div class="ti-progress-${notebookId}">
         <div class="progress progress-warning progress-striped active">
           <div class="bar" style="width: 0%"></div>
         </div>
@@ -23,6 +48,8 @@
     <br />
     
     <div>
+        
+        <a href="#ti-credits-${notebookId}" class="ti-credits" data-toggle="modal">credits</a>
         
         <h1>Political rhetoric vs. STOXX 600</h1>
 

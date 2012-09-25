@@ -52,148 +52,153 @@ div.accordion-heading {
   margin: 10px;
   text-align: center; }
 
-/* line 63, ask.scss */
+/* line 60, ask.scss */
 .timeline-pane {
   background-color: #424242; }
-
-/* line 66, ask.scss */
-.timeline-pane h1 {
-  color: white;
-  padding: 6px 10px;
-  font-weight: normal; }
+  /* line 63, ask.scss */
+  .timeline-pane h1 {
+    color: white;
+    padding: 6px 10px;
+    font-weight: normal; }
+  /* line 69, ask.scss */
+  .timeline-pane a.ti-credits {
+    font-size: 1.2em;
+    color: #fc0;
+    float: right;
+    margin: 5px 10px; }
 
 /* PEOPLE COLUMN */
-/* line 75, ask.scss */
+/* line 80, ask.scss */
 .ti-people-title,
 .ti-tags .ti-title span,
 .ti-timeline-title {
   font-size: 1.5em;
   color: white; }
 
-/* line 83, ask.scss */
+/* line 88, ask.scss */
 .ti-people-picture {
   width: 50px;
   height: 40px;
   text-align: center; }
-  /* line 88, ask.scss */
+  /* line 93, ask.scss */
   .ti-people-picture div {
     width: 50px;
     height: 40px;
     min-height: 40px;
     display: table-cell;
     vertical-align: middle; }
-    /* line 96, ask.scss */
+    /* line 101, ask.scss */
     .ti-people-picture div img {
       max-height: 40px;
       max-width: 50px;
       vertical-align: middle; }
 
-/* line 104, ask.scss */
+/* line 109, ask.scss */
 .ti-people {
   width: 180px; }
-  /* line 106, ask.scss */
+  /* line 111, ask.scss */
   .ti-people li {
     display: block;
     height: 40px;
     margin-bottom: 4px; }
-  /* line 111, ask.scss */
+  /* line 116, ask.scss */
   .ti-people li > div {
     float: left;
     height: 40px;
     border: 0px; }
-  /* line 116, ask.scss */
+  /* line 121, ask.scss */
   .ti-people .ti-people-title {
     height: 30px; }
-  /* line 119, ask.scss */
+  /* line 124, ask.scss */
   .ti-people ul {
     list-style: none;
     margin: 0px;
     padding: 0px; }
 
-/* line 126, ask.scss */
+/* line 131, ask.scss */
 .ti-people-color {
   width: 10px; }
 
-/* line 130, ask.scss */
+/* line 135, ask.scss */
 .ti-people-item {
   cursor: pointer;
   -webkit-transition: background-color 0.6s;
   background-color: #979797; }
-  /* line 135, ask.scss */
+  /* line 140, ask.scss */
   .ti-people-item.active {
     background-color: #dedede; }
 
-/* line 140, ask.scss */
+/* line 145, ask.scss */
 .ti-people-name {
   width: 115px;
   font-size: 1.1em; }
-  /* line 144, ask.scss */
+  /* line 149, ask.scss */
   .ti-people-name p {
     padding: 1px 5px; }
 
 /* TIMELINE */
-/* line 151, ask.scss */
+/* line 156, ask.scss */
 .ti-timeline {
   margin-left: 260px;
   height: 290px;
   width: 600px; }
 
-/* line 157, ask.scss */
+/* line 162, ask.scss */
 .ti-timeline-title {
   height: 25px; }
 
-/* line 160, ask.scss */
+/* line 165, ask.scss */
 .ti-title-name {
   display: inline;
   float: left; }
 
-/* line 164, ask.scss */
+/* line 169, ask.scss */
 .ti-timeline-title ul {
   list-style: none;
   float: right; }
 
-/* line 168, ask.scss */
+/* line 173, ask.scss */
 .ti-timeline-title ul li {
   display: inline;
   color: #aaa; }
 
-/* line 172, ask.scss */
+/* line 177, ask.scss */
 .ti-timeline-title ul li.selected {
   color: white; }
 
-/* line 176, ask.scss */
+/* line 181, ask.scss */
 .ti-left-col {
   width: 250px;
   display: block;
   float: left; }
 
 /* TAGS */
-/* line 185, ask.scss */
+/* line 190, ask.scss */
 .ti-tags {
   margin-top: 15px; }
-  /* line 187, ask.scss */
+  /* line 192, ask.scss */
   .ti-tags a {
     float: right;
     padding: 0px 5px;
     color: #aaa;
     display: none; }
-    /* line 193, ask.scss */
+    /* line 198, ask.scss */
     .ti-tags a.active {
       -webkit-transition: background-color 0.6s;
       display: inline;
       color: #444;
       background-color: #aaa; }
-      /* line 199, ask.scss */
+      /* line 204, ask.scss */
       .ti-tags a.active:hover {
         color: white;
         cursor: pointer;
         text-decoration: none; }
 
-/* line 209, ask.scss */
+/* line 214, ask.scss */
 .ti-title {
   display: block; }
 
-/* line 212, ask.scss */
+/* line 217, ask.scss */
 .ti-tag {
   display: inline-block;
   padding: 1px 7px;
@@ -202,28 +207,28 @@ div.accordion-heading {
   cursor: pointer;
   -webkit-transition: background-color 0.6s;
   background-color: #979797; }
-  /* line 221, ask.scss */
+  /* line 226, ask.scss */
   .ti-tag.active {
     background-color: white; }
 
-/* line 226, ask.scss */
+/* line 231, ask.scss */
 .ti-annotations, .ti-left-col {
   -webkit-transition: opacity 2s;
   opacity: 1.0; }
-  /* line 229, ask.scss */
+  /* line 234, ask.scss */
   .ti-annotations.ti-invisible, .ti-left-col.ti-invisible {
     opacity: 0; }
 
 /* ANNOTATIONS */
-/* line 236, ask.scss */
+/* line 241, ask.scss */
 .ti-annotations {
   margin-left: 260px;
   height: 400px; }
-  /* line 240, ask.scss */
+  /* line 245, ask.scss */
   .ti-annotations .slots-header {
     width: 600px;
     margin-top: -6px; }
-    /* line 244, ask.scss */
+    /* line 249, ask.scss */
     .ti-annotations .slots-header table {
       width: 600px;
       text-align: center;
@@ -232,152 +237,152 @@ div.accordion-heading {
       margin-bottom: 1px;
       font-decoration: italic; }
 
-/* line 256, ask.scss */
+/* line 261, ask.scss */
 .ti-annotations .slot {
   display: block;
   position: absolute;
   width: 20px;
   height: 20px; }
 
-/* line 262, ask.scss */
+/* line 267, ask.scss */
 .ti-annotations .slot-1 {
   margin-left: 20px; }
 
-/* line 263, ask.scss */
+/* line 268, ask.scss */
 .ti-annotations .slot-2 {
   margin-left: 40px; }
 
-/* line 264, ask.scss */
+/* line 269, ask.scss */
 .ti-annotations .slot-3 {
   margin-left: 60px; }
 
-/* line 265, ask.scss */
+/* line 270, ask.scss */
 .ti-annotations .slot-4 {
   margin-left: 80px; }
 
-/* line 266, ask.scss */
+/* line 271, ask.scss */
 .ti-annotations .slot-5 {
   margin-left: 100px; }
 
-/* line 267, ask.scss */
+/* line 272, ask.scss */
 .ti-annotations .slot-6 {
   margin-left: 120px; }
 
-/* line 268, ask.scss */
+/* line 273, ask.scss */
 .ti-annotations .slot-7 {
   margin-left: 140px; }
 
-/* line 269, ask.scss */
+/* line 274, ask.scss */
 .ti-annotations .slot-8 {
   margin-left: 160px; }
 
-/* line 270, ask.scss */
+/* line 275, ask.scss */
 .ti-annotations .slot-9 {
   margin-left: 180px; }
 
-/* line 271, ask.scss */
+/* line 276, ask.scss */
 .ti-annotations .slot-10 {
   margin-left: 200px; }
 
-/* line 272, ask.scss */
+/* line 277, ask.scss */
 .ti-annotations .slot-11 {
   margin-left: 220px; }
 
-/* line 273, ask.scss */
+/* line 278, ask.scss */
 .ti-annotations .slot-12 {
   margin-left: 240px; }
 
-/* line 274, ask.scss */
+/* line 279, ask.scss */
 .ti-annotations .slot-13 {
   margin-left: 260px; }
 
-/* line 275, ask.scss */
+/* line 280, ask.scss */
 .ti-annotations .slot-14 {
   margin-left: 280px; }
 
-/* line 276, ask.scss */
+/* line 281, ask.scss */
 .ti-annotations .slot-15 {
   margin-left: 300px; }
 
-/* line 277, ask.scss */
+/* line 282, ask.scss */
 .ti-annotations .slot-16 {
   margin-left: 320px; }
 
-/* line 278, ask.scss */
+/* line 283, ask.scss */
 .ti-annotations .slot-17 {
   margin-left: 340px; }
 
-/* line 279, ask.scss */
+/* line 284, ask.scss */
 .ti-annotations .slot-18 {
   margin-left: 360px; }
 
-/* line 280, ask.scss */
+/* line 285, ask.scss */
 .ti-annotations .slot-19 {
   margin-left: 380px; }
 
-/* line 281, ask.scss */
+/* line 286, ask.scss */
 .ti-annotations .slot-20 {
   margin-left: 400px; }
 
-/* line 282, ask.scss */
+/* line 287, ask.scss */
 .ti-annotations .slot-21 {
   margin-left: 420px; }
 
-/* line 283, ask.scss */
+/* line 288, ask.scss */
 .ti-annotations .slot-22 {
   margin-left: 440px; }
 
-/* line 284, ask.scss */
+/* line 289, ask.scss */
 .ti-annotations .slot-23 {
   margin-left: 460px; }
 
-/* line 285, ask.scss */
+/* line 290, ask.scss */
 .ti-annotations .slot-24 {
   margin-left: 480px; }
 
-/* line 286, ask.scss */
+/* line 291, ask.scss */
 .ti-annotations .slot-25 {
   margin-left: 500px; }
 
-/* line 287, ask.scss */
+/* line 292, ask.scss */
 .ti-annotations .slot-26 {
   margin-left: 520px; }
 
-/* line 288, ask.scss */
+/* line 293, ask.scss */
 .ti-annotations .slot-27 {
   margin-left: 540px; }
 
-/* line 289, ask.scss */
+/* line 294, ask.scss */
 .ti-annotations .slot-28 {
   margin-left: 560px; }
 
-/* line 290, ask.scss */
+/* line 295, ask.scss */
 .ti-annotations .slot-29 {
   margin-left: 580px; }
 
-/* line 291, ask.scss */
+/* line 296, ask.scss */
 .ti-annotations .slot-30 {
   margin-left: 600px; }
 
-/* line 294, ask.scss */
+/* line 299, ask.scss */
 .ti-ann-item {
   -webkit-transition: opacity 0.6s;
   z-index: 10;
   position: relative;
   /* &.collapsed */ }
-  /* line 299, ask.scss */
+  /* line 304, ask.scss */
   .ti-ann-item.collapsed {
     width: 20px;
     z-index: 0; }
-    /* line 303, ask.scss */
+    /* line 308, ask.scss */
     .ti-ann-item.collapsed:hover {
       z-index: 1000; }
-    /* line 306, ask.scss */
+    /* line 311, ask.scss */
     .ti-ann-item.collapsed .box {
       display: block;
       width: 19px;
       height: 19px; }
-      /* line 310, ask.scss */
+      /* line 315, ask.scss */
       .ti-ann-item.collapsed .box:hover {
         -webkit-transition: width 0.3s, height 0.3s, margin 0.3s, border 0.3s;
         z-index: 1000;
@@ -389,29 +394,29 @@ div.accordion-heading {
         margin-bottom: -6px;
         border: 1px solid #424242;
         opacity: 1.0; }
-    /* line 329, ask.scss */
+    /* line 334, ask.scss */
     .ti-ann-item.collapsed .ti-boxes {
       display: block; }
-    /* line 330, ask.scss */
+    /* line 335, ask.scss */
     .ti-ann-item.collapsed .ti-ann-content {
       display: none; }
-  /* line 332, ask.scss */
+  /* line 337, ask.scss */
   .ti-ann-item .ti-boxes {
     display: none; }
-  /* line 333, ask.scss */
+  /* line 338, ask.scss */
   .ti-ann-item .ti-ann-content {
     display: block;
     width: 250px;
     background: #dedede; }
-  /* line 340, ask.scss */
+  /* line 345, ask.scss */
   .ti-ann-item.collapsed.deactive {
     opacity: 0.15; }
-  /* line 343, ask.scss */
+  /* line 348, ask.scss */
   .ti-ann-item.active.collapsed .box {
     opacity: 1.0; }
 
 /* .ti-ann-item */
-/* line 348, ask.scss */
+/* line 353, ask.scss */
 .ti-ann-close {
   position: absolute;
   left: 0px;
@@ -421,13 +426,13 @@ div.accordion-heading {
   color: white;
   font-weight: bold;
   text-align: center; }
-  /* line 358, ask.scss */
+  /* line 363, ask.scss */
   .ti-ann-close:hover {
     background-color: rgba(255, 255, 255, 0.5);
     color: #666;
     cursor: pointer; }
 
-/* line 368, ask.scss */
+/* line 373, ask.scss */
 .ti-ann-content-picture {
   width: 50px;
   height: 50px;
@@ -435,146 +440,146 @@ div.accordion-heading {
   margin-right: 5px;
   margin-bottom: 5px;
   text-align: center; }
-  /* line 376, ask.scss */
+  /* line 381, ask.scss */
   .ti-ann-content-picture div {
     width: 50px;
     height: 50px;
     min-height: 50px;
     display: table-cell;
     vertical-align: middle; }
-    /* line 383, ask.scss */
+    /* line 388, ask.scss */
     .ti-ann-content-picture div img {
       margin: 1px;
       max-height: 50px;
       max-width: 50px;
       vertical-align: middle; }
 
-/* line 392, ask.scss */
+/* line 397, ask.scss */
 .ti-ann-content-name {
   margin-left: 50px;
   color: black;
   font-weight: bold; }
 
-/* line 397, ask.scss */
+/* line 402, ask.scss */
 .ti-ann-content-text {
   padding: 5px;
   color: black;
   max-height: 200px;
   overflow: auto; }
 
-/* line 403, ask.scss */
+/* line 408, ask.scss */
 .ti-ann-content-source {
   color: #666;
   font-style: italic; }
 
-/* line 407, ask.scss */
+/* line 412, ask.scss */
 .ti-ann-content-date {
   color: #666; }
 
-/* line 412, ask.scss */
+/* line 417, ask.scss */
 .ti-boxes {
   border-bottom: 1px solid #424242;
   border-right: 1px solid #424242;
   cursor: pointer; }
 
-/* line 417, ask.scss */
+/* line 422, ask.scss */
 .ti-ann-content {
   border-left: 20px solid;
   margin-bottom: 1px; }
 
 /* Boxes COLORS */
-/* line 423, ask.scss */
+/* line 428, ask.scss */
 .ti-ann-content.color-0 {
   border-color: #6abcd1; }
 
-/* line 424, ask.scss */
+/* line 429, ask.scss */
 .box.color-0 {
   background-color: #6abcd1; }
 
-/* line 425, ask.scss */
+/* line 430, ask.scss */
 .ti-people-color.color-0 {
   background-color: #6abcd1; }
 
-/* line 427, ask.scss */
+/* line 432, ask.scss */
 .ti-ann-content.color-1 {
   border-color: #a6534b; }
 
-/* line 428, ask.scss */
+/* line 433, ask.scss */
 .box.color-1 {
   background-color: #a6534b; }
 
-/* line 429, ask.scss */
+/* line 434, ask.scss */
 .ti-people-color.color-1 {
   background-color: #a6534b; }
 
-/* line 431, ask.scss */
+/* line 436, ask.scss */
 .ti-ann-content.color-2 {
   border-color: #f3ce7f; }
 
-/* line 432, ask.scss */
+/* line 437, ask.scss */
 .box.color-2 {
   background-color: #f3ce7f; }
 
-/* line 433, ask.scss */
+/* line 438, ask.scss */
 .ti-people-color.color-2 {
   background-color: #f3ce7f; }
 
-/* line 435, ask.scss */
+/* line 440, ask.scss */
 .ti-ann-content.color-3 {
   border-color: #5d8476; }
 
-/* line 436, ask.scss */
+/* line 441, ask.scss */
 .box.color-3 {
   background-color: #5d8476; }
 
-/* line 437, ask.scss */
+/* line 442, ask.scss */
 .ti-people-color.color-3 {
   background-color: #5d8476; }
 
-/* line 439, ask.scss */
+/* line 444, ask.scss */
 .ti-ann-content.color-4 {
   border-color: #ca6f47; }
 
-/* line 440, ask.scss */
+/* line 445, ask.scss */
 .box.color-4 {
   background-color: #ca6f47; }
 
-/* line 441, ask.scss */
+/* line 446, ask.scss */
 .ti-people-color.color-4 {
   background-color: #ca6f47; }
 
-/* line 444, ask.scss */
+/* line 449, ask.scss */
 .ti-ann-content.color-5 {
   border-color: #a76ea1; }
 
-/* line 445, ask.scss */
+/* line 450, ask.scss */
 .box.color-5 {
   background-color: #a76ea1; }
 
-/* line 446, ask.scss */
+/* line 451, ask.scss */
 .ti-people-color.color-5 {
   background-color: #a76ea1; }
 
-/* line 448, ask.scss */
+/* line 453, ask.scss */
 .ti-ann-content.color-6 {
   border-color: #a99c43; }
 
-/* line 449, ask.scss */
+/* line 454, ask.scss */
 .box.color-6 {
   background-color: #a99c43; }
 
-/* line 450, ask.scss */
+/* line 455, ask.scss */
 .ti-people-color.color-6 {
   background-color: #a99c43; }
 
-/* line 452, ask.scss */
+/* line 457, ask.scss */
 .ti-ann-content.color-7 {
   border-color: #693b94; }
 
-/* line 453, ask.scss */
+/* line 458, ask.scss */
 .box.color-7 {
   background-color: #693b94; }
 
-/* line 454, ask.scss */
+/* line 459, ask.scss */
 .ti-people-color.color-7 {
   background-color: #693b94; }

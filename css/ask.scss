@@ -57,16 +57,21 @@ div.accordion-heading {
 }
 
 
-.timeline-container {
-	
-}
 .timeline-pane {
     background-color: rgb(66, 66, 66);
-}
-.timeline-pane h1 {
-    color: white;
-    padding: 6px 10px;
-    font-weight: normal;
+    
+    h1 {
+        color: white;
+        padding: 6px 10px;
+        font-weight: normal;
+    }
+    
+    a.ti-credits {
+        font-size: 1.2em;
+        color: #fc0;
+        float: right;
+        margin: 5px 10px;
+    }
 }
 
 /* PEOPLE COLUMN */
