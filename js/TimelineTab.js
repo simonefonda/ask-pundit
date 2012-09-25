@@ -96,7 +96,7 @@ define(["dojo/_base/declare",
                 
             });
             
-            on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
+            on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
                 if (!self.areAllAnnActive()) {
 
                     self.activateAllAnn();
@@ -287,7 +287,7 @@ define(["dojo/_base/declare",
             if (tag in self.tagsObjects)
                 self.tagsObjects[tag].n++;
             else
-                self.tagsObjects[tag] = {n: 1}
+                self.tagsObjects[tag] = {n: 1};
             
             console.log('--- timeline tags, added ', tag, self.tagsObjects);
         },
@@ -324,7 +324,7 @@ define(["dojo/_base/declare",
             self.activateAnnByTag(tag);
             dojo.query('.ti-tags .ti-tag[data-tag-uri="'+tag+'"]').addClass('active');
             
-            self.activateAllPersons()
+            self.activateAllPersons();
         },
         
         togglePerson: function(person) {
@@ -358,7 +358,7 @@ define(["dojo/_base/declare",
                 === dojo.query('#timeline-tab-'+this.notebookId+' .ti-people-item').length;
         },
         getActivePersons: function() {
-            return dojo.query('#timeline-tab-'+this.notebookId+' .ti-people-item.active').length
+            return dojo.query('#timeline-tab-'+this.notebookId+' .ti-people-item.active').length;
         },
         activateAnnByPerson: function(person) {
             dojo.query('#timeline-tab-'+this.notebookId+' .ti-ann-item[data-quotation-from="'+person+'"]')
@@ -492,7 +492,7 @@ define(["dojo/_base/declare",
                 // TODO : avoid appending annotations out of range
                 
                 // DEBUG: why it's not a date? :|
-                slot = dojoDate.difference(self.startDate, dateStamp.fromISOString(ann.annDate));
+                slot = dojoDate.difference(self.startDate, dateStamp.fromISOString(ann.annDate)) +1;
                 
                 // If an annotation day is before startDate, dont append it 
                 // TODO: same when it's beyond endDate

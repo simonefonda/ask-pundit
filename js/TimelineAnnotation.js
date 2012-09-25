@@ -107,12 +107,9 @@ define(["dojo/_base/declare",
             var self = this;
             self.inherited(arguments);
             
-            console.log('startup stocazz', self.annDate, self.tagsWidgets);
-            
             // Add tags to the annotation
             for (var t in self.tagsWidgets) {
                 self.tagsWidgets[t].placeAt(dojo.query('.ti-ann-item[data-annotation="'+self.subject_enc+'"] .ti-ann-content-tags')[0]);
-                console.log('added tag? WUTEFAQ', t, self.subject, self.annDay);
             }
             
 
