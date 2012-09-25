@@ -98,6 +98,7 @@ define(["dojo/_base/declare",
             
             on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
                 if (!self.areAllAnnActive()) {
+
                     self.activateAllAnn();
                     self.updateResetButton();
                 }
@@ -295,7 +296,6 @@ define(["dojo/_base/declare",
             var self = this,
                 foo;
 
-            console.log('show tagz ', self.tagsObjects);
             for (var t in self.tagsObjects) {
                 foo = new TimelineTag({
                     notebookId: self.notebookId,
@@ -304,36 +304,81 @@ define(["dojo/_base/declare",
                 });
                 foo.placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags')[0]);
                 
-                on(dojo.query('.ti-tags .ti-tag[data-tag-uri="'+t+'"]')[0], 'click', (function(uri) {
-                    return function(e) {
-                        self.toggleTag(uri);
-                    }
+                on(dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags .ti-tag[data-tag-uri="'+t+'"]')[0], 'click', (function(uri) {
+                    return function(e) { self.toggleTag(uri); }
                 })(t));
-                
             }
-            // console.log('show ended, ', self.tagsObjects);
-                        
         },
 
         toggleTag: function(tag) {
             var self = this;
             
             // If they are all active, deactivate all but the clicked
-            // else just activate the clicked one
+            // with tag buttons
+
             if (self.areAllTagsActive()) {
-                // Update tag buttons and annotations
                 dojo.query('.ti-tags .ti-tag').removeClass('active');
                 self.deactivateAllAnn();
-                self.activateAnnByTag(tag);
-            } else {
-                self.activateAnnByTag(tag);
             }
-            dojo.query('.ti-tags .ti-tag[data-tag-uri="'+tag+'"]').addClass('active');
             
+            self.activateAnnByTag(tag);
+            dojo.query('.ti-tags .ti-tag[data-tag-uri="'+tag+'"]').addClass('active');
+        },
+        
+        togglePerson: function(person) {
+            var self = this,
+                p = dojo.query('#timeline-tab-'+self.notebookId+' .ti-people-item[data-quotation-from="'+person+'"]');
+
+            console.log('tot ', person);
+            
+            if (self.areAllPersonsActive()) {
+                dojo.query('#timeline-tab-'+self.notebookId+' .ti-people-item').removeClass('active');
+                self.deactivateAllAnn();
+                self.activateAnnByPerson(person);
+                p.addClass('active');
+            } else if (!domClass.contains(p[0], 'active')) {
+                self.activateAnnByPerson(person);
+                p.addClass('active');
+            } else if (self.getActivePersons() === 1) {
+                console.log('just me!', person);
+                self.activateAnnByPerson(person);
+            } else {
+                self.deactivateAnnByPerson(person);
+                p.removeClass('active');
+                return;
+            }
+                
+            
+        },
+        areAllPersonsActive: function() {
+            return this.getActivePersons()
+                === dojo.query('#timeline-tab-'+this.notebookId+' .ti-people-item').length;
+        },
+        getActivePersons: function() {
+            return dojo.query('#timeline-tab-'+this.notebookId+' .ti-people-item.active').length
+        },
+        activateAnnByPerson: function(person) {
+            dojo.query('#timeline-tab-'+this.notebookId+' .ti-ann-item[data-quotation-from="'+person+'"]')
+                .addClass('active')
+                .removeClass('deactive');
+            this.updateResetButton();
+        },
+        deactivateAnnByPerson: function(person) {
+            dojo.query('#timeline-tab-'+this.notebookId+' .ti-ann-item[data-quotation-from="'+person+'"]')
+                .addClass('deactive')
+                .removeClass('active');
+            this.updateResetButton();
+        },
+        activateAllPersons: function() {
+            dojo.query('#timeline-tab-'+this.notebookId+' .ti-people-item')
+                .addClass('active')
+                .removeClass('deactive');
         },
         
         areAllTagsActive: function() {
-            return dojo.query('.ti-tags .ti-tag.active').length === dojo.query('.ti-tags .ti-tag').length;
+            var self = this;
+            return dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags .ti-tag.active').length 
+                === dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags .ti-tag').length;
         },
         activateAnnByTag: function(tag) {
             var self = this;
@@ -359,6 +404,7 @@ define(["dojo/_base/declare",
                 .removeClass('deactive')
                 .addClass('active');
             self.activateAllTags();
+            self.activateAllPersons();
             self.updateResetButton();
         },
         deactivateAllAnn: function() {
@@ -379,8 +425,15 @@ define(["dojo/_base/declare",
         // Append persons to the people box
         showPersons: function() {
             var self = this;
-            for (var p in self.persons) 
+            for (var p in self.persons) {
+                var uri = self.persons[p].params.perUri;
                 self.persons[p].placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-people ul')[0]);
+                
+                on(dojo.query('#timeline-tab-'+self.notebookId+' .ti-people-item[data-quotation-from="'+uri+'"]')[0], 'click', (function(pers) {
+                    return function(e) { self.togglePerson(pers); }
+                })(uri)); 
+               
+            }
         },
         
         showAnnotations: function() {

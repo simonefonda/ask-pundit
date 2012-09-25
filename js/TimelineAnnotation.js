@@ -23,6 +23,7 @@ define(["dojo/_base/declare",
         annDate: '',
         annDay: '',
         annQuotationFrom: '',
+        annQuotationFromURI: '',
         annDepiction: '',
         annSource: '',
 		annWebPage: '',
@@ -71,6 +72,7 @@ define(["dojo/_base/declare",
             if (foo) {    
                 self.colorClass = self.colorClassPrefix + self.parentTimeline.getColor(foo);
                 self.annQuotationFrom = items[foo][_label][0].value;
+                self.annQuotationFromURI = foo;
                 // From the URI of the quoted person, get also the color
                 self.annDepiction = items[foo][_depic][0].value;
             }
