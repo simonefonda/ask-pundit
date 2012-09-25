@@ -231,7 +231,7 @@ $pep-width: 50px;
     }
 }
 
-.ti-annotations, .ti-left-col {
+.ti-annotations .slot, .ti-left-col {
     -webkit-transition: opacity 2s;
     opacity: 1.0;
     &.ti-invisible {

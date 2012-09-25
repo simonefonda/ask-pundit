@@ -214,11 +214,11 @@ div.accordion-heading {
     background-color: white; }
 
 /* line 234, ask.scss */
-.ti-annotations, .ti-left-col {
+.ti-annotations .slot, .ti-left-col {
   -webkit-transition: opacity 2s;
   opacity: 1.0; }
   /* line 237, ask.scss */
-  .ti-annotations.ti-invisible, .ti-left-col.ti-invisible {
+  .ti-annotations .slot.ti-invisible, .ti-left-col.ti-invisible {
     opacity: 0; }
 
 /* ANNOTATIONS */

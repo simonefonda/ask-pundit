@@ -184,10 +184,9 @@ define(["dojo/_base/declare",
     	        var dot = r.circle(x, y, 4).attr({fill: "#333", stroke: color, "stroke-width": 2});
 
 				//This is the line dividing two months...
-				if (dates[i] !== undefined && dates[i-1] !== undefined && dates[i].getMonth() !== dates[i-1].getMonth()) {
-					blanket.push(r.rect(leftgutter + X * i , height - 20, 1, height - bottomgutter + 20).attr({stroke: "none", fill: "#999", opacity: 100}));	
-					
-				} 
+				//if (dates[i] !== undefined && dates[i-1] !== undefined && dates[i].getMonth() !== dates[i-1].getMonth()) {
+				//	blanket.push(r.rect(leftgutter + X * i , height - 20, 1, height - bottomgutter + 20).attr({stroke: "none", fill: "#999", opacity: 100}));	
+				// } 
                 blanket.push(r.rect(leftgutter + X * i, 0, X, height - bottomgutter).attr({stroke: "none", fill: "#fff", opacity: 0}));	
 
 				
