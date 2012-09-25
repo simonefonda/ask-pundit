@@ -76,11 +76,13 @@ define(["dojo/_base/declare",
                 // From the URI of the quoted person, get also the color
                 self.annDepiction = items[foo][_depic][0].value;
             }
-            
+                        
             // Add tags
             if (_tag in self.annotation) {
                 foo = self.annotation[_tag];
-                for (var t = foo.length-1; t--;) {
+                
+                for (var t = foo.length; t--;) {
+                    
                     self.parentTimeline.addTag(foo[t].value);
                     var bar = new TimelineAnnotationTag({
                         notebookId: self.notebookId,
