@@ -235,7 +235,7 @@ define(["dojo/_base/declare",
         showGraph: function() {
             var self = this,
                 foo = new Date(self.startDate.getFullYear(), self.startDate.getMonth()+1, 1),
-                diff = dojoDate.difference(self.startDate, foo) +1,
+                diff = dojoDate.difference(self.startDate, foo),
                 span = dojoDate.difference(self.startDate, self.endDate),
                 firstPerc = parseInt(100*diff/span, 10),
                 td1 = dojo.query('.ti-annotations .slots-header td')[0],
@@ -323,6 +323,8 @@ define(["dojo/_base/declare",
             
             self.activateAnnByTag(tag);
             dojo.query('.ti-tags .ti-tag[data-tag-uri="'+tag+'"]').addClass('active');
+            
+            self.activateAllPersons()
         },
         
         togglePerson: function(person) {
@@ -330,6 +332,8 @@ define(["dojo/_base/declare",
                 p = dojo.query('#timeline-tab-'+self.notebookId+' .ti-people-item[data-quotation-from="'+person+'"]');
 
             console.log('tot ', person);
+            
+            self.activateAllTags();
             
             if (self.areAllPersonsActive()) {
                 dojo.query('#timeline-tab-'+self.notebookId+' .ti-people-item').removeClass('active');
@@ -347,7 +351,6 @@ define(["dojo/_base/declare",
                 p.removeClass('active');
                 return;
             }
-                
             
         },
         areAllPersonsActive: function() {
@@ -489,7 +492,7 @@ define(["dojo/_base/declare",
                 // TODO : avoid appending annotations out of range
                 
                 // DEBUG: why it's not a date? :|
-                slot = dojoDate.difference(self.startDate, dateStamp.fromISOString(ann.annDate)) + 1;
+                slot = dojoDate.difference(self.startDate, dateStamp.fromISOString(ann.annDate));
                 
                 // If an annotation day is before startDate, dont append it 
                 // TODO: same when it's beyond endDate
