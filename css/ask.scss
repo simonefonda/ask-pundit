@@ -67,10 +67,21 @@ div.accordion-heading {
     }
     
     a.ti-credits {
-        font-size: 1.2em;
-        color: #fc0;
-        float: right;
-        margin: 5px 10px;
+        text-decoration: none;
+        -webkit-transition: background-color 0.6s;
+        display: inline;
+        color: #444;
+        background-color: #999;
+        position: absolute;
+        width: 70px;
+        margin-left: 790px;    
+        height: 22px;
+        text-align: center;
+        line-height: 22px;
+        &:hover {
+            color: black;
+            background-color: #ccc;
+        }
     }
 }
 
