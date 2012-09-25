@@ -61,7 +61,8 @@ define(["dojo/_base/declare",
             self.inherited(arguments);
             self.name = this.notebookId;
             
-            self.endDate = new Date();
+            //self.endDate = dojoDate.add(new Date(),'day', 2);
+			self.endDate = new Date();
             self.startDate = dojoDate.add(self.endDate, 'day', -29);
             
             // TODO : date format ? 
@@ -262,7 +263,7 @@ define(["dojo/_base/declare",
         showGraph: function() {
             var self = this,
                 foo = new Date(self.startDate.getFullYear(), self.startDate.getMonth()+1, 1),
-                diff = dojoDate.difference(self.startDate, foo) +1,
+                diff = dojoDate.difference(self.startDate, foo),
                 span = dojoDate.difference(self.startDate, self.endDate),
                 firstPerc = 100*diff/span,
                 td1 = dojo.query('.ti-annotations .slots-header td')[0],
@@ -273,13 +274,15 @@ define(["dojo/_base/declare",
             // TODO : this works for just 1+1 months and 30 days as timespan
             // domStyle.set(td1, {width: firstPerc +'%'});
             // domStyle.set(td2, {width: (100-firstPerc) +'%'});
-            domStyle.set(td1, {width: 20*diff -correction +'px'});
+            domStyle.set(td1, {width: 20*diff -correction +'px'}); 
             domStyle.set(td2, {width: 20*(span-diff) -correction +'px'});
             
             var mNames = dateLocale.getNames("months", "wide");
-            dojo.query(td1).innerHTML(mNames[self.startDate.getMonth()] + ' ' + self.startDate.getFullYear());
-            dojo.query(td2).innerHTML(mNames[self.endDate.getMonth()] + ' ' + self.endDate.getFullYear());
-            
+            dojo.query(td1).innerHTML(mNames[self.startDate.getMonth()]);
+            dojo.query(td2).innerHTML(mNames[self.endDate.getMonth()]);
+            //dojo.query(td1).innerHTML("1");
+            //dojo.query(td2).innerHTML("2");
+			
             new TimelineGraph({
                 notebookId: self.notebookId,
                 startDate: self.startDate,

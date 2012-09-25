@@ -138,7 +138,6 @@ $pep-width: 50px;
     }
     .ti-people-title {
         height: 30px;
-		padding: 1px 7px;
     }
     ul {
    	list-style: none;
@@ -247,7 +246,6 @@ a.ti-reset-button {
 
 .ti-title {
 	display: block;
-	padding: 1px 7px;
 }
 .ti-tag {
 	display: inline-block;
@@ -260,6 +258,10 @@ a.ti-reset-button {
     &.active {
     	background-color: white;
     }
+}
+
+.ti-left-col {
+	padding: 1px 4px;
 }
 
 .ti-annotations .slot, .ti-left-col {

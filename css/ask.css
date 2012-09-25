@@ -105,8 +105,7 @@ div.accordion-heading {
     height: 40px;
     border: 0px; }
   .ti-people .ti-people-title {
-    height: 30px;
-    padding: 1px 7px; }
+    height: 30px; }
   .ti-people ul {
     list-style: none;
     margin: 0px;
@@ -186,8 +185,7 @@ a.ti-reset-button {
       text-decoration: none; }
 
 .ti-title {
-  display: block;
-  padding: 1px 7px; }
+  display: block; }
 
 .ti-tag {
   display: inline-block;
@@ -198,6 +196,9 @@ a.ti-reset-button {
   background-color: #979797; }
   .ti-tag.active {
     background-color: white; }
+
+.ti-left-col {
+  padding: 1px 4px; }
 
 .ti-annotations .slot, .ti-left-col {
   -webkit-transition: opacity 2s;
