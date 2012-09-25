@@ -42,9 +42,12 @@ define(["dojo/_base/declare",
         startup: function() {
             this.inherited(arguments);
             this.setupRouter();
-            this.loadNotebookList();
-            this.loadBookmarkList();
             this.setupHandlers();
+            
+            this.notebookLoaded = false;
+            this.bookmarkLoaded = false;
+            // this.loadNotebookList();
+            // this.loadBookmarkList();
         },
 
         setupHandlers: function() {
@@ -100,10 +103,14 @@ define(["dojo/_base/declare",
             var self = this;
             
             router.register('/notebooks/', function(evt) {
+                if (!self.notebookLoaded)
+                    self.loadNotebookList();
                 dojo.query("[href='#tab-notebooks']").tab('show');
             });
 
             router.register('/bookmarks/', function(evt) {
+                if (!self.bookmarkLoaded)
+                    self.loadBookmarkList();
                 dojo.query("[href='#tab-bookmarks']").tab('show');
             });
 
