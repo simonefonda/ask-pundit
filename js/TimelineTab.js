@@ -61,8 +61,9 @@ define(["dojo/_base/declare",
             self.inherited(arguments);
             self.name = this.notebookId;
             
-            self.endDate = dojoDate.add(new Date(),'day', 0);
-			//self.endDate = new Date();
+            // The following is to test how it would look in the future...
+			//self.endDate = dojoDate.add(new Date(),'day', 3);
+			self.endDate = new Date();
             self.startDate = dojoDate.add(self.endDate, 'day', -29);
             
             // TODO : date format ? 
@@ -276,14 +277,23 @@ define(["dojo/_base/declare",
             // domStyle.set(td2, {width: (100-firstPerc) +'%'});
 			
 			var mNames = dateLocale.getNames("months", "wide");
+			var td1_width = 20*diff -correction;
+			var td2_width = 20*(span-diff) -correction;
 			
-            domStyle.set(td1, {width: 20*diff -correction +'px'}); 
-            dojo.query(td1).innerHTML(mNames[self.startDate.getMonth()]);
+            domStyle.set(td1, {width: td1_width +'px'}); 
+			// Show month name only if it fits...
+			if (td1_width > 30 ) {
+				dojo.query(td1).innerHTML(mNames[self.startDate.getMonth()]);	
+			}
+            
 			
 			// There is no point in showing the second tab if it spans only one month...
 			if (self.startDate.getMonth() !== self.endDate.getMonth()) {
-				domStyle.set(td2, {width: 20*(span-diff) -correction +'px'});
-	            dojo.query(td2).innerHTML(mNames[self.endDate.getMonth()]);
+				domStyle.set(td2, {width: td2_width +'px'});
+				// Show month name only if it fits...
+	            if (td2_width > 30 ) {
+					dojo.query(td2).innerHTML(mNames[self.endDate.getMonth()]);	
+	            }
 			} else {
 				domStyle.set(td2, {visibility: 'hidden'});
 			}
