@@ -61,8 +61,8 @@ define(["dojo/_base/declare",
             self.inherited(arguments);
             self.name = this.notebookId;
             
-            //self.endDate = dojoDate.add(new Date(),'day', 2);
-			self.endDate = new Date();
+            self.endDate = dojoDate.add(new Date(),'day', 0);
+			//self.endDate = new Date();
             self.startDate = dojoDate.add(self.endDate, 'day', -29);
             
             // TODO : date format ? 
@@ -274,12 +274,20 @@ define(["dojo/_base/declare",
             // TODO : this works for just 1+1 months and 30 days as timespan
             // domStyle.set(td1, {width: firstPerc +'%'});
             // domStyle.set(td2, {width: (100-firstPerc) +'%'});
+			
+			var mNames = dateLocale.getNames("months", "wide");
+			
             domStyle.set(td1, {width: 20*diff -correction +'px'}); 
-            domStyle.set(td2, {width: 20*(span-diff) -correction +'px'});
-            
-            var mNames = dateLocale.getNames("months", "wide");
             dojo.query(td1).innerHTML(mNames[self.startDate.getMonth()]);
-            dojo.query(td2).innerHTML(mNames[self.endDate.getMonth()]);
+			
+			// There is no point in showing the second tab if it spans only one month...
+			if (self.startDate.getMonth() !== self.endDate.getMonth()) {
+				domStyle.set(td2, {width: 20*(span-diff) -correction +'px'});
+	            dojo.query(td2).innerHTML(mNames[self.endDate.getMonth()]);
+			} else {
+				domStyle.set(td2, {visibility: 'hidden'});
+			}
+			
             //dojo.query(td1).innerHTML("1");
             //dojo.query(td2).innerHTML("2");
 			
