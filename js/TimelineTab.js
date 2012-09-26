@@ -75,12 +75,9 @@ define(["dojo/_base/declare",
             var self = this;
             self.inherited(arguments);
 
-
-			// This has been taken out from the "if there's tab below...
-			// .. so the reset works now ... correct?!!?
+            // Always bind the click on the reset button
             on(dojo.query('#timeline-tab-'+self.notebookId+' a.ti-reset-button')[0], 'click', function() {
                 if (!self.areAllAnnActive()) {
-
                     self.activateAllAnn();
                     self.updateResetButton();
                 }
@@ -371,17 +368,6 @@ define(["dojo/_base/declare",
             
             // If they are all active, deactivate all but the clicked
             // with tag buttons
-            /*
-            if (self.areAllTagsActive()) {
-                dojo.query('.ti-tags .ti-tag').removeClass('active');
-                self.deactivateAllAnn();
-            }
-            
-            self.activateAnnByTag(tag);
-            dojo.query('.ti-tags .ti-tag[data-tag-uri="'+tag+'"]').addClass('active');
-            
-            */
-            
             if (self.areAllTagsActive()) {
                 dojo.query('#timeline-tab-'+self.notebookId+' .ti-tags .ti-tag').removeClass('active');
                 self.deactivateAllAnn();
