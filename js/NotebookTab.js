@@ -76,7 +76,7 @@ define(["dojo/_base/declare",
 
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ self.notebookId +"/metadata", {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                     for (var ann in data) {
@@ -106,7 +106,7 @@ define(["dojo/_base/declare",
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ self.notebookId, {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                         
@@ -148,7 +148,7 @@ define(["dojo/_base/declare",
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/content", {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data){
 
@@ -166,13 +166,16 @@ define(["dojo/_base/declare",
                             self.itemsURIs[annotationId].push(subject);
                         
                         for (var predicate in data[subject]) {
-
+                            
                             var pre = new AnnotationPredicate({
                                 annotationId: annotationId,
                                 subject_enc: BASE64.encode(subject),
                                 uri: predicate,
                                 objects_num: data[subject][predicate].length
                             }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
+
+                            if (dojo.indexOf(self.itemsURIs[annotationId], predicate) === -1)
+                                self.itemsURIs[annotationId].push(predicate);
 
                             for (var object in data[subject][predicate]) {
 
@@ -211,7 +214,7 @@ define(["dojo/_base/declare",
             
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/items", {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                                         
@@ -230,6 +233,8 @@ define(["dojo/_base/declare",
                         if (uri in data) {
                             
                             if (_type in data[uri]) {
+                                
+                                console.log('ara che data ', uri, data[uri]);
                                 
                                 var uri_enc = BASE64.encode(uri),
                                     label = data[uri][_lab][0].value,
