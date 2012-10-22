@@ -5,8 +5,8 @@
 
 
 @font-face {
-	font-family: "Rockwell";
-	src: url("Rockwell.otf");
+    font-family: "Rockwell";
+    src: url("Rockwell.otf");
 }
 /*
 body, html {
@@ -19,18 +19,18 @@ body, html {
 }
 
 #askTabContainer .tab-content {
-	position: relative;
-	top: 50px;
+    position: relative;
+    top: 50px;
 }
 
 
 #ask-pills {
-	width: 100%;
-	position: fixed;
-	height: 37px;
-	padding-top:  5px;
-	top: 0px;
-	background-color: white;
+    width: 100%;
+    position: fixed;
+    height: 37px;
+    padding-top:  5px;
+    top: 0px;
+    background-color: white;
     z-index: 1000;
 }
 
@@ -45,10 +45,6 @@ legend.interactive:hover {
 }
 
 .very-hidden { display: none; }
-
-div.accordion-heading {
-    background-color: #eee;
-}
 
 .ti-progress-container {
     padding: 20px 90px;
@@ -97,21 +93,21 @@ div.accordion-heading {
 .ti-tags .ti-title span,
 .ti-timeline-title {
     font-size: 1.5em;
-	color: white;
+    color: white;
 }
 
 $pep-height: 40px;
 $pep-width: 50px;
 
 .ti-people-picture {
-	width: $pep-width;
-	height: $pep-height;
+    width: $pep-width;
+    height: $pep-height;
     text-align: center;
 
     div {
         
-    	width: $pep-width;
-    	height: $pep-height;
+        width: $pep-width;
+        height: $pep-height;
         min-height: $pep-height;
         display: table-cell;
         vertical-align: middle;
@@ -512,3 +508,26 @@ $ann-pic-width: 50px;
 .ti-ann-content.color-7 { border-color: rgb(105, 59, 148); }
 .box.color-7 { background-color: rgb(105, 59, 148); }
 .ti-people-color.color-7 { background-color: rgb(105, 59, 148); }
+
+
+div.accordion-group {
+
+    .accordion-heading {
+        background-color: #eee;
+    }
+
+    img {
+        border: 1px solid black;
+        max-width: 100px;
+        max-height: 100px;
+        float: left;
+        margin-right: 20px;
+    }
+
+    a i { 
+        margin-left: 5px;
+        opacity: 0.6; 
+    }
+    a:hover i { opacity: 1; }
+
+}

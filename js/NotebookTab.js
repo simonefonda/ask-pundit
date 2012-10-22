@@ -223,7 +223,8 @@ define(["dojo/_base/declare",
                         _tf = "http://purl.org/pundit/ont/ao#text-fragment",
                         _prop = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
                         _lab = "http://www.w3.org/2000/01/rdf-schema#label",
-                        _desc = "http://purl.org/dc/elements/1.1/description";
+                        _desc = "http://purl.org/dc/elements/1.1/description",
+                        _depic = "http://xmlns.com/foaf/0.1/depiction";
                     
                     // Look for items starting from itemsURIs
                     for (var current in self.itemsURIs[annotationId]) {
@@ -239,7 +240,8 @@ define(["dojo/_base/declare",
                                 var uri_enc = BASE64.encode(uri),
                                     label = data[uri][_lab][0].value,
                                     label_short = label.length > 50 ? label.substr(0, self.titleChars)+' ..' : label,
-                                    desc = "";
+                                    desc = "",
+                                    depic = (_depic in data[uri]) ? data[uri][_depic][0].value : '';
                                     
                                 if (typeof(data[uri][_desc]) !== "undefined")
                                     desc = data[uri][_desc][0].value;
@@ -266,8 +268,10 @@ define(["dojo/_base/declare",
                                 // details .. 
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me-as-object="'+uri_enc+'"]')
                                     .forEach(function(__e) {
-                                        var content = label + (desc !== "" ? "<br/><br/>"+desc : "");
-                                        content += "<br/><a href='"+uri+"'>More info ..</a>";
+                                        var content = "<h3>" + label + "</h3>";
+                                        content += depic !== '' ? "<img src='"+depic+"'>" : '';
+                                        content += desc !== "" ? desc : "";
+                                        content += "<br/><a href='"+uri+"'>More info<i class='icon-share'></i></a>";
                                         dojo.query(__e).empty().innerHTML(content);
                                     });
                                 
