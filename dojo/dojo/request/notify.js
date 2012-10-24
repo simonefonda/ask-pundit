@@ -1,38 +1,74 @@
-/*
-	Copyright (c) 2004-2011, The Dojo Foundation All Rights Reserved.
-	Available via Academic Free License >= 2.1 OR the modified BSD license.
-	see: http://dojotoolkit.org/license for details
-*/
+define(['../Evented', '../_base/lang', './util'], function(Evented, lang, util){
+	// module:
+	//		dojo/request/notify
+	// summary:
+	//		Global notification API for dojo/request. Notifications will
+	//		only be emitted if this module is required.
+	//
+	//		| require('dojo/request', 'dojo/request/notify',
+	//		|     function(request, notify){
+	//		|         notify('load', function(response){
+	//		|             if(response.url === 'someUrl.html'){
+	//		|                 console.log('Loaded!');
+	//		|             }
+	//		|         });
+	//		|         request.get('someUrl.html');
+	//		|     }
+	//		| );
 
-//>>built
-define("dojo/request/notify",["../Evented","../_base/lang","./util"],function(_1,_2,_3){
-var _4=0;
-var _5=_2.mixin(new _1,{onsend:function(_6){
-if(!_4){
-this.emit("start");
-}
-_4++;
-},_onload:function(_7){
-this.emit("done",_7);
-},_onerror:function(_8){
-this.emit("done",_8);
-},_ondone:function(_9){
-if(--_4<=0){
-_4=0;
-this.emit("stop");
-}
-},emit:function(_a,_b){
-var _c=_1.prototype.emit.apply(this,arguments);
-if(this["_on"+_a]){
-this["_on"+_a].apply(this,arguments);
-}
-return _c;
-}});
-function _d(_e,_f){
-return _5.on(_e,_f);
-};
-_d.emit=function(_10,_11,_12){
-return _5.emit(_10,_11,_12);
-};
-return _3.notify=_d;
+	var pubCount = 0,
+		slice = [].slice;
+
+	var hub = lang.mixin(new Evented, {
+		onsend: function(data){
+			if(!pubCount){
+				this.emit('start');
+			}
+			pubCount++;
+		},
+		_onload: function(data){
+			this.emit('done', data);
+		},
+		_onerror: function(data){
+			this.emit('done', data);
+		},
+		_ondone: function(data){
+			if(--pubCount <= 0){
+				pubCount = 0;
+				this.emit('stop');
+			}
+		},
+		emit: function(type, event){
+			var result = Evented.prototype.emit.apply(this, arguments);
+
+			// After all event handlers have run, run _on* handler
+			if(this['_on' + type]){
+				this['_on' + type].apply(this, slice.call(arguments, 1));
+			}
+			return result;
+		}
+	});
+
+	function notify(type, listener){
+		// summary:
+		//		Register a listener to be notified when an event
+		//		in dojo/request happens.
+		// type: String?
+		//		The event to listen for. Events emitted: "start", "send",
+		//		"load", "error", "done", "stop".
+		// listener: Function?
+		//		A callback to be run when an event happens.
+		// returns:
+		//		A signal object that can be used to cancel the listener.
+		//		If remove() is called on this signal object, it will
+		//		stop the listener from being executed.
+		return hub.on(type, listener);
+	}
+	notify.emit = function(type, event, cancel){
+		return hub.emit(type, event, cancel);
+	};
+
+	// Attach notify to dojo/request/util to avoid
+	// try{ require('./notify'); }catch(e){}
+	return util.notify = notify;
 });

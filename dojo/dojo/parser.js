@@ -1,424 +1,865 @@
-/*
-	Copyright (c) 2004-2011, The Dojo Foundation All Rights Reserved.
-	Available via Academic Free License >= 2.1 OR the modified BSD license.
-	see: http://dojotoolkit.org/license for details
-*/
+define(
+	["require", "./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./_base/html", "./_base/window",
+		"./_base/url", "./_base/json", "./aspect", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./ready"],
+	function(require, dojo, dlang, darray, config, dhtml, dwindow, _Url, djson, aspect, dates, Deferred, has, query, don, ready){
 
-//>>built
-define("dojo/parser",["./_base/kernel","./_base/lang","./_base/array","./_base/config","./_base/html","./_base/window","./_base/url","./_base/json","./aspect","./date/stamp","./Deferred","./has","./query","./on","./ready"],function(_1,_2,_3,_4,_5,_6,_7,_8,_9,_a,_b,_c,_d,_e,_f){
-new Date("X");
-var _10=0;
-_9.after(_2,"extend",function(){
-_10++;
-},true);
-function _11(_12){
-var map=_12._nameCaseMap,_13=_12.prototype;
-if(!map||map._extendCnt<_10){
-map=_12._nameCaseMap={};
-for(var _14 in _13){
-if(_14.charAt(0)==="_"){
-continue;
-}
-map[_14.toLowerCase()]=_14;
-}
-map._extendCnt=_10;
-}
-return map;
-};
-var _15={};
-function _16(_17){
-var ts=_17.join();
-if(!_15[ts]){
-var _18=[];
-for(var i=0,l=_17.length;i<l;i++){
-var t=_17[i];
-_18[_18.length]=(_15[t]=_15[t]||(_2.getObject(t)||(~t.indexOf("/")&&require(t))));
-}
-var _19=_18.shift();
-_15[ts]=_18.length?(_19.createSubclass?_19.createSubclass(_18):_19.extend.apply(_19,_18)):_19;
-}
-return _15[ts];
-};
-var _1a={_clearCache:function(){
-_10++;
-_15={};
-},_functionFromScript:function(_1b,_1c){
-var _1d="",_1e="",_1f=(_1b.getAttribute(_1c+"args")||_1b.getAttribute("args")),_20=_1b.getAttribute("with");
-var _21=(_1f||"").split(/\s*,\s*/);
-if(_20&&_20.length){
-_3.forEach(_20.split(/\s*,\s*/),function(_22){
-_1d+="with("+_22+"){";
-_1e+="}";
-});
-}
-return new Function(_21,_1d+_1b.innerHTML+_1e);
-},instantiate:function(_23,_24,_25){
-_24=_24||{};
-_25=_25||{};
-var _26=(_25.scope||_1._scopeName)+"Type",_27="data-"+(_25.scope||_1._scopeName)+"-",_28=_27+"type",_29=_27+"mixins";
-var _2a=[];
-_3.forEach(_23,function(_2b){
-var _2c=_26 in _24?_24[_26]:_2b.getAttribute(_28)||_2b.getAttribute(_26);
-if(_2c){
-var _2d=_2b.getAttribute(_29),_2e=_2d?[_2c].concat(_2d.split(/\s*,\s*/)):[_2c];
-_2a.push({node:_2b,types:_2e});
-}
-});
-return this._instantiate(_2a,_24,_25);
-},_instantiate:function(_2f,_30,_31){
-var _32=_3.map(_2f,function(obj){
-var _33=obj.ctor||_16(obj.types);
-if(!_33){
-throw new Error("Unable to resolve constructor for: '"+obj.types.join()+"'");
-}
-return this.construct(_33,obj.node,_30,_31,obj.scripts,obj.inherited);
-},this);
-if(!_30._started&&!_31.noStart){
-_3.forEach(_32,function(_34){
-if(typeof _34.startup==="function"&&!_34._started){
-_34.startup();
-}
-});
-}
-return _32;
-},construct:function(_35,_36,_37,_38,_39,_3a){
-var _3b=_35&&_35.prototype;
-_38=_38||{};
-var _3c={};
-if(_38.defaults){
-_2.mixin(_3c,_38.defaults);
-}
-if(_3a){
-_2.mixin(_3c,_3a);
-}
-var _3d;
-if(_c("dom-attributes-explicit")){
-_3d=_36.attributes;
-}else{
-if(_c("dom-attributes-specified-flag")){
-_3d=_3.filter(_36.attributes,function(a){
-return a.specified;
-});
-}else{
-var _3e=/^input$|^img$/i.test(_36.nodeName)?_36:_36.cloneNode(false),_3f=_3e.outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g,"").replace(/^\s*<[a-zA-Z0-9]*\s*/,"").replace(/\s*>.*$/,"");
-_3d=_3.map(_3f.split(/\s+/),function(_40){
-var _41=_40.toLowerCase();
-return {name:_40,value:(_36.nodeName=="LI"&&_40=="value")||_41=="enctype"?_36.getAttribute(_41):_36.getAttributeNode(_41).value};
-});
-}
-}
-var _42=_38.scope||_1._scopeName,_43="data-"+_42+"-",_44={};
-if(_42!=="dojo"){
-_44[_43+"props"]="data-dojo-props";
-_44[_43+"type"]="data-dojo-type";
-_44[_43+"mixins"]="data-dojo-mixins";
-_44[_42+"type"]="dojoType";
-_44[_43+"id"]="data-dojo-id";
-}
-var i=0,_45,_46=[],_47,_48;
-while(_45=_3d[i++]){
-var _49=_45.name,_4a=_49.toLowerCase(),_4b=_45.value;
-switch(_44[_4a]||_4a){
-case "data-dojo-type":
-case "dojotype":
-case "data-dojo-mixins":
-break;
-case "data-dojo-props":
-_48=_4b;
-break;
-case "data-dojo-id":
-case "jsid":
-_47=_4b;
-break;
-case "data-dojo-attach-point":
-case "dojoattachpoint":
-_3c.dojoAttachPoint=_4b;
-break;
-case "data-dojo-attach-event":
-case "dojoattachevent":
-_3c.dojoAttachEvent=_4b;
-break;
-case "class":
-_3c["class"]=_36.className;
-break;
-case "style":
-_3c["style"]=_36.style&&_36.style.cssText;
-break;
-default:
-if(!(_49 in _3b)){
-var map=_11(_35);
-_49=map[_4a]||_49;
-}
-if(_49 in _3b){
-switch(typeof _3b[_49]){
-case "string":
-_3c[_49]=_4b;
-break;
-case "number":
-_3c[_49]=_4b.length?Number(_4b):NaN;
-break;
-case "boolean":
-_3c[_49]=_4b.toLowerCase()!="false";
-break;
-case "function":
-if(_4b===""||_4b.search(/[^\w\.]+/i)!=-1){
-_3c[_49]=new Function(_4b);
-}else{
-_3c[_49]=_2.getObject(_4b,false)||new Function(_4b);
-}
-_46.push(_49);
-break;
-default:
-var _4c=_3b[_49];
-_3c[_49]=(_4c&&"length" in _4c)?(_4b?_4b.split(/\s*,\s*/):[]):(_4c instanceof Date)?(_4b==""?new Date(""):_4b=="now"?new Date():_a.fromISOString(_4b)):(_4c instanceof _7)?(_1.baseUrl+_4b):_8.fromJson(_4b);
-}
-}else{
-_3c[_49]=_4b;
-}
-}
-}
-for(var j=0;j<_46.length;j++){
-var _4d=_46[j].toLowerCase();
-_36.removeAttribute(_4d);
-_36[_4d]=null;
-}
-if(_48){
-try{
-_48=_8.fromJson.call(_38.propsThis,"{"+_48+"}");
-_2.mixin(_3c,_48);
-}
-catch(e){
-throw new Error(e.toString()+" in data-dojo-props='"+_48+"'");
-}
-}
-_2.mixin(_3c,_37);
-if(!_39){
-_39=(_35&&(_35._noScript||_3b._noScript)?[]:_d("> script[type^='dojo/']",_36));
-}
-var _4e=[],_4f=[],_50=[],ons=[];
-if(_39){
-for(i=0;i<_39.length;i++){
-var _51=_39[i];
-_36.removeChild(_51);
-var _52=(_51.getAttribute(_43+"event")||_51.getAttribute("event")),_53=_51.getAttribute(_43+"prop"),_54=_51.getAttribute(_43+"method"),_55=_51.getAttribute(_43+"advice"),_56=_51.getAttribute("type"),nf=this._functionFromScript(_51,_43);
-if(_52){
-if(_56=="dojo/connect"){
-_4e.push({method:_52,func:nf});
-}else{
-if(_56=="dojo/on"){
-ons.push({event:_52,func:nf});
-}else{
-_3c[_52]=nf;
-}
-}
-}else{
-if(_56=="dojo/aspect"){
-_4e.push({method:_54,advice:_55,func:nf});
-}else{
-if(_56=="dojo/watch"){
-_50.push({prop:_53,func:nf});
-}else{
-_4f.push(nf);
-}
-}
-}
-}
-}
-var _57=_35.markupFactory||_3b.markupFactory;
-var _58=_57?_57(_3c,_36,_35):new _35(_3c,_36);
-if(_47){
-_2.setObject(_47,_58);
-}
-for(i=0;i<_4e.length;i++){
-_9[_4e[i].advice||"after"](_58,_4e[i].method,_2.hitch(_58,_4e[i].func),true);
-}
-for(i=0;i<_4f.length;i++){
-_4f[i].call(_58);
-}
-for(i=0;i<_50.length;i++){
-_58.watch(_50[i].prop,_50[i].func);
-}
-for(i=0;i<ons.length;i++){
-_e(_58,ons[i].event,ons[i].func);
-}
-return _58;
-},scan:function(_59,_5a){
-var _5b=[],_5c=[],_5d={};
-var _5e=(_5a.scope||_1._scopeName)+"Type",_5f="data-"+(_5a.scope||_1._scopeName)+"-",_60=_5f+"type",_61=_5f+"textdir",_62=_5f+"mixins";
-var _63=_59.firstChild;
-var _64=_5a.inherited;
-if(!_64){
-function _65(_66,_67){
-return (_66.getAttribute&&_66.getAttribute(_67))||(_66.parentNode&&_65(_66.parentNode,_67));
-};
-_64={dir:_65(_59,"dir"),lang:_65(_59,"lang"),textDir:_65(_59,_61)};
-for(var key in _64){
-if(!_64[key]){
-delete _64[key];
-}
-}
-}
-var _68={inherited:_64};
-var _69;
-var _6a;
-function _6b(_6c){
-if(!_6c.inherited){
-_6c.inherited={};
-var _6d=_6c.node,_6e=_6b(_6c.parent);
-var _6f={dir:_6d.getAttribute("dir")||_6e.dir,lang:_6d.getAttribute("lang")||_6e.lang,textDir:_6d.getAttribute(_61)||_6e.textDir};
-for(var key in _6f){
-if(_6f[key]){
-_6c.inherited[key]=_6f[key];
-}
-}
-}
-return _6c.inherited;
-};
-while(true){
-if(!_63){
-if(!_68||!_68.node){
-break;
-}
-_63=_68.node.nextSibling;
-_69=_68.scripts;
-_6a=false;
-_68=_68.parent;
-continue;
-}
-if(_63.nodeType!=1){
-_63=_63.nextSibling;
-continue;
-}
-if(_69&&_63.nodeName.toLowerCase()=="script"){
-_70=_63.getAttribute("type");
-if(_70&&/^dojo\/\w/i.test(_70)){
-_69.push(_63);
-}
-_63=_63.nextSibling;
-continue;
-}
-if(_6a){
-_63=_63.nextSibling;
-continue;
-}
-var _70=_63.getAttribute(_60)||_63.getAttribute(_5e);
-var _71=_63.firstChild;
-if(!_70&&(!_71||(_71.nodeType==3&&!_71.nextSibling))){
-_63=_63.nextSibling;
-continue;
-}
-var _72;
-var _73=null;
-if(_70){
-var _74=_63.getAttribute(_62),_75=_74?[_70].concat(_74.split(/\s*,\s*/)):[_70];
-try{
-_73=_16(_75);
-}
-catch(e){
-}
-if(!_73){
-_3.forEach(_75,function(t){
-if(~t.indexOf("/")&&!_5d[t]){
-_5d[t]=true;
-_5c[_5c.length]=t;
-}
-});
-}
-var _76=_73&&!_73.prototype._noScript?[]:null;
-_72={types:_75,ctor:_73,parent:_68,node:_63,scripts:_76};
-_72.inherited=_6b(_72);
-_5b.push(_72);
-}else{
-_72={node:_63,scripts:_69,parent:_68};
-}
-_63=_71;
-_69=_76;
-_6a=_73&&_73.prototype.stopParser&&!(_5a.template);
-_68=_72;
-}
-var d=new _b();
-if(_5c.length){
-if(_c("dojo-debug-messages")){
-console.warn("WARNING: Modules being Auto-Required: "+_5c.join(", "));
-}
-require(_5c,function(){
-d.resolve(_3.filter(_5b,function(_77){
-if(!_77.ctor){
-try{
-_77.ctor=_16(_77.types);
-}
-catch(e){
-}
-}
-var _78=_77.parent;
-while(_78&&!_78.types){
-_78=_78.parent;
-}
-var _79=_77.ctor&&_77.ctor.prototype;
-_77.instantiateChildren=!(_79&&_79.stopParser&&!(_5a.template));
-_77.instantiate=!_78||(_78.instantiate&&_78.instantiateChildren);
-return _77.instantiate;
-}));
-});
-}else{
-d.resolve(_5b);
-}
-return d.promise;
-},_require:function(_7a){
-var _7b=_8.fromJson("{"+_7a.innerHTML+"}"),_7c=[],_7d=[],d=new _b();
-for(var _7e in _7b){
-_7c.push(_7e);
-_7d.push(_7b[_7e]);
-}
-require(_7d,function(){
-for(var i=0;i<_7c.length;i++){
-_2.setObject(_7c[i],arguments[i]);
-}
-d.resolve(arguments);
-});
-return d.promise;
-},_scanAmd:function(_7f){
-var _80=new _b(),_81=_80.promise;
-_80.resolve(true);
-var _82=this;
-_d("script[type='dojo/require']",_7f).forEach(function(_83){
-_81=_81.then(function(){
-return _82._require(_83);
-});
-_83.parentNode.removeChild(_83);
-});
-return _81;
-},parse:function(_84,_85){
-var _86;
-if(!_85&&_84&&_84.rootNode){
-_85=_84;
-_86=_85.rootNode;
-}else{
-if(_84&&_2.isObject(_84)&&!("nodeType" in _84)){
-_85=_84;
-}else{
-_86=_84;
-}
-}
-_86=_86?_5.byId(_86):_6.body();
-_85=_85||{};
-var _87=_85.template?{template:true}:{},_88=[],_89=this;
-var p=this._scanAmd(_86,_85).then(function(){
-return _89.scan(_86,_85);
-}).then(function(_8a){
-return _88=_88.concat(_89._instantiate(_8a,_87,_85));
-}).otherwise(function(e){
-console.error("dojo/parser::parse() error",e);
-throw e;
-});
-_2.mixin(_88,p);
-return _88;
-}};
-if(1){
-_1.parser=_1a;
-}
-if(_4.parseOnLoad){
-_f(100,_1a,"parse");
-}
-return _1a;
+	// module:
+	//		dojo/parser
+
+	new Date("X"); // workaround for #11279, new Date("") == NaN
+
+
+	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
+	// If BorderContainer is loaded after _Widget's parameter list has been cached,
+	// we need to refresh that parameter list (for _Widget and all widgets that extend _Widget).
+	var extendCnt = 0;
+	aspect.after(dlang, "extend", function(){
+		extendCnt++;
+	}, true);
+
+	function getNameMap(ctor){
+		// summary:
+		//		Returns map from lowercase name to attribute name in class, ex: {onclick: "onClick"}
+		var map = ctor._nameCaseMap, proto = ctor.prototype;
+
+		// Create the map if it's undefined.
+		// Refresh the map if a superclass was possibly extended with new methods since the map was created.
+		if(!map || map._extendCnt < extendCnt){
+			map = ctor._nameCaseMap = {};
+			for(var name in proto){
+				if(name.charAt(0) === "_"){ continue; }	// skip internal properties
+				map[name.toLowerCase()] = name;
+			}
+			map._extendCnt = extendCnt;
+		}
+		return map;
+	}
+
+	// Map from widget name or list of widget names(ex: "dijit/form/Button,acme/MyMixin") to a constructor.
+	var _ctorMap = {};
+
+	function getCtor(/*String[]*/ types){
+		// summary:
+		//		Retrieves a constructor.  If the types array contains more than one class/MID then the
+		//		subsequent classes will be mixed into the first class and a unique constructor will be
+		//		returned for that array.
+
+		var ts = types.join();
+		if(!_ctorMap[ts]){
+			var mixins = [];
+			for(var i = 0, l = types.length; i < l; i++){
+				var t = types[i];
+				// TODO: Consider swapping getObject and require in the future
+				mixins[mixins.length] = (_ctorMap[t] = _ctorMap[t] || (dlang.getObject(t) || (~t.indexOf('/') && require(t))));
+			}
+			var ctor = mixins.shift();
+			_ctorMap[ts] = mixins.length ? (ctor.createSubclass ? ctor.createSubclass(mixins) : ctor.extend.apply(ctor, mixins)) : ctor;
+		}
+
+		return _ctorMap[ts];
+	}
+
+	var parser = {
+		// summary:
+		//		The Dom/Widget parsing package
+
+		_clearCache: function(){
+			// summary:
+			//		Clear cached data.   Used mainly for benchmarking.
+			extendCnt++;
+			_ctorMap = {};
+		},
+
+		_functionFromScript: function(script, attrData){
+			// summary:
+			//		Convert a `<script type="dojo/method" args="a, b, c"> ... </script>`
+			//		into a function
+			// script: DOMNode
+			//		The `<script>` DOMNode
+			// attrData: String
+			//		For HTML5 compliance, searches for attrData + "args" (typically
+			//		"data-dojo-args") instead of "args"
+			var preamble = "",
+				suffix = "",
+				argsStr = (script.getAttribute(attrData + "args") || script.getAttribute("args")),
+				withStr = script.getAttribute("with");
+
+			// Convert any arguments supplied in script tag into an array to be passed to the
+			var fnArgs = (argsStr || "").split(/\s*,\s*/);
+
+			if(withStr && withStr.length){
+				darray.forEach(withStr.split(/\s*,\s*/), function(part){
+					preamble += "with("+part+"){";
+					suffix += "}";
+				});
+			}
+
+			return new Function(fnArgs, preamble + script.innerHTML + suffix);
+		},
+
+		instantiate: function(nodes, mixin, options){
+			// summary:
+			//		Takes array of nodes, and turns them into class instances and
+			//		potentially calls a startup method to allow them to connect with
+			//		any children.
+			// nodes: Array
+			//		Array of DOM nodes
+			// mixin: Object?
+			//		An object that will be mixed in with each node in the array.
+			//		Values in the mixin will override values in the node, if they
+			//		exist.
+			// options: Object?
+			//		An object used to hold kwArgs for instantiation.
+			//		See parse.options argument for details.
+
+			mixin = mixin || {};
+			options = options || {};
+
+			var dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
+				attrData = "data-" + (options.scope || dojo._scopeName) + "-",// typically "data-dojo-"
+				dataDojoType = attrData + "type",						// typically "data-dojo-type"
+				dataDojoMixins = attrData + "mixins";					// typically "data-dojo-mixins"
+
+			var list = [];
+			darray.forEach(nodes, function(node){
+				var type = dojoType in mixin ? mixin[dojoType] : node.getAttribute(dataDojoType) || node.getAttribute(dojoType);
+				if(type){
+					var mixinsValue = node.getAttribute(dataDojoMixins),
+						types = mixinsValue ? [type].concat(mixinsValue.split(/\s*,\s*/)) : [type];
+
+					list.push({
+						node: node,
+						types: types
+					});
+				}
+			});
+
+			// Instantiate the nodes and return the objects
+			return this._instantiate(list, mixin, options);
+		},
+
+		_instantiate: function(nodes, mixin, options){
+			// summary:
+			//		Takes array of objects representing nodes, and turns them into class instances and
+			//		potentially calls a startup method to allow them to connect with
+			//		any children.
+			// nodes: Array
+			//		Array of objects like
+			//	|		{
+			//	|			ctor: Function (may be null)
+			//	|			types: ["dijit/form/Button", "acme/MyMixin"] (used if ctor not specified)
+			//	|			node: DOMNode,
+			//	|			scripts: [ ... ],	// array of <script type="dojo/..."> children of node
+			//	|			inherited: { ... }	// settings inherited from ancestors like dir, theme, etc.
+			//	|		}
+			// mixin: Object
+			//		An object that will be mixed in with each node in the array.
+			//		Values in the mixin will override values in the node, if they
+			//		exist.
+			// options: Object
+			//		An options object used to hold kwArgs for instantiation.
+			//		See parse.options argument for details.
+
+			// Call widget constructors
+			var thelist = darray.map(nodes, function(obj){
+				var ctor = obj.ctor || getCtor(obj.types);
+				// If we still haven't resolved a ctor, it is fatal now
+				if(!ctor){
+					throw new Error("Unable to resolve constructor for: '" + obj.types.join() + "'");
+				}
+				return this.construct(ctor, obj.node, mixin, options, obj.scripts, obj.inherited);
+			}, this);
+
+			// Call startup on each top level instance if it makes sense (as for
+			// widgets).  Parent widgets will recursively call startup on their
+			// (non-top level) children
+			if(!mixin._started && !options.noStart){
+				darray.forEach(thelist, function(instance){
+					if(typeof instance.startup === "function" && !instance._started){
+						instance.startup();
+					}
+				});
+			}
+
+			return thelist;
+		},
+
+		construct: function(ctor, node, mixin, options, scripts, inherited){
+			// summary:
+			//		Calls new ctor(params, node), where params is the hash of parameters specified on the node,
+			//		excluding data-dojo-type and data-dojo-mixins.   Does not call startup().   Returns the widget.
+			// ctor: Function
+			//		Widget constructor.
+			// node: DOMNode
+			//		This node will be replaced/attached to by the widget.  It also specifies the arguments to pass to ctor.
+			// mixin: Object?
+			//		Attributes in this object will be passed as parameters to ctor,
+			//		overriding attributes specified on the node.
+			// options: Object?
+			//		An options object used to hold kwArgs for instantiation.   See parse.options argument for details.
+			// scripts: DomNode[]?
+			//		Array of `<script type="dojo/*">` DOMNodes.  If not specified, will search for `<script>` tags inside node.
+			// inherited: Object?
+			//		Settings from dir=rtl or lang=... on a node above this node.   Overrides options.inherited.
+
+			var proto = ctor && ctor.prototype;
+			options = options || {};
+
+			// Setup hash to hold parameter settings for this widget.	Start with the parameter
+			// settings inherited from ancestors ("dir" and "lang").
+			// Inherited setting may later be overridden by explicit settings on node itself.
+			var params = {};
+
+			if(options.defaults){
+				// settings for the document itself (or whatever subtree is being parsed)
+				dlang.mixin(params, options.defaults);
+			}
+			if(inherited){
+				// settings from dir=rtl or lang=... on a node above this node
+				dlang.mixin(params, inherited);
+			}
+
+			// Get list of attributes explicitly listed in the markup
+			var attributes;
+			if(has("dom-attributes-explicit")){
+				// Standard path to get list of user specified attributes
+				attributes = node.attributes;
+			}else if(has("dom-attributes-specified-flag")){
+				// Special processing needed for IE8, to skip a few faux values in attributes[]
+				attributes = darray.filter(node.attributes, function(a){ return a.specified;});
+			}else{
+				// Special path for IE6-7, avoid (sometimes >100) bogus entries in node.attributes
+				var clone = /^input$|^img$/i.test(node.nodeName) ? node : node.cloneNode(false),
+					attrs = clone.outerHTML.replace(/=[^\s"']+|="[^"]*"|='[^']*'/g, "").replace(/^\s*<[a-zA-Z0-9]*\s*/, "").replace(/\s*>.*$/, "");
+
+				attributes = darray.map(attrs.split(/\s+/), function(name){
+					var lcName = name.toLowerCase();
+					return {
+						name: name,
+						// getAttribute() doesn't work for button.value, returns innerHTML of button.
+						// but getAttributeNode().value doesn't work for the form.encType or li.value
+						value: (node.nodeName == "LI" && name == "value") || lcName == "enctype" ?
+								node.getAttribute(lcName) : node.getAttributeNode(lcName).value
+					};
+				});
+			}
+
+			// Hash to convert scoped attribute name (ex: data-dojo17-params) to something friendly (ex: data-dojo-params)
+			// TODO: remove scope for 2.0
+			var scope = options.scope || dojo._scopeName,
+				attrData = "data-" + scope + "-",						// typically "data-dojo-"
+				hash = {};
+			if(scope !== "dojo"){
+				hash[attrData + "props"] = "data-dojo-props";
+				hash[attrData + "type"] = "data-dojo-type";
+				hash[attrData + "mixins"] = "data-dojo-mixins";
+				hash[scope + "type"] = "dojoType";
+				hash[attrData + "id"] = "data-dojo-id";
+			}
+
+			// Read in attributes and process them, including data-dojo-props, data-dojo-type,
+			// dojoAttachPoint, etc., as well as normal foo=bar attributes.
+			var i=0, item, funcAttrs=[], jsname, extra;
+			while(item = attributes[i++]){
+				var name = item.name,
+					lcName = name.toLowerCase(),
+					value = item.value;
+
+				switch(hash[lcName] || lcName){
+				// Already processed, just ignore
+				case "data-dojo-type":
+				case "dojotype":
+				case "data-dojo-mixins":
+					break;
+
+				// Data-dojo-props.   Save for later to make sure it overrides direct foo=bar settings
+				case "data-dojo-props":
+					extra = value;
+					break;
+
+				// data-dojo-id or jsId. TODO: drop jsId in 2.0
+				case "data-dojo-id":
+				case "jsid":
+					jsname = value;
+					break;
+
+				// For the benefit of _Templated
+				case "data-dojo-attach-point":
+				case "dojoattachpoint":
+					params.dojoAttachPoint = value;
+					break;
+				case "data-dojo-attach-event":
+				case "dojoattachevent":
+					params.dojoAttachEvent = value;
+					break;
+
+				// Special parameter handling needed for IE
+				case "class":
+					params["class"] = node.className;
+					break;
+				case "style":
+					params["style"] = node.style && node.style.cssText;
+					break;
+				default:
+					// Normal attribute, ex: value="123"
+
+					// Find attribute in widget corresponding to specified name.
+					// May involve case conversion, ex: onclick --> onClick
+					if(!(name in proto)){
+						var map = getNameMap(ctor);
+						name = map[lcName] || name;
+					}
+
+					// Set params[name] to value, doing type conversion
+					if(name in proto){
+						switch(typeof proto[name]){
+						case "string":
+							params[name] = value;
+							break;
+						case "number":
+							params[name] = value.length ? Number(value) : NaN;
+							break;
+						case "boolean":
+							// for checked/disabled value might be "" or "checked".	 interpret as true.
+							params[name] = value.toLowerCase() != "false";
+							break;
+						case "function":
+							if(value === "" || value.search(/[^\w\.]+/i) != -1){
+								// The user has specified some text for a function like "return x+5"
+								params[name] = new Function(value);
+							}else{
+								// The user has specified the name of a global function like "myOnClick"
+								// or a single word function "return"
+								params[name] = dlang.getObject(value, false) || new Function(value);
+							}
+							funcAttrs.push(name);	// prevent "double connect", see #15026
+							break;
+						default:
+							var pVal = proto[name];
+							params[name] =
+								(pVal && "length" in pVal) ? (value ? value.split(/\s*,\s*/) : []) :	// array
+									(pVal instanceof Date) ?
+										(value == "" ? new Date("") :	// the NaN of dates
+										value == "now" ? new Date() :	// current date
+										dates.fromISOString(value)) :
+								(pVal instanceof _Url) ? (dojo.baseUrl + value) :
+								djson.fromJson(value);
+						}
+					}else{
+						params[name] = value;
+					}
+				}
+			}
+
+			// Remove function attributes from DOMNode to prevent "double connect" problem, see #15026.
+			// Do this as a separate loop since attributes[] is often a live collection (depends on the browser though).
+			for(var j=0; j<funcAttrs.length; j++){
+				var lcfname = funcAttrs[j].toLowerCase();
+				node.removeAttribute(lcfname);
+				node[lcfname] = null;
+			}
+
+			// Mix things found in data-dojo-props into the params, overriding any direct settings
+			if(extra){
+				try{
+					extra = djson.fromJson.call(options.propsThis, "{" + extra + "}");
+					dlang.mixin(params, extra);
+				}catch(e){
+					// give the user a pointer to their invalid parameters. FIXME: can we kill this in production?
+					throw new Error(e.toString() + " in data-dojo-props='" + extra + "'");
+				}
+			}
+
+			// Any parameters specified in "mixin" override everything else.
+			dlang.mixin(params, mixin);
+
+			// Get <script> nodes associated with this widget, if they weren't specified explicitly
+			if(!scripts){
+				scripts = (ctor && (ctor._noScript || proto._noScript) ? [] : query("> script[type^='dojo/']", node));
+			}
+
+			// Process <script type="dojo/*"> script tags
+			// <script type="dojo/method" event="foo"> tags are added to params, and passed to
+			// the widget on instantiation.
+			// <script type="dojo/method"> tags (with no event) are executed after instantiation
+			// <script type="dojo/connect" data-dojo-event="foo"> tags are dojo.connected after instantiation
+			// <script type="dojo/watch" data-dojo-prop="foo"> tags are dojo.watch after instantiation
+			// <script type="dojo/on" data-dojo-event="foo"> tags are dojo.on after instantiation
+			// note: dojo/* script tags cannot exist in self closing widgets, like <input />
+			var aspects = [],	// aspects to connect after instantiation
+				calls = [],		// functions to call after instantiation
+				watches = [],  // functions to watch after instantiation
+				ons = []; // functions to on after instantiation
+
+			if(scripts){
+				for(i=0; i<scripts.length; i++){
+					var script = scripts[i];
+					node.removeChild(script);
+					// FIXME: drop event="" support in 2.0. use data-dojo-event="" instead
+					var event = (script.getAttribute(attrData + "event") || script.getAttribute("event")),
+						prop = script.getAttribute(attrData + "prop"),
+						method = script.getAttribute(attrData + "method"),
+						advice = script.getAttribute(attrData + "advice"),
+						scriptType = script.getAttribute("type"),
+						nf = this._functionFromScript(script, attrData);
+					if(event){
+						if(scriptType == "dojo/connect"){
+							aspects.push({ method: event, func: nf });
+						}else if(scriptType == "dojo/on"){
+							ons.push({ event: event, func: nf });
+						}else{
+							params[event] = nf;
+						}
+					}else if(scriptType == "dojo/aspect"){
+						aspects.push({ method: method, advice: advice, func: nf });
+					}else if(scriptType == "dojo/watch"){
+						watches.push({ prop: prop, func: nf });
+					}else{
+						calls.push(nf);
+					}
+				}
+			}
+
+			// create the instance
+			var markupFactory = ctor.markupFactory || proto.markupFactory;
+			var instance = markupFactory ? markupFactory(params, node, ctor) : new ctor(params, node);
+
+			// map it to the JS namespace if that makes sense
+			if(jsname){
+				dlang.setObject(jsname, instance);
+			}
+
+			// process connections and startup functions
+			for(i=0; i<aspects.length; i++){
+				aspect[aspects[i].advice || "after"](instance, aspects[i].method, dlang.hitch(instance, aspects[i].func), true);
+			}
+			for(i=0; i<calls.length; i++){
+				calls[i].call(instance);
+			}
+			for(i=0; i<watches.length; i++){
+				instance.watch(watches[i].prop, watches[i].func);
+			}
+			for(i=0; i<ons.length; i++){
+				don(instance, ons[i].event, ons[i].func);
+			}
+
+			return instance;
+		},
+
+		scan: function(root, options){
+			// summary:
+			//		Scan a DOM tree and return an array of objects representing the DOMNodes
+			//		that need to be turned into widgets.
+			// description:
+			//		Search specified node (or document root node) recursively for class instances
+			//		and return an array of objects that represent potential widgets to be
+			//		instantiated. Searches for either data-dojo-type="MID" or dojoType="MID" where
+			//		"MID" is a module ID like "dijit/form/Button" or a fully qualified Class name
+			//		like "dijit/form/Button".  If the MID is not currently available, scan will
+			//		attempt to require() in the module.
+			//
+			//		See parser.parse() for details of markup.
+			// root: DomNode?
+			//		A default starting root node from which to start the parsing. Can be
+			//		omitted, defaulting to the entire document. If omitted, the `options`
+			//		object can be passed in this place. If the `options` object has a
+			//		`rootNode` member, that is used.
+			// options: Object
+			//		a kwArgs options object, see parse() for details
+			//
+			// returns: Promise
+			//		A promise that is resolved with the nodes that have been parsed.
+
+			var list = [],  // Output List
+				mids = [], // An array of modules that are not yet loaded
+				midsHash = {}; // Used to keep the mids array unique
+
+			var dojoType = (options.scope || dojo._scopeName) + "Type",		// typically "dojoType"
+				attrData = "data-" + (options.scope || dojo._scopeName) + "-",	// typically "data-dojo-"
+				dataDojoType = attrData + "type",						// typically "data-dojo-type"
+				dataDojoTextDir = attrData + "textdir",					// typically "data-dojo-textdir"
+				dataDojoMixins = attrData + "mixins";					// typically "data-dojo-mixins"
+
+			// Info on DOMNode currently being processed
+			var node = root.firstChild;
+
+			// Info on parent of DOMNode currently being processed
+			//	- inherited: dir, lang, and textDir setting of parent, or inherited by parent
+			//	- parent: pointer to identical structure for my parent (or null if no parent)
+			//	- scripts: if specified, collects <script type="dojo/..."> type nodes from children
+			var inherited = options.inherited;
+			if(!inherited){
+				function findAncestorAttr(node, attr){
+					return (node.getAttribute && node.getAttribute(attr)) ||
+						(node.parentNode && findAncestorAttr(node.parentNode, attr));
+				}
+				inherited = {
+					dir: findAncestorAttr(root, "dir"),
+					lang: findAncestorAttr(root, "lang"),
+					textDir: findAncestorAttr(root, dataDojoTextDir)
+				};
+				for(var key in inherited){
+					if(!inherited[key]){ delete inherited[key]; }
+				}
+			}
+
+			// Metadata about parent node
+			var parent = {
+				inherited: inherited
+			};
+
+			// For collecting <script type="dojo/..."> type nodes (when null, we don't need to collect)
+			var scripts;
+
+			// when true, only look for <script type="dojo/..."> tags, and don't recurse to children
+			var scriptsOnly;
+
+			function getEffective(parent){
+				// summary:
+				//		Get effective dir, lang, textDir settings for specified obj
+				//		(matching "parent" object structure above), and do caching.
+				//		Take care not to return null entries.
+				if(!parent.inherited){
+					parent.inherited = {};
+					var node = parent.node,
+						grandparent = getEffective(parent.parent);
+					var inherited  = {
+						dir: node.getAttribute("dir") || grandparent.dir,
+						lang: node.getAttribute("lang") || grandparent.lang,
+						textDir: node.getAttribute(dataDojoTextDir) || grandparent.textDir
+					};
+					for(var key in inherited){
+						if(inherited[key]){
+							parent.inherited[key] = inherited[key];
+						}
+					}
+				}
+				return parent.inherited;
+			}
+
+			// DFS on DOM tree, collecting nodes with data-dojo-type specified.
+			while(true){
+				if(!node){
+					// Finished this level, continue to parent's next sibling
+					if(!parent || !parent.node){
+						break;
+					}
+					node = parent.node.nextSibling;
+					scriptsOnly = false;
+					parent = parent.parent;
+					scripts = parent.scripts;
+					continue;
+				}
+
+				if(node.nodeType != 1){
+					// Text or comment node, skip to next sibling
+					node = node.nextSibling;
+					continue;
+				}
+
+				if(scripts && node.nodeName.toLowerCase() == "script"){
+					// Save <script type="dojo/..."> for parent, then continue to next sibling
+					type = node.getAttribute("type");
+					if(type && /^dojo\/\w/i.test(type)){
+						scripts.push(node);
+					}
+					node = node.nextSibling;
+					continue;
+				}
+				if(scriptsOnly){
+					// scriptsOnly flag is set, we have already collected scripts if the parent wants them, so now we shouldn't
+					// continue further analysis of the node and will continue to the next sibling
+					node = node.nextSibling;
+					continue;
+				}
+
+				// Check for data-dojo-type attribute, fallback to backward compatible dojoType
+				// TODO: Remove dojoType in 2.0
+				var type = node.getAttribute(dataDojoType) || node.getAttribute(dojoType);
+
+				// Short circuit for leaf nodes containing nothing [but text]
+				var firstChild = node.firstChild;
+				if(!type && (!firstChild || (firstChild.nodeType == 3 && !firstChild.nextSibling))){
+					node = node.nextSibling;
+					continue;
+				}
+
+				// Meta data about current node
+				var current;
+
+				var ctor = null;
+				if(type){
+					// If dojoType/data-dojo-type specified, add to output array of nodes to instantiate.
+					var mixinsValue = node.getAttribute(dataDojoMixins),
+						types = mixinsValue ? [type].concat(mixinsValue.split(/\s*,\s*/)) : [type];
+
+					// Note: won't find classes declared via dojo/Declaration or any modules that haven't been
+					// loaded yet so use try/catch to avoid throw from require()
+					try{
+						ctor = getCtor(types);
+					}catch(e){}
+
+					// If the constructor was not found, check to see if it has modules that can be loaded
+					if(!ctor){
+						darray.forEach(types, function(t){
+							if(~t.indexOf('/') && !midsHash[t]){
+								// If the type looks like a MID and it currently isn't in the array of MIDs to load, add it.
+								midsHash[t] = true;
+								mids[mids.length] = t;
+							}
+						});
+					}
+
+					var childScripts = ctor && !ctor.prototype._noScript ? [] : null; // <script> nodes that are parent's children
+
+					// Setup meta data about this widget node, and save it to list of nodes to instantiate
+					current = {
+						types: types,
+						ctor: ctor,
+						parent: parent,
+						node: node,
+						scripts: childScripts
+					};
+					current.inherited = getEffective(current); // dir & lang settings for current node, explicit or inherited
+					list.push(current);
+				}else{
+					// Meta data about this non-widget node
+					current = {
+						node: node,
+						scripts: scripts,
+						parent: parent
+					};
+				}
+
+				// Recurse, collecting <script type="dojo/..."> children, and also looking for
+				// descendant nodes with dojoType specified (unless the widget has the stopParser flag).
+				// When finished with children, go to my next sibling.
+				node = firstChild;
+				scripts = childScripts;
+				scriptsOnly = ctor && ctor.prototype.stopParser && !(options.template);
+				parent = current;
+			}
+
+			var d = new Deferred();
+
+			// If there are modules to load then require them in
+			if(mids.length){
+				// Warn that there are modules being auto-required
+				if(has("dojo-debug-messages")){
+					console.warn("WARNING: Modules being Auto-Required: " + mids.join(", "));
+				}
+				require(mids, function(){
+					// Go through list of widget nodes, filling in missing constructors, and filtering out nodes that shouldn't
+					// be instantiated due to a stopParser flag on an ancestor that we belatedly learned about due to
+					// auto-require of a module like ContentPane.   Assumes list is in DFS order.
+					d.resolve(darray.filter(list, function(widget){
+						if(!widget.ctor){
+							// Attempt to find the constructor again.   Still won't find classes defined via
+							// dijit/Declaration so need to try/catch.
+							try{
+								widget.ctor = getCtor(widget.types);
+							}catch(e){}
+						}
+
+						// Get the parent widget
+						var parent = widget.parent;
+						while(parent && !parent.types){
+							parent = parent.parent;
+						}
+
+						// Return false if this node should be skipped due to stopParser on an ancestor.
+						// Since list[] is in DFS order, this loop will always set parent.instantiateChildren before
+						// trying to compute widget.instantiate.
+						var proto = widget.ctor && widget.ctor.prototype;
+						widget.instantiateChildren = !(proto && proto.stopParser && !(options.template));
+						widget.instantiate = !parent || (parent.instantiate && parent.instantiateChildren);
+						return widget.instantiate;
+					}));
+				});
+			}else{
+				// There were no modules to load, so just resolve with the parsed nodes.   This separate code path is for
+				// efficiency, to avoid running the require() and the callback code above.
+				d.resolve(list);
+			}
+
+			// Return the promise
+			return d.promise;
+		},
+
+		_require: function(/*DOMNode*/ script){
+			// summary:
+			//		Helper for _scanAMD().  Takes a `<script type=dojo/require>bar: "acme/bar", ...</script>` node,
+			//		calls require() to load the specified modules and (asynchronously) assign them to the specified global
+			//		variables, and returns a Promise for when that operation completes.
+			//
+			//		In the example above, it is effectively doing a require(["acme/bar", ...], function(a){ bar = a; }).
+
+			var hash = djson.fromJson("{" + script.innerHTML + "}"),
+				vars = [],
+				mids = [],
+				d = new Deferred();
+
+			for(var name in hash){
+				vars.push(name);
+				mids.push(hash[name]);
+			}
+
+			require(mids, function(){
+				for(var i=0; i<vars.length; i++){
+					dlang.setObject(vars[i], arguments[i]);
+				}
+				d.resolve(arguments);
+			});
+
+			return d.promise;
+		},
+
+		_scanAmd: function(root){
+			// summary:
+			//		Scans the DOM for any declarative requires and returns their values.
+			// description:
+			//		Looks for `<script type=dojo/require>bar: "acme/bar", ...</script>` node, calls require() to load the
+			//		specified modules and (asynchronously) assign them to the specified global variables,
+			//		 and returns a Promise for when those operations complete.
+			// root: DomNode
+			//		The node to base the scan from.
+
+			// Promise that resolves when all the <script type=dojo/require> nodes have finished loading.
+			var deferred = new Deferred(),
+				promise = deferred.promise;
+			deferred.resolve(true);
+
+			var self = this;
+			query("script[type='dojo/require']", root).forEach(function(node){
+				// Fire off require() call for specified modules.  Chain this require to fire after
+				// any previous requires complete, so that layers can be loaded before individual module require()'s fire.
+				promise = promise.then(function(){ return self._require(node); });
+
+				// Remove from DOM so it isn't seen again
+				node.parentNode.removeChild(node);
+			});
+
+			return promise;
+		},
+
+		parse: function(rootNode, options){
+			// summary:
+			//		Scan the DOM for class instances, and instantiate them.
+			// description:
+			//		Search specified node (or root node) recursively for class instances,
+			//		and instantiate them. Searches for either data-dojo-type="Class" or
+			//		dojoType="Class" where "Class" is a a fully qualified class name,
+			//		like `dijit/form/Button`
+			//
+			//		Using `data-dojo-type`:
+			//		Attributes using can be mixed into the parameters used to instantiate the
+			//		Class by using a `data-dojo-props` attribute on the node being converted.
+			//		`data-dojo-props` should be a string attribute to be converted from JSON.
+			//
+			//		Using `dojoType`:
+			//		Attributes are read from the original domNode and converted to appropriate
+			//		types by looking up the Class prototype values. This is the default behavior
+			//		from Dojo 1.0 to Dojo 1.5. `dojoType` support is deprecated, and will
+			//		go away in Dojo 2.0.
+			// rootNode: DomNode?
+			//		A default starting root node from which to start the parsing. Can be
+			//		omitted, defaulting to the entire document. If omitted, the `options`
+			//		object can be passed in this place. If the `options` object has a
+			//		`rootNode` member, that is used.
+			// options: Object?
+			//		A hash of options.
+			//
+			//		- noStart: Boolean?:
+			//			when set will prevent the parser from calling .startup()
+			//			when locating the nodes.
+			//		- rootNode: DomNode?:
+			//			identical to the function's `rootNode` argument, though
+			//			allowed to be passed in via this `options object.
+			//		- template: Boolean:
+			//			If true, ignores ContentPane's stopParser flag and parses contents inside of
+			//			a ContentPane inside of a template.   This allows dojoAttachPoint on widgets/nodes
+			//			nested inside the ContentPane to work.
+			//		- inherited: Object:
+			//			Hash possibly containing dir and lang settings to be applied to
+			//			parsed widgets, unless there's another setting on a sub-node that overrides
+			//		- scope: String:
+			//			Root for attribute names to search for.   If scopeName is dojo,
+			//			will search for data-dojo-type (or dojoType).   For backwards compatibility
+			//			reasons defaults to dojo._scopeName (which is "dojo" except when
+			//			multi-version support is used, when it will be something like dojo16, dojo20, etc.)
+			//		- propsThis: Object:
+			//			If specified, "this" referenced from data-dojo-props will refer to propsThis.
+			//			Intended for use from the widgets-in-template feature of `dijit._WidgetsInTemplateMixin`
+			// returns: Mixed
+			//		Returns a blended object that is an array of the instantiated objects, but also can include
+			//		a promise that is resolved with the instantiated objects.  This is done for backwards
+			//		compatibility.  If the parser auto-requires modules, it will always behave in a promise
+			//		fashion and `parser.parse().then(function(instances){...})` should be used.
+			// example:
+			//		Parse all widgets on a page:
+			//	|		parser.parse();
+			// example:
+			//		Parse all classes within the node with id="foo"
+			//	|		parser.parse(dojo.byId('foo'));
+			// example:
+			//		Parse all classes in a page, but do not call .startup() on any
+			//		child
+			//	|		parser.parse({ noStart: true })
+			// example:
+			//		Parse all classes in a node, but do not call .startup()
+			//	|		parser.parse(someNode, { noStart:true });
+			//	|		// or
+			//	|		parser.parse({ noStart:true, rootNode: someNode });
+
+			// determine the root node and options based on the passed arguments.
+			var root;
+			if(!options && rootNode && rootNode.rootNode){
+				options = rootNode;
+				root = options.rootNode;
+			}else if(rootNode && dlang.isObject(rootNode) && !("nodeType" in rootNode)){
+				options = rootNode;
+			}else{
+				root = rootNode;
+			}
+			root = root ? dhtml.byId(root) : dwindow.body();
+
+			options = options || {};
+
+			var mixin = options.template ? { template: true } : {},
+				instances = [],
+				self = this;
+
+			// First scan for any <script type=dojo/require> nodes, and execute.
+			// Then scan for all nodes with data-dojo-type, and load any unloaded modules.
+			// Then build the object instances.  Add instances to already existing (but empty) instances[] array,
+			// which may already have been returned to caller.  Also, use otherwise to collect and throw any errors
+			// that occur during the parse().
+			var p =
+				this._scanAmd(root, options).then(function(){
+					return self.scan(root, options);
+				}).then(function(parsedNodes){
+					return instances = instances.concat(self._instantiate(parsedNodes, mixin, options));
+				}).otherwise(function(e){
+					// TODO Modify to follow better pattern for promise error managment when available
+					console.error("dojo/parser::parse() error", e);
+					throw e;
+				});
+
+			// Blend the array with the promise
+			dlang.mixin(instances, p);
+			return instances;
+		}
+	};
+
+	if(has("extend-dojo")){
+		dojo.parser  = parser;
+	}
+
+	// Register the parser callback. It should be the first callback
+	// after the a11y test.
+	if(config.parseOnLoad){
+		ready(100, parser, "parse");
+	}
+
+	return parser;
 });

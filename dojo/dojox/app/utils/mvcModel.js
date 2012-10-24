@@ -1,65 +1,100 @@
-//>>built
-define("dojox/app/utils/mvcModel",["dojo/_base/lang","dojo/Deferred","dojo/when","dojo/_base/config","dojo/store/DataStore","dojox/mvc/getStateful","dojo/has"],function(_1,_2,_3,_4,_5,_6,_7){
-return function(_8,_9,_a){
-var _b={};
-var _c=new _2();
-var _d;
-if(_9.store&&_9.store.params&&_9.store.params.data){
-_d={"store":_9.store.store,"query":_9.store.query?_9.store.query:{}};
-}else{
-if(_9.datastore){
-var _e={};
-for(var _a in _9.query){
-if(_a.charAt(0)!=="_"){
-_e[_a]=_9.query[_a];
-}
-}
-_d={"store":new _5({store:_9.datastore.store}),"query":_e};
-}else{
-if(_9.data){
-if(_9.data&&_1.isString(_9.data)){
-_9.data=_1.getObject(_9.data);
-}
-_d={"data":_9.data,query:{}};
-}
-}
-}
-var _f=null;
-var _10=_8[_a].type?_8[_a].type:"dojox/mvc/EditStoreRefListController";
-var def=new _2();
-require([_10],function(_11){
-def.resolve(_11);
-});
-_3(def,function(_12){
-_f=new _12(_d);
-var _13;
-try{
-if(_f.queryStore){
-_13=_f.queryStore(_d.query);
-}else{
-var _14=_f._refSourceModelProp||_f._refModelProp||"model";
-_f.set(_14,_6(_d.data));
-_13=_f;
-}
-}
-catch(ex){
-_c.reject("load mvc model error.");
-return _c.promise;
-}
-if(_13.then){
-_3(_13,_1.hitch(this,function(){
-_b=_f;
-_c.resolve(_b);
-return _b;
-}),function(){
-loadModelLoaderDeferred.reject("load model error.");
-});
-}else{
-_b=_f;
-_c.resolve(_b);
-return _b;
-}
-});
-return _c;
-};
+define(["dojo/_base/lang", "dojo/Deferred", "dojo/when", "dojo/_base/config",
+		"dojo/store/DataStore", "dojox/mvc/getStateful", "dojo/has"],
+function(lang, Deferred, when, config, dataStore, getStateful, has){
+	return function(/*Object*/config, /*Object*/params, /*String*/item){
+		// summary:
+		//		mvcModel is called for each mvc model, to create the mvc model based upon the type and params.
+		//		It will also load models and return the either the loadedModels or a promise.
+		// description:
+		//		Called for each model with a modelLoader of "dojox/app/utils/mvcModel", it will
+		//		create the model based upon the type and the params set for the model in the config.
+		// config: Object
+		//		The models section of the config for this view or for the app.
+		// params: Object
+		//		The params set into the config for this model.
+		// item: String
+		//		The String with the name of this model
+		// returns: model 
+		//		The model, of the type specified in the config for this model.
+		var loadedModels = {};
+		var loadMvcModelDeferred = new Deferred();
+
+		var fixupQuery = function(query){
+			var ops = {};
+			for(var item in query){  // need this to handle query params without errors
+				if(item.charAt(0) !== "_"){
+					ops[item] = query[item];
+				}
+			}
+			return(ops);
+		}
+
+		var options;
+		if(params.store){
+			//	if query is not set on the model params, it may be set on the store
+			options = {
+				"store": params.store.store,
+				"query": params.query ? fixupQuery(params.query) : params.store.query ? fixupQuery(params.store.query) : {}
+			};
+		}else if(params.datastore){
+			options = {
+				"store": new dataStore({
+					store: params.datastore.store
+				}),
+				"query": fixupQuery(params.query)
+			};
+		}else if(params.data){
+			if(params.data && lang.isString(params.data)){
+				//get the object specified by string value of data property
+				//cannot assign object literal or reference to data property
+				//because json.ref will generate __parent to point to its parent
+				//and will cause infinitive loop when creating StatefulModel.
+				params.data = lang.getObject(params.data);
+			}
+			options = {"data": params.data, query: {}};
+		}
+		var newModel = null;
+		var type = config[item].type ? config[item].type : "dojox/mvc/EditStoreRefListController";
+		// need to load the class to use for the model
+		var def = new Deferred();
+		require([type], // require the model type
+		function(requirement){
+			def.resolve(requirement);
+		});
+
+		when(def, function(modelCtor){
+			newModel = new modelCtor(options);
+			var createMvcPromise;
+			try{
+				if(newModel.queryStore){
+					createMvcPromise = newModel.queryStore(options.query);
+				}else{
+					var modelProp = newModel._refSourceModelProp || newModel._refModelProp || "model";
+					newModel.set(modelProp, getStateful(options.data));
+					createMvcPromise = newModel;
+				}
+			}catch(ex){
+				//console.warn("load mvc model error.", ex);
+				loadMvcModelDeferred.reject("load mvc model error.");
+				return loadMvcModelDeferred.promise;
+			}
+			if(createMvcPromise.then){
+				when(createMvcPromise, lang.hitch(this, function() {
+					// now the loadedModels[item].models is set.
+					loadedModels = newModel;
+					loadMvcModelDeferred.resolve(loadedModels);
+					//this.app.log("in mvcModel promise path, loadedModels = ", loadedModels);
+					return loadedModels;
+				}), function(){
+					loadModelLoaderDeferred.reject("load model error.")
+				});
+			}else{ // query did not return a promise, so use newModel
+				loadedModels = newModel;
+				//this.app.log("in mvcModel else path, loadedModels = ",loadedModels);
+				loadMvcModelDeferred.resolve(loadedModels);
+				return loadedModels;
+			}
+		});
+		return loadMvcModelDeferred;
+	}
 });

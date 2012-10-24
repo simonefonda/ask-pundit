@@ -1,25 +1,32 @@
-//>>built
-define("dojox/charting/plot2d/StackedBars",["dojo/_base/declare","./Bars","./commonStacked"],function(_1,_2,_3){
-return _1("dojox.charting.plot2d.StackedBars",_2,{getSeriesStats:function(){
-var _4=_3.collectStats(this.series),t;
-this._maxRunLength=_4.hmax;
-_4.hmin-=0.5;
-_4.hmax+=0.5;
-t=_4.hmin,_4.hmin=_4.vmin,_4.vmin=t;
-t=_4.hmax,_4.hmax=_4.vmax,_4.vmax=t;
-return _4;
-},getDataLength:function(_5){
-return this._maxRunLength;
-},getValue:function(_6,_7,_8,_9){
-var y,x;
-if(_9){
-x=_7;
-y=_3.getIndexValue(this.series,_8,x);
-}else{
-x=_6.x-1;
-y=_3.getValue(this.series,_8,_6.x);
-y=y?y.y:null;
-}
-return {y:y,x:x};
-}});
+define(["dojo/_base/declare", "./Bars", "./commonStacked"], 
+	function(declare, Bars, commonStacked){
+
+	return declare("dojox.charting.plot2d.StackedBars", Bars, {
+		// summary:
+		//		The plot object representing a stacked bar chart (horizontal bars).
+		getSeriesStats: function(){
+			// summary:
+			//		Calculate the min/max on all attached series in both directions.
+			// returns: Object
+			//		{hmin, hmax, vmin, vmax} min/max in both directions.
+			var stats = commonStacked.collectStats(this.series), t;
+			stats.hmin -= 0.5;
+			stats.hmax += 0.5;
+			t = stats.hmin, stats.hmin = stats.vmin, stats.vmin = t;
+			t = stats.hmax, stats.hmax = stats.vmax, stats.vmax = t;
+			return stats; // Object
+		},
+		getValue: function(value, index, seriesIndex, indexed){
+			var y,x;
+			if(indexed){
+				x = index;
+				y = commonStacked.getIndexValue(this.series, seriesIndex, x);
+			}else{
+				x = value.x - 1;
+				y = commonStacked.getValue(this.series, seriesIndex, value.x);
+				y = y ? y.y: null;
+			}
+			return {y:y, x:x};
+		}
+	});
 });

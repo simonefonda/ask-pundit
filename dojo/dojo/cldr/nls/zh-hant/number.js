@@ -1,8 +1,9 @@
-/*
-	Copyright (c) 2004-2011, The Dojo Foundation All Rights Reserved.
-	Available via Academic Free License >= 2.1 OR the modified BSD license.
-	see: http://dojotoolkit.org/license for details
-*/
-
-//>>built
-define("dojo/cldr/nls/zh-hant/number",{"nan":"非數值","decimalFormat-short":"000兆","currencyFormat":"¤#,##0.00"});
+define(
+//begin v1.x content
+{
+	"nan": "非數值",
+	"decimalFormat-short": "000兆",
+	"currencyFormat": "¤#,##0.00"
+}
+//end v1.x content
+);
