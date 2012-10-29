@@ -279,7 +279,6 @@ define(["dojo/_base/declare",
                                 console.log('ERROR? No type: this should NOT happen.');
                             }
                             
-                            
                         } else { // if uri in data 
                             console.log('ERROR? Uri not in data __'+ uri +'__', data, typeof(data[uri]), typeof(uri));
                         }

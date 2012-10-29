@@ -13,14 +13,19 @@ define(["dojo/_base/declare",
         "ask/BookmarkCollectionTab",
         "ask/BookmarkList",
         "ask/IOHelper",
+
+        "pundit/AuthenticatedRequester",
+        
         "bootstrap/Tab",
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane"], 
     function(declare, router, on, request, config, encode,
         indexTemplate, _WidgetBase, _TemplatedMixin, 
-        NotebookItem, NotebookTab, TimelineTab, BookmarkCollectionTab, BookmarkList, IOHelper, BTab, TabContainer, 
-        ContentPane) {
-	
+        NotebookItem, NotebookTab, TimelineTab, BookmarkCollectionTab, BookmarkList, IOHelper, 
+        PAuthenticatedRequester,
+        BTab, 
+        TabContainer, ContentPane) {
+
 	return declare("ask.Index", [_WidgetBase, _TemplatedMixin], {
         name: '',
         bio: '',
@@ -37,6 +42,8 @@ define(["dojo/_base/declare",
                 serverAddress: config.ask.nodeServerAddress,
                 serverPort: config.ask.nodeServerPort
             });
+            
+            
         },
         
         startup: function() {
@@ -46,8 +53,13 @@ define(["dojo/_base/declare",
             
             this.notebookLoaded = false;
             this.bookmarkLoaded = false;
-            // this.loadNotebookList();
-            // this.loadBookmarkList();
+
+            this.requester = new PAuthenticatedRequester({
+                debug: true
+            })
+            .placeAt(dojo.byId('ask_container'))
+            .startup();
+
         },
 
         setupHandlers: function() {
