@@ -16,10 +16,10 @@
     <div id="ask_container"></div>
  
 <script>
-    require(["ask/Index", "dojo/parser"], function(Index, parser) {
+    require(["ask/Ask", "dojo/parser"], function(Index, parser) {
         parser.parse();
-        var index = new Index().placeAt(dojo.byId('ask_container'));
-        index.startup();
+        ASK = new ask.Ask().placeAt(dojo.byId('ask_container'));
+        ASK.startup();
     });
 </script>
 
