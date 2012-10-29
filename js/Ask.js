@@ -13,8 +13,8 @@ define(["dojo/_base/declare",
         "ask/BookmarkCollectionTab",
         "ask/BookmarkList",
         "ask/IOHelper",
-        "ask/MyAsk",
 
+        "ask/MyAsk",
         "pundit/AuthenticatedRequester",
         
         "bootstrap/Tab",
@@ -41,13 +41,16 @@ define(["dojo/_base/declare",
             this.inherited(arguments);
         },
         constructor: function() {
-            this.inherited(arguments);
-            this.socketHelper = new IOHelper({
+            var self = this;
+            self.inherited(arguments);
+            self.socketHelper = new IOHelper({
                 serverAddress: config.ask.nodeServerAddress,
                 serverPort: config.ask.nodeServerPort
             });
-            
-            
+
+            self.requester = PAuthenticatedRequester({
+                debug: true
+            }).placeAt(dojo.byId('ask_container'));
         },
         
         startup: function() {
@@ -55,12 +58,10 @@ define(["dojo/_base/declare",
             
             self.inherited(arguments);
             self.setupHandlers();
-            
-            self.requester = new PAuthenticatedRequester({
-                debug: true
-            }).placeAt(dojo.byId('ask_container')).startup();
 
-            this.setupRouter();
+            self.setupRouter();
+            
+            self.requester.startup();
 
         },
 
@@ -164,9 +165,7 @@ define(["dojo/_base/declare",
 
         loadMyAsk: function() {
             var self = this;
-            console.log('Load my cazzi');
             self.myAsk = new MyAsk().placeAt(dojo.byId('myAskContainer'));
-            
         },
         
 

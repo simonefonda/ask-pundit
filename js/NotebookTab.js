@@ -235,8 +235,6 @@ define(["dojo/_base/declare",
                             
                             if (_type in data[uri]) {
                                 
-                                console.log('ara che data ', uri, data[uri]);
-                                
                                 var uri_enc = BASE64.encode(uri),
                                     label = data[uri][_lab][0].value,
                                     label_short = label.length > 50 ? label.substr(0, self.titleChars)+' ..' : label,
