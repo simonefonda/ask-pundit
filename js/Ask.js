@@ -13,6 +13,7 @@ define(["dojo/_base/declare",
         "ask/BookmarkCollectionTab",
         "ask/BookmarkList",
         "ask/IOHelper",
+        "ask/MyAsk",
 
         "pundit/AuthenticatedRequester",
         
@@ -22,7 +23,7 @@ define(["dojo/_base/declare",
     function(declare, router, on, request, config, encode,
         indexTemplate, _WidgetBase, _TemplatedMixin, 
         NotebookItem, NotebookTab, TimelineTab, BookmarkCollectionTab, BookmarkList, IOHelper, 
-        PAuthenticatedRequester,
+        MyAsk, PAuthenticatedRequester,
         BTab, 
         TabContainer, ContentPane) {
 
@@ -33,6 +34,9 @@ define(["dojo/_base/declare",
         socketHelper: '',
         liveSearchTimer: '',
         liveSearchTimerLength: 500,
+        notebookLoaded: false,
+        bookmarkLoaded: false,
+        myAskLoaded: false,
         postMixInProperties: function() {
             this.inherited(arguments);
         },
@@ -47,18 +51,16 @@ define(["dojo/_base/declare",
         },
         
         startup: function() {
-            this.inherited(arguments);
-            this.setupRouter();
-            this.setupHandlers();
+            var self = this;
             
-            this.notebookLoaded = false;
-            this.bookmarkLoaded = false;
-
-            this.requester = new PAuthenticatedRequester({
+            self.inherited(arguments);
+            self.setupHandlers();
+            
+            self.requester = new PAuthenticatedRequester({
                 debug: true
-            })
-            .placeAt(dojo.byId('ask_container'))
-            .startup();
+            }).placeAt(dojo.byId('ask_container')).startup();
+
+            this.setupRouter();
 
         },
 
@@ -117,20 +119,26 @@ define(["dojo/_base/declare",
             var self = this;
             
             router.register('/notebooks/', function(evt) {
-                if (!self.notebookLoaded)
+                if (!self.notebookLoaded) {
                     self.loadNotebookList();
+                    self.notebookLoaded = true;
+                }
                 dojo.query("[href='#tab-notebooks']").tab('show');
             });
 
             router.register('/bookmarks/', function(evt) {
-                if (!self.bookmarkLoaded)
+                if (!self.bookmarkLoaded) {
+                    self.bookmarkLoaded = true;
                     self.loadBookmarkList();
+                }
                 dojo.query("[href='#tab-bookmarks']").tab('show');
             });
 
             router.register('/myAsk/', function(evt) {
-                if (!self.myAskLoaded)
+                if (!self.myAskLoaded) {
+                    self.myAskLoaded = true;
                     self.loadMyAsk();
+                }
                 dojo.query("[href='#tab-myAsk']").tab('show');
             });
 
@@ -154,13 +162,21 @@ define(["dojo/_base/declare",
                 
         },
 
+        loadMyAsk: function() {
+            var self = this;
+            console.log('Load my cazzi');
+            self.myAsk = new MyAsk().placeAt(dojo.byId('myAskContainer'));
+            
+        },
+        
+
         // TODO: move this to an object handling himself?
         loadNotebookList: function() {
             var self = this;
 
             request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/public/", {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data) {
                     dojo.query('#notebooksContainer').empty();
