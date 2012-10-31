@@ -650,16 +650,15 @@ div.accordion-group a i {
 div.accordion-group a:hover i {
   opacity: 1; }
 
-/*** Login modal ***/
-/* line 539, ask.scss */
+/* line 2, _ask_login_modal.scss */
 #pundit-login-modal .modal-body {
   /* Hide text depending on login state: off, waiting, logged */ }
-  /* line 543, ask.scss */
+  /* line 6, _ask_login_modal.scss */
   #pundit-login-modal .modal-body.pundit-login-state-off .pundit-login-waiting, #pundit-login-modal .modal-body.pundit-login-state-off .pundit-login-logged {
     display: none; }
-  /* line 546, ask.scss */
+  /* line 9, _ask_login_modal.scss */
   #pundit-login-modal .modal-body.pundit-login-state-waiting .pundit-login-off, #pundit-login-modal .modal-body.pundit-login-state-waiting .pundit-login-logged {
     display: none; }
-  /* line 549, ask.scss */
+  /* line 12, _ask_login_modal.scss */
   #pundit-login-modal .modal-body.pundit-login-state-logged .pundit-login-off, #pundit-login-modal .modal-body.pundit-login-state-logged .pundit-login-waiting {
     display: none; }
