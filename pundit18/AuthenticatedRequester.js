@@ -1,5 +1,5 @@
 /**
- * @class pundit.authenticatedRequests
+ * @class pundit.authenticatedRequester
  * @extends pundit.baseComponent
  * @description Provides facilities to interact with the pundit server, through
  * authenticated API Calls. The authentication is granted by an OpenID workflow,
@@ -11,11 +11,8 @@ define([
         "dojo/_base/declare",
         "dojo/parser",
         "pundit/BaseComponent",
-
         "bootstrap/Modal",
-
         "dojo/text!pundit/tmpl/PunditLoginModalTemplate.html",
-
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"
     ], 
@@ -24,11 +21,8 @@ define([
         declare, 
         parser,
         BaseComponent,
-
         BModal,
-
         LoginModalTemplate,
-
         _WidgetBase,
         _TemplatedMixin
     ) {
@@ -149,17 +143,15 @@ define([
     xDelete: function(callParams) {
         dojo.xhrDelete(this.setWrappingCallParams(callParams));
     },
-	
+
     showLoginForm: function(redirectURL) {
         var self = this;
         
         self.redirectURL = redirectURL;
-        // this.dialog.attr("title", 'You are not logged in!');
         dojo.query('#pundit-login-popup-content').removeClass('logged').removeClass('waiting');
-        // this.dialog.show();
         self.showLogin();
     },
-	
+
     openLoginPopUp : function() {
         var self = this;
 
