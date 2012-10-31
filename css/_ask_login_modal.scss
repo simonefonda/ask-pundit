@@ -1,5 +1,7 @@
 #pundit-login-modal {
     .modal-body {
+        
+        font-size: 1.2em;
 
         /* Hide text depending on login state: off, waiting, logged */
         &.pundit-login-state-off {

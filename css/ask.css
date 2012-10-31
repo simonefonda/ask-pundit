@@ -1,25 +1,18 @@
 @import 'http://fonts.googleapis.com/css?family=Lato:400,900';
-/* @override 
-	http://localhost/ask-dojo/css/ask.css */
 @font-face {
   font-family: "Rockwell";
   src: url("Rockwell.otf"); }
 
-/*
-body, html {
-	font-family: 'Rockwell', 'verdana', sans-serif;
-}
-*/
-/* line 17, ask.scss */
+/* line 8, ask.scss */
 #ask_container {
   font-family: 'Rockwell'; }
 
-/* line 21, ask.scss */
+/* line 12, ask.scss */
 #askTabContainer .tab-content {
   position: relative;
   top: 50px; }
 
-/* line 27, ask.scss */
+/* line 17, ask.scss */
 #ask-pills {
   width: 100%;
   position: fixed;
@@ -29,42 +22,56 @@ body, html {
   background-color: white;
   z-index: 1000; }
 
-/* line 38, ask.scss */
+/* line 27, ask.scss */
 legend.interactive:hover {
   cursor: pointer;
   color: #FAA732; }
 
-/* line 43, ask.scss */
-#askTabContainer {
-  /* font-family: 'Lato', sans-serif; */ }
-
-/* line 47, ask.scss */
+/* line 32, ask.scss */
 .very-hidden {
   display: none; }
 
-/* line 49, ask.scss */
+/* line 36, ask.scss */
+div.accordion-group .accordion-heading {
+  background-color: #eee; }
+/* line 40, ask.scss */
+div.accordion-group img {
+  border: 1px solid black;
+  max-width: 100px;
+  max-height: 100px;
+  float: left;
+  margin-right: 20px; }
+/* line 48, ask.scss */
+div.accordion-group a i {
+  margin-left: 5px;
+  opacity: 0.6; }
+/* line 52, ask.scss */
+div.accordion-group a:hover i {
+  opacity: 1; }
+
+/* line 1, _ask_timeline.scss */
 .ti-progress-container {
   padding: 20px 90px; }
 
-/* line 52, ask.scss */
+/* line 5, _ask_timeline.scss */
 .progress-percentage {
   display: block;
   margin: 10px;
   color: white;
   text-align: center; }
-  /* line 57, ask.scss */
+  /* line 10, _ask_timeline.scss */
   .progress-percentage .progress {
     margin-top: 20px; }
 
-/* line 63, ask.scss */
+/* line 15, _ask_timeline.scss */
 .timeline-pane {
   background-color: #424242; }
-  /* line 66, ask.scss */
+  /* line 18, _ask_timeline.scss */
   .timeline-pane h1 {
     color: white;
     padding: 6px 10px;
     font-weight: normal; }
-  /* line 72, ask.scss */
+  /* line 24, _ask_timeline.scss */
   .timeline-pane a.ti-credits {
     text-decoration: none;
     -webkit-transition: background-color 0.6s;
@@ -77,125 +84,125 @@ legend.interactive:hover {
     height: 22px;
     text-align: center;
     line-height: 22px; }
-    /* line 84, ask.scss */
+    /* line 36, _ask_timeline.scss */
     .timeline-pane a.ti-credits:hover {
       color: black;
       background-color: #ccc; }
 
 /* PEOPLE COLUMN */
-/* line 94, ask.scss */
+/* line 46, _ask_timeline.scss */
 .ti-people-title,
 .ti-tags .ti-title span,
 .ti-timeline-title {
   font-size: 1.5em;
   color: white; }
 
-/* line 102, ask.scss */
+/* line 53, _ask_timeline.scss */
 .ti-people-picture {
   width: 50px;
   height: 40px;
   text-align: center; }
-  /* line 107, ask.scss */
+  /* line 58, _ask_timeline.scss */
   .ti-people-picture div {
     width: 50px;
     height: 40px;
     min-height: 40px;
     display: table-cell;
     vertical-align: middle; }
-    /* line 115, ask.scss */
+    /* line 66, _ask_timeline.scss */
     .ti-people-picture div img {
       max-height: 40px;
       max-width: 50px;
       vertical-align: middle; }
 
-/* line 123, ask.scss */
+/* line 74, _ask_timeline.scss */
 .ti-people {
   width: 180px; }
-  /* line 125, ask.scss */
+  /* line 76, _ask_timeline.scss */
   .ti-people li {
     display: block;
     height: 40px;
     margin-bottom: 4px; }
-  /* line 130, ask.scss */
+  /* line 81, _ask_timeline.scss */
   .ti-people li > div {
     float: left;
     height: 40px;
     border: 0px; }
-  /* line 135, ask.scss */
+  /* line 86, _ask_timeline.scss */
   .ti-people .ti-people-title {
     height: 30px; }
-  /* line 138, ask.scss */
+  /* line 89, _ask_timeline.scss */
   .ti-people ul {
     list-style: none;
     margin: 0px;
     padding: 0px; }
 
-/* line 145, ask.scss */
+/* line 96, _ask_timeline.scss */
 .ti-people-color {
   width: 10px; }
 
-/* line 149, ask.scss */
+/* line 100, _ask_timeline.scss */
 .ti-people-item {
   cursor: pointer;
   -webkit-transition: background-color 0.6s;
   background-color: #979797; }
-  /* line 154, ask.scss */
+  /* line 105, _ask_timeline.scss */
   .ti-people-item.active {
     background-color: #dedede; }
 
-/* line 159, ask.scss */
+/* line 110, _ask_timeline.scss */
 .ti-people-name {
   width: 115px;
   font-size: 1.1em; }
-  /* line 163, ask.scss */
+  /* line 114, _ask_timeline.scss */
   .ti-people-name p {
     padding: 1px 5px; }
 
 /* TIMELINE */
-/* line 170, ask.scss */
+/* line 121, _ask_timeline.scss */
 .ti-timeline {
   margin-left: 260px;
   height: 290px;
   width: 600px; }
 
-/* line 176, ask.scss */
+/* line 127, _ask_timeline.scss */
 .ti-timeline-title {
   height: 25px; }
 
-/* line 179, ask.scss */
+/* line 130, _ask_timeline.scss */
 .ti-title-name {
   display: inline;
   float: left; }
 
-/* line 183, ask.scss */
+/* line 134, _ask_timeline.scss */
 .ti-timeline-title ul {
   list-style: none;
   float: right; }
 
-/* line 187, ask.scss */
+/* line 138, _ask_timeline.scss */
 .ti-timeline-title ul li {
   display: inline;
   color: #aaa; }
 
-/* line 191, ask.scss */
+/* line 142, _ask_timeline.scss */
 .ti-timeline-title ul li.selected {
   color: white; }
 
-/* line 195, ask.scss */
+/* line 146, _ask_timeline.scss */
 .ti-left-col {
   width: 250px;
   display: block;
   float: left; }
 
 /* TAGS */
-/* line 204, ask.scss */
+/* line 155, _ask_timeline.scss */
 .ti-tags {
   margin-top: 15px; }
-  /* line 207, ask.scss */
+  /* line 158, _ask_timeline.scss */
   .ti-tags .ti-tag {
     cursor: pointer; }
 
-/* line 212, ask.scss */
+/* line 163, _ask_timeline.scss */
 a.ti-reset-button {
   position: absolute;
   margin-left: 209px;
@@ -204,27 +211,26 @@ a.ti-reset-button {
   height: 22px;
   text-align: center;
   line-height: 22px;
-  /*	float: right; */
   padding: 0px 5px;
   color: #aaa;
   display: none; }
-  /* line 227, ask.scss */
+  /* line 176, _ask_timeline.scss */
   a.ti-reset-button.active {
     -webkit-transition: background-color 0.6s;
     display: inline;
     color: #444;
     background-color: #aaa; }
-    /* line 233, ask.scss */
+    /* line 182, _ask_timeline.scss */
     a.ti-reset-button.active:hover {
       color: white;
       cursor: pointer;
       text-decoration: none; }
 
-/* line 243, ask.scss */
+/* line 190, _ask_timeline.scss */
 .ti-title {
   display: block; }
 
-/* line 246, ask.scss */
+/* line 193, _ask_timeline.scss */
 .ti-tag {
   display: inline-block;
   padding: 1px 7px;
@@ -232,32 +238,32 @@ a.ti-reset-button {
   color: black;
   -webkit-transition: background-color 0.6s;
   background-color: #979797; }
-  /* line 254, ask.scss */
+  /* line 201, _ask_timeline.scss */
   .ti-tag.active {
     background-color: white; }
 
-/* line 259, ask.scss */
+/* line 206, _ask_timeline.scss */
 .ti-left-col {
   padding: 1px 4px; }
 
-/* line 263, ask.scss */
+/* line 210, _ask_timeline.scss */
 .ti-annotations .slot, .ti-left-col {
   -webkit-transition: opacity 2s;
   opacity: 1.0; }
-  /* line 266, ask.scss */
+  /* line 213, _ask_timeline.scss */
   .ti-annotations .slot.ti-invisible, .ti-left-col.ti-invisible {
     opacity: 0; }
 
 /* ANNOTATIONS */
-/* line 273, ask.scss */
+/* line 220, _ask_timeline.scss */
 .ti-annotations {
   margin-left: 260px;
   height: 400px; }
-  /* line 277, ask.scss */
+  /* line 224, _ask_timeline.scss */
   .ti-annotations .slots-header {
     width: 600px;
     margin-top: -6px; }
-    /* line 281, ask.scss */
+    /* line 228, _ask_timeline.scss */
     .ti-annotations .slots-header table {
       width: 600px;
       text-align: center;
@@ -265,161 +271,162 @@ a.ti-reset-button {
       font-size: 0.9em;
       margin-bottom: 1px;
       font-decoration: italic; }
-      /* line 289, ask.scss */
+      /* line 236, _ask_timeline.scss */
       .ti-annotations .slots-header table td.ti-month-0 {
         background-color: rgba(255, 255, 255, 0.1);
         border-right: 1px solid #424242; }
-      /* line 293, ask.scss */
+      /* line 240, _ask_timeline.scss */
       .ti-annotations .slots-header table td.ti-month-1 {
         background-color: rgba(255, 255, 255, 0.15);
         border-left: 1px solid #424242; }
 
-/* line 303, ask.scss */
+/* line 250, _ask_timeline.scss */
 .ti-annotations .slot {
   display: block;
   position: absolute;
   width: 20px;
   height: 20px; }
 
-/* line 309, ask.scss */
+/* Position 30 slots from left to right */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-1 {
-  margin-left: 20px; }
+   margin-left: 20px; }
 
-/* line 310, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-2 {
-  margin-left: 40px; }
+   margin-left: 40px; }
 
-/* line 311, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-3 {
-  margin-left: 60px; }
+   margin-left: 60px; }
 
-/* line 312, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-4 {
-  margin-left: 80px; }
+   margin-left: 80px; }
 
-/* line 313, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-5 {
-  margin-left: 100px; }
+   margin-left: 100px; }
 
-/* line 314, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-6 {
-  margin-left: 120px; }
+   margin-left: 120px; }
 
-/* line 315, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-7 {
-  margin-left: 140px; }
+   margin-left: 140px; }
 
-/* line 316, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-8 {
-  margin-left: 160px; }
+   margin-left: 160px; }
 
-/* line 317, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-9 {
-  margin-left: 180px; }
+   margin-left: 180px; }
 
-/* line 318, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-10 {
-  margin-left: 200px; }
+   margin-left: 200px; }
 
-/* line 319, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-11 {
-  margin-left: 220px; }
+   margin-left: 220px; }
 
-/* line 320, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-12 {
-  margin-left: 240px; }
+   margin-left: 240px; }
 
-/* line 321, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-13 {
-  margin-left: 260px; }
+   margin-left: 260px; }
 
-/* line 322, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-14 {
-  margin-left: 280px; }
+   margin-left: 280px; }
 
-/* line 323, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-15 {
-  margin-left: 300px; }
+   margin-left: 300px; }
 
-/* line 324, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-16 {
-  margin-left: 320px; }
+   margin-left: 320px; }
 
-/* line 325, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-17 {
-  margin-left: 340px; }
+   margin-left: 340px; }
 
-/* line 326, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-18 {
-  margin-left: 360px; }
+   margin-left: 360px; }
 
-/* line 327, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-19 {
-  margin-left: 380px; }
+   margin-left: 380px; }
 
-/* line 328, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-20 {
-  margin-left: 400px; }
+   margin-left: 400px; }
 
-/* line 329, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-21 {
-  margin-left: 420px; }
+   margin-left: 420px; }
 
-/* line 330, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-22 {
-  margin-left: 440px; }
+   margin-left: 440px; }
 
-/* line 331, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-23 {
-  margin-left: 460px; }
+   margin-left: 460px; }
 
-/* line 332, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-24 {
-  margin-left: 480px; }
+   margin-left: 480px; }
 
-/* line 333, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-25 {
-  margin-left: 500px; }
+   margin-left: 500px; }
 
-/* line 334, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-26 {
-  margin-left: 520px; }
+   margin-left: 520px; }
 
-/* line 335, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-27 {
-  margin-left: 540px; }
+   margin-left: 540px; }
 
-/* line 336, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-28 {
-  margin-left: 560px; }
+   margin-left: 560px; }
 
-/* line 337, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-29 {
-  margin-left: 580px; }
+   margin-left: 580px; }
 
-/* line 338, ask.scss */
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot-30 {
-  margin-left: 600px; }
+   margin-left: 600px; }
 
-/* line 341, ask.scss */
+/* line 263, _ask_timeline.scss */
 .ti-ann-item {
   -webkit-transition: opacity 0.6s;
   z-index: 10;
   position: relative;
   /* &.collapsed */ }
-  /* line 346, ask.scss */
+  /* line 268, _ask_timeline.scss */
   .ti-ann-item.collapsed {
     width: 20px;
     z-index: 0; }
-    /* line 350, ask.scss */
+    /* line 272, _ask_timeline.scss */
     .ti-ann-item.collapsed:hover {
       z-index: 1000; }
-    /* line 353, ask.scss */
+    /* line 275, _ask_timeline.scss */
     .ti-ann-item.collapsed .box {
       display: block;
       width: 19px;
       height: 19px; }
-      /* line 357, ask.scss */
+      /* line 279, _ask_timeline.scss */
       .ti-ann-item.collapsed .box:hover {
         -webkit-transition: width 0.3s, height 0.3s, margin 0.3s, border 0.3s;
         z-index: 1000;
@@ -431,29 +438,29 @@ a.ti-reset-button {
         margin-bottom: -6px;
         border: 1px solid #424242;
         opacity: 1.0; }
-    /* line 376, ask.scss */
+    /* line 298, _ask_timeline.scss */
     .ti-ann-item.collapsed .ti-boxes {
       display: block; }
-    /* line 377, ask.scss */
+    /* line 299, _ask_timeline.scss */
     .ti-ann-item.collapsed .ti-ann-content {
       display: none; }
-  /* line 379, ask.scss */
+  /* line 301, _ask_timeline.scss */
   .ti-ann-item .ti-boxes {
     display: none; }
-  /* line 380, ask.scss */
+  /* line 302, _ask_timeline.scss */
   .ti-ann-item .ti-ann-content {
     display: block;
     width: 250px;
     background: #dedede; }
-  /* line 387, ask.scss */
+  /* line 309, _ask_timeline.scss */
   .ti-ann-item.collapsed.deactive {
     opacity: 0.10; }
-  /* line 390, ask.scss */
+  /* line 312, _ask_timeline.scss */
   .ti-ann-item.active.collapsed .box {
     opacity: 1.0; }
 
 /* .ti-ann-item */
-/* line 395, ask.scss */
+/* line 317, _ask_timeline.scss */
 .ti-ann-close {
   position: absolute;
   left: 0px;
@@ -463,13 +470,13 @@ a.ti-reset-button {
   color: white;
   font-weight: bold;
   text-align: center; }
-  /* line 405, ask.scss */
+  /* line 327, _ask_timeline.scss */
   .ti-ann-close:hover {
     background-color: rgba(255, 255, 255, 0.5);
     color: #666;
     cursor: pointer; }
 
-/* line 415, ask.scss */
+/* line 337, _ask_timeline.scss */
 .ti-ann-content-picture {
   width: 50px;
   height: 50px;
@@ -477,188 +484,171 @@ a.ti-reset-button {
   margin-right: 5px;
   margin-bottom: 5px;
   text-align: center; }
-  /* line 423, ask.scss */
+  /* line 345, _ask_timeline.scss */
   .ti-ann-content-picture div {
     width: 50px;
     height: 50px;
     min-height: 50px;
     display: table-cell;
     vertical-align: middle; }
-    /* line 430, ask.scss */
+    /* line 352, _ask_timeline.scss */
     .ti-ann-content-picture div img {
       margin: 1px;
       max-height: 50px;
       max-width: 50px;
       vertical-align: middle; }
 
-/* line 439, ask.scss */
+/* line 361, _ask_timeline.scss */
 .ti-ann-content-name {
   margin-left: 50px;
   color: black;
   font-weight: bold; }
 
-/* line 444, ask.scss */
+/* line 366, _ask_timeline.scss */
 .ti-ann-content-text {
   padding: 5px;
   color: black;
   max-height: 200px;
   overflow: auto; }
 
-/* line 450, ask.scss */
+/* line 372, _ask_timeline.scss */
 .ti-ann-content-link {
   padding: 1px 6px; }
-  /* line 453, ask.scss */
+  /* line 375, _ask_timeline.scss */
   .ti-ann-content-link a i {
     margin-left: 5px;
     opacity: 0.6; }
-  /* line 457, ask.scss */
+  /* line 379, _ask_timeline.scss */
   .ti-ann-content-link a:hover i {
     opacity: 1; }
 
-/* line 459, ask.scss */
+/* line 381, _ask_timeline.scss */
 .ti-ann-content-source {
   color: #666;
   font-style: italic; }
 
-/* line 463, ask.scss */
+/* line 385, _ask_timeline.scss */
 .ti-ann-content-date {
   color: #666; }
 
-/* line 468, ask.scss */
+/* line 390, _ask_timeline.scss */
 .ti-boxes {
   border-bottom: 1px solid #424242;
   border-right: 1px solid #424242;
   cursor: pointer; }
 
-/* line 473, ask.scss */
+/* line 395, _ask_timeline.scss */
 .ti-ann-content {
   border-left: 20px solid;
   margin-bottom: 1px; }
 
 /* Boxes COLORS */
-/* line 479, ask.scss */
-.ti-ann-content.color-0 {
+/* line 405, _ask_timeline.scss */
+.ti-ann-content-color-0 {
   border-color: #6abcd1; }
 
-/* line 480, ask.scss */
+/* line 406, _ask_timeline.scss */
 .box.color-0 {
   background-color: #6abcd1; }
 
-/* line 481, ask.scss */
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-0 {
   background-color: #6abcd1; }
 
-/* line 483, ask.scss */
-.ti-ann-content.color-1 {
+/* line 405, _ask_timeline.scss */
+.ti-ann-content-color-1 {
   border-color: #a6534b; }
 
-/* line 484, ask.scss */
+/* line 406, _ask_timeline.scss */
 .box.color-1 {
   background-color: #a6534b; }
 
-/* line 485, ask.scss */
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-1 {
   background-color: #a6534b; }
 
-/* line 487, ask.scss */
-.ti-ann-content.color-2 {
+/* line 405, _ask_timeline.scss */
+.ti-ann-content-color-2 {
   border-color: #f3ce7f; }
 
-/* line 488, ask.scss */
+/* line 406, _ask_timeline.scss */
 .box.color-2 {
   background-color: #f3ce7f; }
 
-/* line 489, ask.scss */
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-2 {
   background-color: #f3ce7f; }
 
-/* line 491, ask.scss */
-.ti-ann-content.color-3 {
+/* line 405, _ask_timeline.scss */
+.ti-ann-content-color-3 {
   border-color: #5d8476; }
 
-/* line 492, ask.scss */
+/* line 406, _ask_timeline.scss */
 .box.color-3 {
   background-color: #5d8476; }
 
-/* line 493, ask.scss */
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-3 {
   background-color: #5d8476; }
 
-/* line 495, ask.scss */
-.ti-ann-content.color-4 {
+/* line 405, _ask_timeline.scss */
+.ti-ann-content-color-4 {
   border-color: #ca6f47; }
 
-/* line 496, ask.scss */
+/* line 406, _ask_timeline.scss */
 .box.color-4 {
   background-color: #ca6f47; }
 
-/* line 497, ask.scss */
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-4 {
   background-color: #ca6f47; }
 
-/* line 500, ask.scss */
-.ti-ann-content.color-5 {
+/* line 405, _ask_timeline.scss */
+.ti-ann-content-color-5 {
   border-color: #a76ea1; }
 
-/* line 501, ask.scss */
+/* line 406, _ask_timeline.scss */
 .box.color-5 {
   background-color: #a76ea1; }
 
-/* line 502, ask.scss */
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-5 {
   background-color: #a76ea1; }
 
-/* line 504, ask.scss */
-.ti-ann-content.color-6 {
-  border-color: #a99c43; }
-
-/* line 505, ask.scss */
-.box.color-6 {
-  background-color: #a99c43; }
-
-/* line 506, ask.scss */
-.ti-people-color.color-6 {
-  background-color: #a99c43; }
-
-/* line 508, ask.scss */
-.ti-ann-content.color-7 {
+/* line 405, _ask_timeline.scss */
+.ti-ann-content-color-6 {
   border-color: #693b94; }
 
-/* line 509, ask.scss */
+/* line 406, _ask_timeline.scss */
+.box.color-6 {
+  background-color: #693b94; }
+
+/* line 407, _ask_timeline.scss */
+.ti-people-color.color-6 {
+  background-color: #693b94; }
+
+/* line 405, _ask_timeline.scss */
+.ti-ann-content-color-7 {
+  border-color: #a99c43; }
+
+/* line 406, _ask_timeline.scss */
 .box.color-7 {
-  background-color: #693b94; }
+  background-color: #a99c43; }
 
-/* line 510, ask.scss */
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-7 {
-  background-color: #693b94; }
-
-/* line 515, ask.scss */
-div.accordion-group .accordion-heading {
-  background-color: #eee; }
-/* line 519, ask.scss */
-div.accordion-group img {
-  border: 1px solid black;
-  max-width: 100px;
-  max-height: 100px;
-  float: left;
-  margin-right: 20px; }
-/* line 527, ask.scss */
-div.accordion-group a i {
-  margin-left: 5px;
-  opacity: 0.6; }
-/* line 531, ask.scss */
-div.accordion-group a:hover i {
-  opacity: 1; }
+  background-color: #a99c43; }
 
 /* line 2, _ask_login_modal.scss */
 #pundit-login-modal .modal-body {
+  font-size: 1.2em;
   /* Hide text depending on login state: off, waiting, logged */ }
-  /* line 6, _ask_login_modal.scss */
+  /* line 8, _ask_login_modal.scss */
   #pundit-login-modal .modal-body.pundit-login-state-off .pundit-login-waiting, #pundit-login-modal .modal-body.pundit-login-state-off .pundit-login-logged {
     display: none; }
-  /* line 9, _ask_login_modal.scss */
+  /* line 11, _ask_login_modal.scss */
   #pundit-login-modal .modal-body.pundit-login-state-waiting .pundit-login-off, #pundit-login-modal .modal-body.pundit-login-state-waiting .pundit-login-logged {
     display: none; }
-  /* line 12, _ask_login_modal.scss */
+  /* line 14, _ask_login_modal.scss */
   #pundit-login-modal .modal-body.pundit-login-state-logged .pundit-login-off, #pundit-login-modal .modal-body.pundit-login-state-logged .pundit-login-waiting {
     display: none; }
