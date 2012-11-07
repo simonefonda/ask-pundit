@@ -58,19 +58,6 @@ define(["dojo/_base/declare",
                 dojo.query('#notebook-tab-'+self.notebookId).addClass('active');
             });
 
-            /*
-            var b = "<li><a href='#/timeline/"+this.notebookId+"'" +
-                    "' data-toggle='tab' id='tab-time-"+self.notebookId+
-                    "'>T: "+this.name+"</a></li>";
-
-            dojo.place(b, "ask-pills");
-            
-            on(dojo.query('#tab-time-'+self.notebookId), 'show', function(e) {
-                dojo.query('#ask-tab-content .tab-pane').removeClass('active');
-                dojo.query('#timeline-tab-'+self.notebookId).addClass('active');
-            });
-            */
-
             if (self.canEdit) {
                 console.log('OMG CAN EDIT OMG OMG OMG');
             }
