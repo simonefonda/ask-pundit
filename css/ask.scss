@@ -54,4 +54,6 @@ div.accordion-group {
 }
 
 @import "ask_timeline";
-@import "ask_login_modal";
+@import "my_ask";
+/* TODO: move this in pundit.scss? */
+@import "pundit_login_modal";

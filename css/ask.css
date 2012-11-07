@@ -639,13 +639,25 @@ a.ti-reset-button {
 .ti-people-color.color-7 {
   background-color: #a99c43; }
 
+/* Hide stuff depending on login state: off, waiting, logged */
+/* line 4, _my_ask.scss */
+.my-ask.login-state-off .login-waiting, .my-ask.login-state-off .login-logged {
+  display: none; }
+/* line 7, _my_ask.scss */
+.my-ask.login-state-waiting .login-off, .my-ask.login-state-waiting .login-logged {
+  display: none; }
+/* line 10, _my_ask.scss */
+.my-ask.login-state-logged .login-off, .my-ask.login-state-logged .login-waiting {
+  display: none; }
+
+/* TODO: move this in pundit.scss? */
 /* Hide text depending on login state: off, waiting, logged */
-/* line 4, _ask_login_modal.scss */
+/* line 4, _pundit_login_modal.scss */
 #pundit-login-modal.pundit-login-state-off .pundit-login-waiting, #pundit-login-modal.pundit-login-state-off .pundit-login-logged {
   display: none; }
-/* line 7, _ask_login_modal.scss */
+/* line 7, _pundit_login_modal.scss */
 #pundit-login-modal.pundit-login-state-waiting .pundit-login-off, #pundit-login-modal.pundit-login-state-waiting .pundit-login-logged {
   display: none; }
-/* line 10, _ask_login_modal.scss */
+/* line 10, _pundit_login_modal.scss */
 #pundit-login-modal.pundit-login-state-logged .pundit-login-off, #pundit-login-modal.pundit-login-state-logged .pundit-login-waiting {
   display: none; }

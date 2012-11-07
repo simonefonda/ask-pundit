@@ -1,12 +1,24 @@
-<div>
+<div class="my-ask login-state-off">
 
-    <div class="hero span5">
-        <blockquote>
-            <p>135465432 123432</p>
-            <small>aeae a</small>
-        </blockquote>
+    <div class="row">
+        <div class="login-logged">
+            <div class="span5">
+                <blockquote>
+                    <p>Logged in as .. </p>
+                    <small> .. more info</small>
+                </blockquote>
+            </div>
+            <button class="ask-logout btn btn-danger">Logout</button>
+        </div>
+
+        <div class="login-off">
+            <div class="span5">
+                <p>You are not logged in.</p>
+            </div>
+            <button class="ask-login btn btn-primary">Login</button>
+        </div>
     </div>
-
-    <div class="row"></div>
+    
+    <div id="my-ask-notebooks"></div>
 
 </div>
