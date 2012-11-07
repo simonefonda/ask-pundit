@@ -117,7 +117,11 @@ define(["dojo/_base/declare",
 
             for (var j = ids.length; j--;) {
 
-                var foo = new NotebookItem({notebookId: ids[j]})
+                var foo = new NotebookItem({
+                        notebookId: ids[j],
+                        isOwner: true,
+                        canEdit: true
+                    })
                     .placeAt(dojo.byId('my-ask-notebooks'));
 
                 // self.loadNotebooksMeta(data.NotebookIDs[i]);

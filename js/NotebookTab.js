@@ -34,6 +34,8 @@ define(["dojo/_base/declare",
         itemsURIs: [],
         renderedItemsURIs: [],
         label: '',
+        isOwner: false,
+        canEdit: false,
         templateString: notebookTabTemplate,
         // number of chars to display in the title of the annotation
         titleChars: 50,
@@ -45,10 +47,33 @@ define(["dojo/_base/declare",
             self.inherited(arguments);
 
             // place the tab button
-            var b = "<li><a href='#notebook-tab-"+this.notebookId+
+            var own = self.isOwner,
+                b = "<li><a href='#/"+ (self.isOwner ? "myN" : "n") +"otebooks/"+this.notebookId+
                     "' data-toggle='tab' id='tab-"+this.notebookId+
-                    "'>N: "+this.notebookId+"</a></li>";
+                    "'>"+ (self.isOwner ? "My N" : "N") +": "+this.notebookId+"</a></li>";
             dojo.place(b, "ask-pills");
+
+            on(dojo.query('#tab-'+self.notebookId), 'show', function(e) {
+                dojo.query('#ask-tab-content .tab-pane').removeClass('active');
+                dojo.query('#notebook-tab-'+self.notebookId).addClass('active');
+            });
+
+            /*
+            var b = "<li><a href='#/timeline/"+this.notebookId+"'" +
+                    "' data-toggle='tab' id='tab-time-"+self.notebookId+
+                    "'>T: "+this.name+"</a></li>";
+
+            dojo.place(b, "ask-pills");
+            
+            on(dojo.query('#tab-time-'+self.notebookId), 'show', function(e) {
+                dojo.query('#ask-tab-content .tab-pane').removeClass('active');
+                dojo.query('#timeline-tab-'+self.notebookId).addClass('active');
+            });
+            */
+
+            if (self.canEdit) {
+                console.log('OMG CAN EDIT OMG OMG OMG');
+            }
 
             self.loadNotebookMetadata();
             self.loadNotebookAnnotations();
@@ -91,7 +116,7 @@ define(["dojo/_base/declare",
 
                         self.label = data[ann]['http://www.w3.org/2000/01/rdf-schema#label'][0].value;
                         dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
-                        dojo.query('#tab-'+self.notebookId).innerHTML("N: "+ self.label);
+                        dojo.query('#tab-'+self.notebookId).innerHTML((self.isOwner ? "My N" : "N") +": "+ self.label);
                     }
 
                 }, 

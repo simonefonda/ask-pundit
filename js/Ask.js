@@ -82,7 +82,9 @@ define(["dojo/_base/declare",
                 } else if (id.match(/\/bookmarks\//) !== null) {
                     router.go(id);
                 } else if (id.match(/\/timeline\//) !== null) {
-                    console.log('Router going id ', id);
+                    router.go(id);
+                } else if (id.match(/\/myNotebooks\//) !== null) {
+                    console.log('si ma id? ', id);
                     router.go(id);
                 } else 
                     router.go('/notebooks/'+ id.substr(-8, 8));
@@ -149,6 +151,10 @@ define(["dojo/_base/declare",
 
             router.register('/notebooks/:id', function(evt) {
                 self.openNotebook(evt.params.id);
+            });
+
+            router.register('/myNotebooks/:id', function(evt) {
+                self.openNotebook(evt.params.id, true);
             });
 
             router.register('/timeline/:id', function(evt) {
@@ -251,14 +257,17 @@ define(["dojo/_base/declare",
             dojo.query('[data-target-collection="'+base64+'"]').tab('show');
         },
         
-        openNotebook: function(id) {
-            var self = this;
+        openNotebook: function(id, mine) {
+            var self = this,
+                mine = mine || false;
             
             // if the tab doesnt exist, create it
             if (dojo.query("#notebook-tab-"+ id).length === 0)
                 var nbTab = new NotebookTab({
                     notebookId: id,
-                    id: 'notebook-tab-'+ id
+                    id: 'notebook-tab-'+ id,
+                    isOwner: mine,
+                    canEdit: mine
                 }).placeAt(dojo.byId('ask-tab-content'));
             
             dojo.query("#tab-"+id).tab('show');
