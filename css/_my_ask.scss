@@ -1,0 +1,12 @@
+/* Hide stuff depending on login state: off, waiting, logged */
+.my-ask {
+    &.login-state-off {
+        .login-waiting, .login-logged { display: none };
+    }
+    &.login-state-waiting {
+        .login-off, .login-logged { display: none };
+    }
+    &.login-state-logged {
+        .login-off, .login-waiting { display: none };
+    }
+}
