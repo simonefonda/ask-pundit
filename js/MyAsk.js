@@ -35,7 +35,7 @@ define(["dojo/_base/declare",
             // Are we logged in already? Just check.
             // If not in logged in state already, go for it
             ASK.requester.isLoggedIn(function(b, d) {
-                if (!self._isLoggedIn)
+                if (!self._isLoggedIn && b)
                     self._afterLogin(d);
             });
 
