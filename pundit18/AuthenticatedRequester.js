@@ -35,7 +35,7 @@ define([
     
     // TODO: can be removed from here and just taken from the first auth request or
     // is logged in
-    redirectURL: "AAAAAAAAAAAAAAhttp://metasound.dibet.univpm.it/annotationserver/login.jsp",
+    redirectURL: "http://metasound.dibet.univpm.it/annotationserver/login.jsp",
     
     _loggedIn: false,
     _logginInAs: {},
@@ -84,7 +84,7 @@ define([
     
     startup: function() {
         var self = this;
-        self.initLoginDialog();
+        self._initLoginDialog();
         self.log('Startup done');
     },
 
@@ -128,12 +128,17 @@ define([
         dojo.xhrDelete(this._setWrappingCallParams(callParams));
     },
 
-    initLoginDialog: function() {
+    _initLoginDialog: function() {
         var self = this;
 
         self._setLoginState('off');
 
         on(dojo.byId('pundit-login-open-button'), 'click', function() {
+            self.log('Opening the login dialog');
+            self._openLoginPopUp();
+        });
+
+        on(dojo.byId('pundit-login-open-button-again'), 'click', function() {
             self.log('Opening the login dialog');
             self._openLoginPopUp();
         });
@@ -149,14 +154,6 @@ define([
             clearTimeout(self.loginTimer);
         });
 	    
-    },
-    
-    showLogin: function() {
-        dojo.query('#pundit-login-modal').modal('show');
-    },
-    
-    hideLogin: function() {
-        dojo.query('#pundit-login-modal').modal('hide');
     },
 
     _openLoginPopUp: function() {
@@ -189,6 +186,12 @@ define([
         
     },
 
+    /**
+      * @method isLoggedIn
+      * @description Checks with the server if an user is logged in. Will call
+      * the given callback passing true or false
+      * @param f {function} Callback to be called when the check is done
+      */
     isLoggedIn: function(f) {
         var self = this;
         
@@ -225,8 +228,13 @@ define([
 
         self.xGet(args);
     }, // isLoggedIn()
-    
-    login: function() {
+
+    /**
+      * @method login
+      * @description If the user is logged, does nothing. If not, starts the
+      * login procedures, opening the modal login dialog first
+      */
+     login: function() {
         var self = this;
         
         // If we're logged in already, do nothing
@@ -239,6 +247,11 @@ define([
         
     },
     
+    /**
+      * @method logout
+      * @description Logs out any logged in user by calling the relative
+      * server API
+      */
     logout: function(f) {
         var self = this;
         
@@ -265,6 +278,18 @@ define([
         self.xGet(args);
     },
 
+    /**
+      * @method showLogin
+      * @description Shows the login modal dialog
+      */
+    showLogin: function() {
+        dojo.query('#pundit-login-modal').modal('show');
+    },
+    
+    hideLogin: function() {
+        if (dojo.hasClass('pundit-login-modal', 'in'))
+            dojo.query('#pundit-login-modal').modal('hide');
+    },
 
     // Automatically called when the login happens
     _afterLogin: function(data) {
@@ -284,11 +309,10 @@ define([
         for (var i = self.blockedRequests.length; i--;) 
             self.xGet(self.blockedRequests[i]);
       
-        // Hide the modal if open
-        if (dojo.hasClass('pundit-login-modal', 'in'))
-            setTimeout(function() { 
-                self.hideLogin();
-            }, self.opts.loginAutomaticHideMS);
+        // Hide the modal, if open
+        setTimeout(function() { 
+            self.hideLogin();
+        }, self.opts.loginAutomaticHideMS);
 
         self.fireOnLogin(data);
         
