@@ -9,17 +9,17 @@ define(["dojo/_base/declare",
         templateString: notebookItemTemplate,
         isOwner: false,
         canEdit: false,
+        
         postMixInProperties: function() {
             var self = this;
             
             self.inherited(arguments);
-            
+
+            // Render a different link if we own the notebook
             if (self.isOwner) {
-                console.log('Notebook item owner, oooh my' + self.notebookId);
                 self.href = "#/myNotebooks/" + self.notebookId;
             } else {
                 self.href = "#/notebooks/" + self.notebookId;
-                console.log('NOTNOT Notebook item owner' + self.notebookId);
             }
             
         },

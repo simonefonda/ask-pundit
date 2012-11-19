@@ -1,4 +1,5 @@
 define(["dojo/_base/declare", 
+        "dojo/_base/lang",
         "dojo/router", 
         "dojo/on", 
         "dojo/request",
@@ -16,14 +17,15 @@ define(["dojo/_base/declare",
 
         "ask/MyAsk",
         "pundit/AuthenticatedRequester",
+        "pundit/Namespace",
         
         "bootstrap/Tab",
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane"], 
-    function(declare, router, on, request, config, encode,
+    function(declare, lang, router, on, request, config, encode,
         indexTemplate, _WidgetBase, _TemplatedMixin, 
         NotebookItem, NotebookTab, TimelineTab, BookmarkCollectionTab, BookmarkList, IOHelper, 
-        MyAsk, PAuthenticatedRequester,
+        MyAsk, PAuthenticatedRequester, PNamespace,
         BTab, 
         TabContainer, ContentPane) {
 
@@ -48,9 +50,11 @@ define(["dojo/_base/declare",
                 serverPort: config.ask.nodeServerPort
             });
 
-            self.requester = PAuthenticatedRequester({
+            self.requester = new PAuthenticatedRequester({
                 debug: true
             }).placeAt(dojo.byId('ask_container'));
+            
+            self.ns = new PNamespace();
         },
         
         startup: function() {
@@ -179,7 +183,7 @@ define(["dojo/_base/declare",
         loadNotebookList: function() {
             var self = this;
 
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/public/", {
+            request.get(ASK.ns.asPublicNotebooks, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
             }).then(
@@ -204,9 +208,9 @@ define(["dojo/_base/declare",
         loadNotebooksMeta: function(id) {
             var self = this;
             
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ id +"/metadata", {
+            request.get(lang.replace(ASK.ns.asOpenNotebooksMeta, { id: id }), {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                     
@@ -289,6 +293,16 @@ define(["dojo/_base/declare",
             
             dojo.query("#tab-time-"+id).tab('show');
             
+        },
+        
+        placeErrorAt: function(title, text, placeAt) {
+            var self = this;
+            require(["ask/ErrorMessage"], function() {
+                var e = new ask.ErrorMessage({
+                    title: title, 
+                    text: text
+                }).placeAt(placeAt);
+            });
         }
                 
 	});

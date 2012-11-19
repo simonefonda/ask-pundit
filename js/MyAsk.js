@@ -23,7 +23,8 @@ define(["dojo/_base/declare",
         },
         
         _initBehaviors: function() {
-            var self = this;
+            var self = this,
+                placeAt = dojo.byId('my-ask-messages');
             
             ASK.requester.onLogin(function(d) {
                 self._afterLogin(d);
@@ -32,11 +33,21 @@ define(["dojo/_base/declare",
                 self._afterLogout(d);
             });
 
-            // Are we logged in already? Just check.
+            // Are we logged in already? Just check at startup
             // If not in logged in state already, go for it
-            ASK.requester.isLoggedIn(function(b, d) {
-                if (!self._isLoggedIn && b)
-                    self._afterLogin(d);
+            ASK.requester.isLoggedIn(function(b, data) {
+                if (!self._isLoggedIn && b === true) {
+                    self._afterLogin(data);
+                } else {
+                    // Deal with common errors
+                    // TODO: more errors? Forbidden? Moved? Other??!
+                    if (("response" in data) && ("status" in data.response)) {
+                        if (data.response.status === ASK.requester.HTTP_CONNECTION_ERROR) 
+                            ASK.placeErrorAt("CONNECTION ERROR", "Could not connect to the login server, check your internet connection.", placeAt);
+                    }
+                    
+                }
+                
             });
 
             on(dojo.query('.ask-login')[0], 'click', function() {
@@ -89,7 +100,7 @@ define(["dojo/_base/declare",
             var self = this,
             args = {
                 // TODO: create ASK.ns
-                url: "http://metasound.dibet.univpm.it/annotationserver/api/notebooks/owned",
+                url: ASK.ns.asOwnedNotebooks,
                 handleAs: "json",
                 headers : {"Accept": "application/json"},
                 load: function(r) {
@@ -101,7 +112,7 @@ define(["dojo/_base/declare",
                     self.fireOnError("DOH");
                 }
             },
-            deferred = ASK.requester.xGet(args);
+            deferred = ASK.requester._oldGet(args);
         },
         
         showOwnedNotebooks: function(ids) {

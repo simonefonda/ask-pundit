@@ -1,4 +1,5 @@
-define(["dojo/_base/declare", 
+define(["dojo/_base/declare",
+        "dojo/_base/lang",
         "dojo/request", 
         "dojo/dom-construct",
         "dojo/dom-attr",
@@ -19,7 +20,7 @@ define(["dojo/_base/declare",
         "dijit/layout/ContentPane", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, domAttr, on, router, 
+    function(declare, lang, request, domConstruct, domAttr, on, router, 
         
                 notebookTabTemplate, BCollapse, BDropdown,
                 
@@ -27,7 +28,7 @@ define(["dojo/_base/declare",
                 AnnotationPredicate, AnnotationObject,
                 
                 TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
-	
+
 	return declare("ask.NotebookTab", [_WidgetBase, _TemplatedMixin], {
         parentTabContainer: '',
         notebookId: '',
@@ -60,6 +61,10 @@ define(["dojo/_base/declare",
 
             if (self.canEdit) {
                 console.log('OMG CAN EDIT OMG OMG OMG');
+                
+                // TODO: check with the auth api if GET /notebooks/owned answers
+                // that we own this notebook id, then start getting the info
+                // with the new authenticated API
             }
 
             self.loadNotebookMetadata();
@@ -84,11 +89,23 @@ define(["dojo/_base/declare",
         }, // startup
         
         loadNotebookMetadata: function() {
-            var self = this;
+            var self = this,
+                def, url,
+                placeAt = dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-metadata')[0];
 
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ self.notebookId +"/metadata", {
+            // Use authenticated API if we're owning the notebook
+            if (self.isOwner) {
+                def = ASK.requester;
+                url = lang.replace(ASK.ns.asNotebooksMeta, { id: self.notebookId });
+            } else {
+                def = request;
+                url = lang.replace(ASK.ns.asOpenNotebooksMeta, { id: self.notebookId });
+            }
+            
+            def.get(url, {
+                url: url,
                 handleAs: "json",
-                headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" },
             }).then(
                 function(data){
                     for (var ann in data) {
@@ -99,7 +116,7 @@ define(["dojo/_base/declare",
                             label: data[ann]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
                             includes: data[ann]['http://purl.org/pundit/ont/ao#includes'] || 0
                         });
-                        foo.placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-metadata')[0]);
+                        foo.placeAt(placeAt);
 
                         self.label = data[ann]['http://www.w3.org/2000/01/rdf-schema#label'][0].value;
                         dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
@@ -108,15 +125,38 @@ define(["dojo/_base/declare",
 
                 }, 
                 function(error) {
-                    console.log('error :|');
+                    
+                    // Deal with common errors
+                    // TODO: refactor this in a support method same for all ? 
+                    if (("response" in error) && ("status" in error.response)) {
+                        if (error.response.status === ASK.requester.HTTP_ERROR_FORBIDDEN) 
+                            ASK.placeErrorAt("FORBIDDEN", "You don't have the permission to read this notebook's metadata", placeAt);
+
+                        if (error.response.status === ASK.requester.HTTP_CONNECTION_ERROR) 
+                            ASK.placeErrorAt("CONNECTION ERROR", "Something is wrong, check your internet connection.", placeAt);
+                    }
+
+                    console.log('Some error annotation meta :|', error);
                 }
             ); // then
+            
         },
         
         loadNotebookAnnotations: function() {
-            var self = this;
+            var self = this,
+                def, url,
+                placeAt = dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0];
+
+            // Use authenticated API if we're owning the notebook
+            if (self.isOwner) {
+                def = ASK.requester;
+                url = lang.replace(ASK.ns.asNbAnnList, { id: self.notebookId });
+            } else {
+                def = request;
+                url = lang.replace(ASK.ns.asOpenNbAnnList, { id: self.notebookId });
+            }
             
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ self.notebookId, {
+            def.get(url, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
             }).then(
@@ -130,7 +170,7 @@ define(["dojo/_base/declare",
                         // Annotation item
                         new NotebookItemAnnotation({
                             annotationId: annotationId
-                        }).placeAt(dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0]);
+                        }).placeAt(placeAt);
 
                         // Given the annotation ID, get the content
                         self.loadAnnotationContent({
@@ -144,7 +184,15 @@ define(["dojo/_base/declare",
 
                 }, 
                 function(error) {
-                    console.log('error :|');
+                    if (("response" in error) && ("status" in error.response)) {
+                        if (error.response.status === ASK.requester.HTTP_ERROR_FORBIDDEN) 
+                            ASK.placeErrorAt("FORBIDDEN", "You don't have the permission to read this notebook's annotations", placeAt);
+
+                        if (error.response.status === ASK.requester.HTTP_CONNECTION_ERROR) 
+                            ASK.placeErrorAt("CONNECTION ERROR", "Something is wrong, check your internet connection.", placeAt);
+                    }
+                    
+                    console.log('Some error annotation list :|', error);
                 }
             ); // then
             

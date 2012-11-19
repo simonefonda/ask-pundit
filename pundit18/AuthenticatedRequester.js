@@ -11,6 +11,7 @@ define([
         "dojo/on",
         "dojo/_base/declare",
         "dojo/parser",
+        "dojo/request/xhr",
         "pundit/BaseComponent",
         "bootstrap/Modal",
         "dojo/text!pundit/tmpl/PunditLoginModalTemplate.html",
@@ -22,6 +23,7 @@ define([
         on,
         declare, 
         parser,
+        xhr,
         BaseComponent,
         BModal,
         LoginModalTemplate,
@@ -39,6 +41,9 @@ define([
     
     _loggedIn: false,
     _logginInAs: {},
+    
+    HTTP_ERROR_FORBIDDEN: 403,
+    HTTP_CONNECTION_ERROR: 0,
     
     opts: {
         loginTimerMS: 500,
@@ -89,13 +94,66 @@ define([
     },
 
     /**
-    * @method xGet
+    * @method get
     * @description Performs an HTTP get through an authenticated Ajax call.
     * @param options {object} the same object one would pass to a 
-    * normal dojo xhrGet().
+    * normal dojo xhr.get().
     */
-    xGet: function(callParams) {
-        return dojo.xhrGet(this._setWrappingCallParams(callParams));	
+    /*
+    xGet: function(url, callParams) {
+        return xhr.get(url, this._setWrappingCallParams(callParams));
+    },
+    */
+    
+    get: function(url, callParams) {
+        var self = this,
+            foo = xhr.get(url, self._setWrappingCallParams(callParams)),
+            ref = {};
+            
+        // create a new stub object, exposing a then() member, 
+        // who just saves the functions in the stub object itself
+        ref.then = function(f, e, x){ 
+            this.orig_then = f;
+            this.orig_error = e;
+            return this;
+        }; 
+
+        
+        // TODO: more methods to stub? 
+        
+
+        // Specify our then on the original object: if there's 
+        // a login needed, show the login window, otherwise
+        // we're authenticated with the server already, pass it on
+        // TODO: deal with error: r, e
+        foo.then(function(r){ 
+            if (r && typeof(r.redirectTo) !== "undefined") {
+                // Save the request, along with the object which
+                // will store any future .then() calls on our
+                // fake object
+                self.blockedRequests.push({
+                    ref: ref,
+                    url: url, 
+                    params: callParams
+                });
+                self.redirectURL = r.redirectTo;
+                self.showLogin();
+            } else {
+                // TODO: deal with error: r, e
+                ref.orig_then(r);
+            }
+            
+        }, function(r, e, x) {
+            ref.orig_error(r, e, x);
+        });
+
+        return ref;
+    },
+    
+    _oldGet: function(args) {
+        return this
+            .get(args.url, this._setWrappingCallParams(args))
+            .then(args.load, args.error);
     },
 	
     /**
@@ -223,10 +281,14 @@ define([
                 return false;
                 
             },
-            error: function(error) {}
+            error: function(error) {
+                console.log('si ma, ara che error .....', error);
+                if (typeof(f) === 'function') f(false, error);
+                return false;
+            }
         }
 
-        self.xGet(args);
+        self._oldGet(args);
     }, // isLoggedIn()
 
     /**
@@ -275,7 +337,7 @@ define([
             error: function(error) {}
         }
 
-        self.xGet(args);
+        self._oldGet(args);
     },
 
     /**
@@ -283,9 +345,14 @@ define([
       * @description Shows the login modal dialog
       */
     showLogin: function() {
-        dojo.query('#pundit-login-modal').modal('show');
+        if (!dojo.hasClass('pundit-login-modal', 'in'))
+            dojo.query('#pundit-login-modal').modal('show');
     },
     
+    /**
+      * @method hideLogin
+      * @description Hides the login modal dialog
+      */
     hideLogin: function() {
         if (dojo.hasClass('pundit-login-modal', 'in'))
             dojo.query('#pundit-login-modal').modal('hide');
@@ -305,9 +372,13 @@ define([
         dojo.query('#pundit-login-modal .modal-body span.username')
             .html(data.fullName+" ("+data.email+")");
             
-        // exectue any pending blocked requests
-        for (var i = self.blockedRequests.length; i--;) 
-            self.xGet(self.blockedRequests[i]);
+        // exectue any pending blocked requests: get the stub
+        // object out and do a new call at that url
+        for (var i = self.blockedRequests.length; i--;) {
+            var foo = self.blockedRequests[i];
+            self.get(foo.url, foo.params)
+                .then(foo.ref.orig_then, foo.ref.orig_error);
+        }
       
         // Hide the modal, if open
         setTimeout(function() { 
@@ -333,7 +404,7 @@ define([
         
     },
 
-    _setWrappingCallParams : function(originalCallParams) {
+    _setWrappingCallParams: function(originalCallParams) {
         var self = this,
             wrappedParams = {
                 'withCredentials': true
