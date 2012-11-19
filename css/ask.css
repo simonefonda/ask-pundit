@@ -289,124 +289,124 @@ a.ti-reset-button {
 
 /* Position 30 slots from left to right */
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-1 {
-   margin-left: 20px; }
+.ti-annotations .slot.slot-1 {
+  margin-left: 20px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-2 {
-   margin-left: 40px; }
+.ti-annotations .slot.slot-2 {
+  margin-left: 40px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-3 {
-   margin-left: 60px; }
+.ti-annotations .slot.slot-3 {
+  margin-left: 60px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-4 {
-   margin-left: 80px; }
+.ti-annotations .slot.slot-4 {
+  margin-left: 80px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-5 {
-   margin-left: 100px; }
+.ti-annotations .slot.slot-5 {
+  margin-left: 100px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-6 {
-   margin-left: 120px; }
+.ti-annotations .slot.slot-6 {
+  margin-left: 120px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-7 {
-   margin-left: 140px; }
+.ti-annotations .slot.slot-7 {
+  margin-left: 140px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-8 {
-   margin-left: 160px; }
+.ti-annotations .slot.slot-8 {
+  margin-left: 160px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-9 {
-   margin-left: 180px; }
+.ti-annotations .slot.slot-9 {
+  margin-left: 180px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-10 {
-   margin-left: 200px; }
+.ti-annotations .slot.slot-10 {
+  margin-left: 200px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-11 {
-   margin-left: 220px; }
+.ti-annotations .slot.slot-11 {
+  margin-left: 220px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-12 {
-   margin-left: 240px; }
+.ti-annotations .slot.slot-12 {
+  margin-left: 240px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-13 {
-   margin-left: 260px; }
+.ti-annotations .slot.slot-13 {
+  margin-left: 260px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-14 {
-   margin-left: 280px; }
+.ti-annotations .slot.slot-14 {
+  margin-left: 280px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-15 {
-   margin-left: 300px; }
+.ti-annotations .slot.slot-15 {
+  margin-left: 300px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-16 {
-   margin-left: 320px; }
+.ti-annotations .slot.slot-16 {
+  margin-left: 320px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-17 {
-   margin-left: 340px; }
+.ti-annotations .slot.slot-17 {
+  margin-left: 340px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-18 {
-   margin-left: 360px; }
+.ti-annotations .slot.slot-18 {
+  margin-left: 360px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-19 {
-   margin-left: 380px; }
+.ti-annotations .slot.slot-19 {
+  margin-left: 380px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-20 {
-   margin-left: 400px; }
+.ti-annotations .slot.slot-20 {
+  margin-left: 400px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-21 {
-   margin-left: 420px; }
+.ti-annotations .slot.slot-21 {
+  margin-left: 420px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-22 {
-   margin-left: 440px; }
+.ti-annotations .slot.slot-22 {
+  margin-left: 440px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-23 {
-   margin-left: 460px; }
+.ti-annotations .slot.slot-23 {
+  margin-left: 460px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-24 {
-   margin-left: 480px; }
+.ti-annotations .slot.slot-24 {
+  margin-left: 480px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-25 {
-   margin-left: 500px; }
+.ti-annotations .slot.slot-25 {
+  margin-left: 500px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-26 {
-   margin-left: 520px; }
+.ti-annotations .slot.slot-26 {
+  margin-left: 520px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-27 {
-   margin-left: 540px; }
+.ti-annotations .slot.slot-27 {
+  margin-left: 540px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-28 {
-   margin-left: 560px; }
+.ti-annotations .slot.slot-28 {
+  margin-left: 560px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-29 {
-   margin-left: 580px; }
+.ti-annotations .slot.slot-29 {
+  margin-left: 580px; }
 
 /* line 259, _ask_timeline.scss */
-.ti-annotations .slot-30 {
-   margin-left: 600px; }
+.ti-annotations .slot.slot-30 {
+  margin-left: 600px; }
 
 /* line 263, _ask_timeline.scss */
 .ti-ann-item {

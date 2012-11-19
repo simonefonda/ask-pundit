@@ -1,0 +1,21 @@
+Major differences 
+
+
+** own modules declaration
+** sub modules import and use (ask/NomeModulo, dojo/request ecc)
+** configuration file and object
+** templates: dojo built-in TemplatedMixin + WidgetBase is mediocre (if-then, for, )
+** routes are available in 1.8
+
+
+
+** dojo.xhrGet 
+
+It is now in "dojo/request/xhr" usable with chaining :
+    xhr.get(url, {}).then(function(){}, f..)
+
+legacy compat ??   
+
+    dojo.xhrGet ~= 
+    xhr.get(args.url, args)
+       .then(args.load, args.error)

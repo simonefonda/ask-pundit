@@ -62,13 +62,22 @@ define(["dojo/_base/declare",
             self.name = this.notebookId;
             
             // The following is to test how it would look in the future...
-			//self.endDate = dojoDate.add(new Date(),'day', 3);
-			self.endDate = new Date();
+            //self.endDate = dojoDate.add(new Date(),'day', 3);
+            // self.endDate = new Date();
+            if (typeof(self.endDate) === "undefined") {
+                console.log('End date not found: taking TODAY');
+                self.endDate = new Date();
+            } else {
+                console.log('END date is : ', self.endDate);
+            }
+                
             self.startDate = dojoDate.add(self.endDate, 'day', -29);
             
             // TODO : date format ? 
             self.endDateString = self.endDate.toDateString();
             self.startDateString = self.startDate.toDateString();
+            
+            console.log('Timeline from-to: ', self.startDateString, self.endDateString);
             
         },
         startup: function() {
@@ -575,6 +584,7 @@ define(["dojo/_base/declare",
                 if (slot < 0) {
                     console.log('Out of range: '+slot+' Annotation date: ', self.startDate+" - "+ann.annDate);
                 } else {
+                    console.log('Placing annotation on ', self.notebookId, slot);
                     ann.placeAt(dojo.query('#timeline-tab-'+self.notebookId+' .ti-annotations .slot-'+slot)[0]);
                 }
 

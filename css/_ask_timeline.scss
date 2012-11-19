@@ -256,7 +256,7 @@ a.ti-reset-button {
 
 /* Position 30 slots from left to right */
 @for $i from 1 through 30 {
-    .ti-annotations .slot-#{$i} { margin-left : #{$i*20}px; }
+    .ti-annotations .slot.slot-#{$i} { margin-left : #{$i*20}px; }
 }
 
 

@@ -161,6 +161,10 @@ define(["dojo/_base/declare",
                 self.openNotebook(evt.params.id, true);
             });
 
+            router.register('/timeline/:id/:endDate', function(evt) {
+                self.openTimeline(evt.params.id, evt.params.endDate);
+            });
+
             router.register('/timeline/:id', function(evt) {
                 self.openTimeline(evt.params.id);
             });
@@ -277,8 +281,21 @@ define(["dojo/_base/declare",
             dojo.query("#tab-"+id).tab('show');
         },
         
-        openTimeline: function(id) {
+        openTimeline: function(id, endDate) {
             var self = this;
+            
+            if (typeof(endDate) === "undefined") {
+                console.log('No end date: using today');
+                endDate = new Date();
+            } else {
+                console.log('Having an end date: parsing and using it', endDate);
+                var y = parseInt(endDate.substr(0, 4), 10),
+                    m = parseInt(endDate.substr(4, 2), 10),
+                    d = parseInt(endDate.substr(6, 2), 10);
+                    
+                endDate = new Date(y, m-1, d);
+                console.log('Parsed end date: ', endDate, y, m, d);
+            }
             
             console.log('Opening timeline ', id);
             
@@ -287,7 +304,8 @@ define(["dojo/_base/declare",
                 console.log('NEW NEW timeline ', id);
                 var nbTab = new TimelineTab({
                     notebookId: id,
-                    id: 'timeline-tab-'+ id
+                    id: 'timeline-tab-'+ id,
+                    endDate: endDate
                 }).placeAt(dojo.byId('ask-tab-content'));
             }
             
