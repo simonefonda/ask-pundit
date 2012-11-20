@@ -1,0 +1,34 @@
+<html>
+<body>    
+    <script type="text/javascript" src="require.js"></script>
+
+    <script type="text/javascript">
+        require.config(
+            {
+                baseUrl:'../../',
+                paths: {
+                    'pundit': 'pundit18',
+                    'lib': 'pundit18/test',
+                    'ask': '/ask-pundit/js',
+                    'bootstrap': '/ask-pundit/dojo-Bootstrap/src/bootstrap',
+                    'dojo': '/ask-pundit/dojo/dojo',
+                    'dijit': '/ask-pundit/dojo/dijit'
+                    
+                }
+            }
+        );
+
+        require(['require', 'lib/chai', 'lib/mocha'], function(require, chai, mocha){
+
+            // mocha.setup('bdd');
+
+            // require(['spec/test.module', 'spec/test.script'], function(module){
+            require(['pundit18/AuthenticatedRequester'], function(module){
+                console.log("module: ", module);
+                mocha.run();
+            });
+        });
+    </script>
+
+</body>
+</html>
