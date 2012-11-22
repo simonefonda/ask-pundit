@@ -76,7 +76,7 @@ define(["dojo/_base/declare",
         _importFromTextArea: function() {
             var self = this;
 
-            var id = "4d68f81d",
+            var id = dojo.query('#my-ask-import-select').val(),
                 jsonData = dojo.query('#my-ask-import textarea')[0].value,
                 objectData = JSON.parse(jsonData),
                 context, url;
@@ -100,7 +100,7 @@ define(["dojo/_base/declare",
                     load: function(data) {
                         console.log("Here's your response: ", data);
                         dojo.query('#my-ask-messages')
-                            .append('<p><span class="label label-success">Done</span> Created annotation '+data.AnnotationID+'!</p>');
+                            .append('<p><span class="label label-success">Done</span> Created annotation '+data.AnnotationID+' on notebook '+id+'!</p>');
                     }, 
                     error: function(e) {
                         console.log('We had an error posting the annotation', e);
