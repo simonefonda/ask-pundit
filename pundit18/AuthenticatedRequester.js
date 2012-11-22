@@ -144,7 +144,8 @@ define([
             }
             
         }, function(r, e, x) {
-            ref.orig_error(r, e, x);
+            if (typeof(ref.orig_error) === "function") 
+                ref.orig_error(r, e, x);
         });
 
         return ref;
@@ -260,36 +261,45 @@ define([
                 "Accept":"application/json"
             },
             load: function(data) {
-                
-                // If the json is not what we expect, normalize it a bit
-                if (typeof(data) === 'undefined' || typeof(data.loginStatus) === 'undefined') { 
-                    data = { loginStatus: 0 };
-                    
-                // If we see a .loginServer field: save it as redirectURL
-                } else if (typeof(data.loginServer) !== "undefined")
-                    self.redirectURL = data.loginServer;
-
-                // First time we see we're logged: fire the onLogin(), modify 
-                // the modal content etc. Same for logout.
-                if (data.loginStatus === 1) {
-                    if (self._loggedIn === false) self._afterLogin(data);
-                    if (typeof(f) === 'function') f(true, data);
-                } else {
-                    if (self._loggedIn === true) self._afterLogout();
-                    if (typeof(f) === 'function') f(false);
-                }
-                return false;
-                
-            },
+                return self._handleLoginLoad(data, f);
+            }, 
             error: function(error) {
-                console.log('si ma, ara che error .....', error);
-                if (typeof(f) === 'function') f(false, error);
-                return false;
+                return self._handleLoginError(error, f);
             }
         }
 
         self._oldGet(args);
     }, // isLoggedIn()
+
+    _handleLoginError: function(error, f) {
+        console.log('si ma, ara che error .....', error);
+        if (typeof(f) === 'function') f(false, error);
+        return false;
+    },
+
+    _handleLoginLoad: function(data, f) {
+        var self = this;
+        
+        // If the json is not what we expect, normalize it a bit
+        if (typeof(data) === 'undefined' || typeof(data.loginStatus) === 'undefined') { 
+            data = { loginStatus: 0 };
+                    
+        // If we see a .loginServer field: save it as redirectURL
+        } else if (typeof(data.loginServer) !== "undefined")
+            self.redirectURL = data.loginServer;
+
+        // First time we see we're logged: fire the onLogin(), modify 
+        // the modal content etc. Same for logout.
+        if (data.loginStatus === 1) {
+            if (self._loggedIn === false) self._afterLogin(data);
+            if (typeof(f) === 'function') f(true, data);
+        } else {
+            if (self._loggedIn === true) self._afterLogout();
+            if (typeof(f) === 'function') f(false, data);
+        }
+        return false;
+    }, 
+
 
     /**
       * @method login
@@ -345,8 +355,9 @@ define([
       * @description Shows the login modal dialog
       */
     showLogin: function() {
-        if (!dojo.hasClass('pundit-login-modal', 'in'))
-            dojo.query('#pundit-login-modal').modal('show');
+        if (dojo.query('pundit-login-modal').length > 0)
+            if (!dojo.hasClass('pundit-login-modal', 'in'))
+                dojo.query('#pundit-login-modal').modal('show');
     },
     
     /**

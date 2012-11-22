@@ -66,6 +66,9 @@ define([
         self.asOpenNotebooksMeta  = self.asApi + "open/notebooks/{id}/metadata";
         self.asPublicNotebooks    = self.asApi + "open/notebooks/public/";
 
+        self.asCreateAnnotation   = self.asApi + "notebooks/{id}?context={context}"
+
+
 
         self.asAnnotations        = self.asApi + "annotations/";
         self.asMetadataSearch     = self.asApi + "annotations/metadata/search";
