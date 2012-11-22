@@ -355,7 +355,7 @@ define([
       * @description Shows the login modal dialog
       */
     showLogin: function() {
-        if (dojo.query('pundit-login-modal').length > 0)
+        if (dojo.query('#pundit-login-modal').length > 0)
             if (!dojo.hasClass('pundit-login-modal', 'in'))
                 dojo.query('#pundit-login-modal').modal('show');
     },
