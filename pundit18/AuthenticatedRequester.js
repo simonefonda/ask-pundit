@@ -365,8 +365,9 @@ define([
       * @description Hides the login modal dialog
       */
     hideLogin: function() {
-        if (dojo.hasClass('pundit-login-modal', 'in'))
-            dojo.query('#pundit-login-modal').modal('hide');
+        if (dojo.query('#pundit-login-modal').length > 0)
+            if (dojo.hasClass('pundit-login-modal', 'in'))
+                dojo.query('#pundit-login-modal').modal('hide');
     },
 
     // Automatically called when the login happens
