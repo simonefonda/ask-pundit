@@ -107,6 +107,7 @@ define([
     * @description Logs a debug message in the browser console or (if not
     * present) in a debug div appended to the document.
     * @param options {string} message to be logged.
+    * @returns boolean true if something has been logged, false otherwise
     */
     log: function(w) {
         var foo = this.opts.debug;
@@ -115,15 +116,17 @@ define([
         if (typeof(punditConfig) !== 'undefined' && punditConfig.debugAllModules === true)
             foo = true;
 
-        if (foo === false) return;
+        if (foo === false) return false;
         
         var lib_name = (this.opts.libName !== "") ? this.opts.libName : this.declaredClass;
         if (typeof console === "undefined") {
             if (!dojo.query('#debug_foo'))
                 $("body").append("<div id='debug_foo' style=' border: 3px solid yellow; font-size: 0.9em;'></div>");
             dojo.query("#debug_foo").append("<div>#"+lib_name+"# "+w+"</div>");
+            return true;
         } else {
             console.log('#'+lib_name+'# '+w);
+            return true;
         }
     } // log()
 

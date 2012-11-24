@@ -1,34 +1,38 @@
 <html>
+    <link rel="stylesheet" href="lib/mocha.css" type="text/css" media="screen" title="no title" charset="utf-8">
 <body>    
-    <script type="text/javascript" src="require.js"></script>
 
     <script type="text/javascript">
-        require.config(
-            {
-                baseUrl:'../../',
-                paths: {
-                    'pundit': 'pundit18',
-                    'lib': 'pundit18/test',
-                    'ask': '/ask-pundit/js',
-                    'bootstrap': '/ask-pundit/dojo-Bootstrap/src/bootstrap',
-                    'dojo': '/ask-pundit/dojo/dojo',
-                    'dijit': '/ask-pundit/dojo/dijit'
-                    
-                }
-            }
-        );
+        dojoConfig = {
+            parseOnLoad: true,
+            packages: [
+                { name: 'myTest', location: '/ask-pundit/pundit18/test' },
+                { name: 'testLib', location: '/ask-pundit/pundit18/test/lib' },
+                { name: 'pundit', location: '/ask-pundit/pundit18' },
+                { name: 'ask', location: '/ask-pundit/js' },
+                { name: 'bootstrap', location: '/ask-pundit/dojo-Bootstrap/src/bootstrap' }
+            ]
+        };
+    </script>
+    <script src="../../dojo/dojo/dojo.js"></script>
+    <script src="lib/jquery.1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+    
+        require(['require', 'testLib/chai', 'testLib/mocha'], function(require){
 
-        require(['require', 'lib/chai', 'lib/mocha'], function(require, chai, mocha){
+            mocha.setup('tdd');
 
-            // mocha.setup('bdd');
-
-            // require(['spec/test.module', 'spec/test.script'], function(module){
-            require(['pundit18/AuthenticatedRequester'], function(module){
-                console.log("module: ", module);
+            require([
+                'myTest/TestBaseComponent',
+                'myTest/TestAuthenticatedRequester'
+            ], function() {
                 mocha.run();
             });
+            
         });
     </script>
 
 </body>
+
+<div id="mocha"></div>
 </html>

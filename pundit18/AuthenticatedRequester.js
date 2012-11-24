@@ -306,7 +306,7 @@ define([
       * @description If the user is logged, does nothing. If not, starts the
       * login procedures, opening the modal login dialog first
       */
-     login: function() {
+    login: function() {
         var self = this;
         
         // If we're logged in already, do nothing
@@ -315,7 +315,7 @@ define([
             self.log('Login() opening the login window')
             self._setLoginState('off');
             self.showLogin();
-        })
+        });
         
     },
     
