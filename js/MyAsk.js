@@ -242,13 +242,13 @@ define(["dojo/_base/declare",
                         
                         if (typeof(data[i]['http://purl.org/pundit/ont/ao#includes']) !== "undefined") {
                             annotationNum = data[i]['http://purl.org/pundit/ont/ao#includes'].length;
-                            dojo.query('#nb-item-'+id+' small.annotationNum')
+                            dojo.query('#tab-myAsk #nb-item-'+id+' small.annotationNum')
                                 .innerHTML(annotationNum + " annotations");
                         }
                         
-                        dojo.query('#nb-item-'+id+' p').innerHTML('<span class="label label-'+visibLabel+'">'+visibility+'</span> ' +name);
-                        dojo.query('#nb-item-'+id+' div').innerHTML(name.toLowerCase());
-                        dojo.query('#nb-item-'+id+' small.id-createdAt-createdBy')
+                        dojo.query('#tab-myAsk #nb-item-'+id+' p').innerHTML('<span class="label label-'+visibLabel+'">'+visibility+'</span> ' +name);
+                        dojo.query('#tab-myAsk #nb-item-'+id+' div').innerHTML(name.toLowerCase());
+                        dojo.query('#tab-myAsk #nb-item-'+id+' small.id-createdAt-createdBy')
                             .innerHTML(createdAt);
                             
                         dojo.query('#my-ask-import-select option[value='+id+']').innerHTML(name);

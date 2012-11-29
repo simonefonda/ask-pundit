@@ -51,7 +51,7 @@ define(["dojo/_base/declare",
             });
 
             self.requester = new PAuthenticatedRequester({
-                debug: true
+                debug: false
             }).placeAt(dojo.byId('ask_container'));
             
             self.ns = new PNamespace();
