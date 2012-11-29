@@ -213,12 +213,56 @@ define(["dojo/_base/declare",
                     })
                     .placeAt(dojo.byId('my-ask-notebooks'));
 
-                // self.loadNotebooksMeta(data.NotebookIDs[i]);
+                self.loadNotebooksMeta(ids[j]);
                 
                 // TODO : refactor Ask.loadNotebooksMeta into a READER, maybe from Pundit ? 
             }
             
-        }
+        },
+        
+        // TODO: to show notebook's meta.. this is duplicating a call:
+        // same as notebook item metadata ... AND in Ask.js ..... 
+        loadNotebooksMeta: function(id) {
+            var self = this;
+        
+            ASK.requester.get(lang.replace(ASK.ns.asNotebooksMeta, { id: id }), {
+                handleAs: "json",
+                headers: { "Accept": "application/json" }
+            }).then(
+                function(data){
+                    
+                    for (var i in data) {
+                        
+                        var name = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
+                            annotationNum = 0,
+                            createdAt = data[i]['http://purl.org/dc/terms/created'][0].value,
+                            createdBy = data[i]['http://purl.org/dc/terms/creator'][0].value,
+                            visibility = data[i]['http://open.vocab.org/terms/visibility'][0].value,
+                            visibLabel = (visibility === "public") ? "success" : "important";
+                        
+                        if (typeof(data[i]['http://purl.org/pundit/ont/ao#includes']) !== "undefined") {
+                            annotationNum = data[i]['http://purl.org/pundit/ont/ao#includes'].length;
+                            dojo.query('#nb-item-'+id+' small.annotationNum')
+                                .innerHTML(annotationNum + " annotations");
+                        }
+                        
+                        dojo.query('#nb-item-'+id+' p').innerHTML('<span class="label label-'+visibLabel+'">'+visibility+'</span> ' +name);
+                        dojo.query('#nb-item-'+id+' div').innerHTML(name.toLowerCase());
+                        dojo.query('#nb-item-'+id+' small.id-createdAt-createdBy')
+                            .innerHTML(createdAt);
+                            
+                        dojo.query('#my-ask-import-select option[value='+id+']').innerHTML(name);
+                        
+                    }
+
+                }, 
+                function(error) {
+                    console.log('error :|');
+                }
+            ); // then
+            
+        },
+        
 
 
 	});

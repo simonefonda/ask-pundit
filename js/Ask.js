@@ -227,12 +227,12 @@ define(["dojo/_base/declare",
                         
                         if (typeof(data[i]['http://purl.org/pundit/ont/ao#includes']) !== "undefined") {
                             annotationNum = data[i]['http://purl.org/pundit/ont/ao#includes'].length;
-                            dojo.query('#nb-item-'+id+' small.annotationNum').innerHTML(annotationNum + " annotations");
+                            dojo.query('#tab-notebooks #nb-item-'+id+' small.annotationNum').innerHTML(annotationNum + " annotations");
                         }
                             
-                        dojo.query('#nb-item-'+id+' p').innerHTML(name);
-                        dojo.query('#nb-item-'+id+' div').innerHTML(name.toLowerCase());
-                        dojo.query('#nb-item-'+id+' small.id-createdAt-createdBy').innerHTML(createdAt);
+                        dojo.query('#tab-notebooks #nb-item-'+id+' p').innerHTML(name);
+                        dojo.query('#tab-notebooks #nb-item-'+id+' div').innerHTML(name.toLowerCase());
+                        dojo.query('#tab-notebooks #nb-item-'+id+' small.id-createdAt-createdBy').innerHTML(createdAt);
                         
                     }
 

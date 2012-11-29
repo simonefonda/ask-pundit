@@ -2303,6 +2303,7 @@ mocha = require('mocha');
     suite.emit('run');
     var runner = new mocha.Runner(suite);
     var reporter = new Reporter(runner);
+    window['xyReporter'] = reporter;
     runner.run();
   };
 })();
