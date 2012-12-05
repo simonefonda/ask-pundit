@@ -202,11 +202,21 @@ define(["dojo/_base/declare",
         // grouped by annotation id, grouped by subject, grouped by predicate
         loadAnnotationContent: function(annotationMeta) {
             var self = this,
+                def, url,
                 annotationId = annotationMeta.annotationId;
+                
+            // Use authenticated API if we're owning the notebook
+            if (self.isOwner) {
+                def = ASK.requester;
+                url = lang.replace(ASK.ns.asAnnGraph, { id: annotationId });
+            } else {
+                def = request;
+                url = lang.replace(ASK.ns.asOpenAnnGraph, { id: annotationId });
+            }
 
             self.itemsURIs[annotationId] = [];
             
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/content", {
+            def.get(url, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
             }).then(
@@ -270,9 +280,19 @@ define(["dojo/_base/declare",
         // As we get informations for the items, we will build their
         // widget guessing their type, replacing the placeholders
         loadAnnotationItems: function(annotationId) {
-            var self = this;
+            var self = this,
+                def, url;
+                
+            // Use authenticated API if we're owning the notebook
+            if (self.isOwner) {
+                def = ASK.requester;
+                url = lang.replace(ASK.ns.asAnnItems, { id: annotationId });
+            } else {
+                def = request;
+                url = lang.replace(ASK.ns.asOpenAnnItems, { id: annotationId });
+            }
             
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/items", {
+            def.get(url, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
             }).then(

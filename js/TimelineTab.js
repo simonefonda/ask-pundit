@@ -1,4 +1,5 @@
 define(["dojo/_base/declare", 
+        "dojo/_base/lang",
         "dojo/request", 
         "dojo/dom-construct",
         "dojo/dom-class",
@@ -22,7 +23,7 @@ define(["dojo/_base/declare",
         
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, request, domConstruct, domClass, domStyle, on, router, dojoDate, 
+    function(declare, lang, request, domConstruct, domClass, domStyle, on, router, dojoDate, 
                 dateStamp, dateLocale, fxToggler, dojoFx,
         
                 timelineTabTemplate, TimelineGraph, TimelineAnnotation, TimelineQuotedPerson, TimelineTag,
@@ -30,9 +31,11 @@ define(["dojo/_base/declare",
                 BModal,
                 
                 _WidgetBase, _TemplatedMixin) {
-	
-	return declare("ask.TimelineTab", [_WidgetBase, _TemplatedMixin], {
+
+    return declare("ask.TimelineTab", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
+        // TODO: add support for private timelines
+        isOwner: false,
         name: '',
         notebookRawData: {
             items: {},
@@ -141,11 +144,21 @@ define(["dojo/_base/declare",
         }, // startup
         
         loadNotebookAnnotations: function() {
-            var self = this;
+            var self = this,
+                def, url;
+
+            // Use authenticated API if we're owning the notebook
+            if (self.isOwner) {
+                def = ASK.requester;
+                url = lang.replace(ASK.ns.asNbAnnList, { id: self.notebookId });
+            } else {
+                def = request;
+                url = lang.replace(ASK.ns.asOpenNbAnnList, { id: self.notebookId });
+            }
             
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/notebooks/"+ self.notebookId, {
+            def.get(url, {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                         
@@ -169,11 +182,21 @@ define(["dojo/_base/declare",
         // Will build the main annotation content:
         // grouped by annotation id, grouped by subject, grouped by predicate
         loadAnnotationContent: function(annotationId) {
-            var self = this;
+            var self = this,
+                def, url;
 
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/content", {
+            // Use authenticated API if we're owning the notebook
+            if (self.isOwner) {
+                def = ASK.requester;
+                url = lang.replace(ASK.ns.asAnnGraph, { id: annotationId });
+            } else {
+                def = request;
+                url = lang.replace(ASK.ns.asOpenAnnGraph, { id: annotationId });
+            }
+
+            def.get(url, {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data){
 
@@ -211,11 +234,21 @@ define(["dojo/_base/declare",
         // As we get informations for the items, we will build their
         // widget guessing their type, replacing the placeholders
         loadAnnotationItems: function(annotationId) {
-            var self = this;
+            var self = this,
+                def, url;
             
-            request.get("http://metasound.dibet.univpm.it:8080/annotationserver/api/open/annotations/"+ annotationId +"/items", {
+            // Use authenticated API if we're owning the notebook
+            if (self.isOwner) {
+                def = ASK.requester;
+                url = lang.replace(ASK.ns.asAnnItems, { id: annotationId });
+            } else {
+                def = request;
+                url = lang.replace(ASK.ns.asOpenAnnItems, { id: annotationId });
+            }
+            
+            def.get(url, {
                 handleAs: "json",
-				headers: { "Accept": "application/json" }
+                headers: { "Accept": "application/json" }
             }).then(
                 function(data){
                                         

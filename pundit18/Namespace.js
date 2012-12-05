@@ -54,21 +54,23 @@ define([
         self.as                   = "http://metasound.dibet.univpm.it:8080/annotationserver/";
         self.asApi                = self.as + "api/";
 
-        // /notebooks/ID/annotations/metadata
         self.asNbAnnList          = self.asApi + "notebooks/{id}/annotations/metadata";
         self.asNotebooksMeta      = self.asApi + "notebooks/{id}/metadata";
+        self.asAnnGraph           = self.asApi + "annotations/{id}/graph";
+        self.asAnnItems           = self.asApi + "annotations/{id}/items"
         self.asNotebooksGraph     = self.asApi + "notebooks/graph/";
         self.asCurrentNotebook    = self.asApi + "notebooks/current";
         self.asNotebooksActive    = self.asApi + "notebooks/active";
         self.asOwnedNotebooks     = self.asApi + "notebooks/owned";
 
-        self.asOpenNbAnnList      = self.asApi + "open/notebooks/{id}";
+        self.asOpenNbAnnList      = self.asApi + "open/notebooks/{id}/annotations/metadata";
         self.asOpenNotebooksMeta  = self.asApi + "open/notebooks/{id}/metadata";
+        self.asOpenAnnGraph       = self.asApi + "open/annotations/{id}/graph";
+        self.asOpenAnnItems       = self.asApi + "open/annotations/{id}/items"
+
         self.asPublicNotebooks    = self.asApi + "open/notebooks/public/";
 
         self.asCreateAnnotation   = self.asApi + "notebooks/{id}?context={context}"
-
-
 
         self.asAnnotations        = self.asApi + "annotations/";
         self.asMetadataSearch     = self.asApi + "annotations/metadata/search";
