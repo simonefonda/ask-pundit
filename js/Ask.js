@@ -45,10 +45,14 @@ define(["dojo/_base/declare",
         constructor: function() {
             var self = this;
             self.inherited(arguments);
+            
+            /* DEBUG: removed unused socketIO bookmarking thingie
+            
             self.socketHelper = new IOHelper({
                 serverAddress: config.ask.nodeServerAddress,
                 serverPort: config.ask.nodeServerPort
-            });
+            }); 
+            */
 
             self.requester = new PAuthenticatedRequester({
                 debug: false
