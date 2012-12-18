@@ -571,8 +571,9 @@ define(["dojo/_base/declare",
                     console.log('No date, discarding ', candidate);
                     continue;
                 }
-                                
+                
                 date = dateStamp.fromISOString(candidate[_date][0].value);
+                
                 if (date.toDateString() === "Invalid Date") {
                     console.log('Invalid date, discarding ', candidate, date, candidate[_date][0].value);
                     continue;
