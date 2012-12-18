@@ -53,6 +53,12 @@ div.accordion-group {
 
 }
 
+div.nb-item {
+    height: 180px;
+}
+
+
+
 @import "ask_timeline";
 @import "my_ask";
 /* TODO: move this in pundit.scss? */

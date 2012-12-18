@@ -49,6 +49,10 @@ div.accordion-group a i {
 div.accordion-group a:hover i {
   opacity: 1; }
 
+/* line 56, ask.scss */
+div.nb-item {
+  height: 180px; }
+
 /* line 1, _ask_timeline.scss */
 .ti-progress-container {
   padding: 20px 90px; }
