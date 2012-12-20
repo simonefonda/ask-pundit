@@ -4,16 +4,21 @@
       <h1><span id="nb-header-${notebookId}">:: ${label} ::</span> <small>${notebookId}</small></h1>
     </div>
 
-    <div>
+    <div class="row">
+        <div class="span5">
+            <span class="label label-important">BETA</span>
+            Timeline is a prototypal visualization for data journalists. <br />For more info see: 
+            <a href="http://thepund.it/journalism-how-to.php" target="_blank">http://thepund.it/journalism-how-to.php</a>
+        </div>
+        <div class="span2">
+            <a type="button" class="btn btn-large btn-success" href="#/timeline/${notebookId}">Timeline</a>
+        </div>
         <p>
 
             <!-- DEBUG: removed unused buttons
-
             <button type="button" class="btn btn-large btn-info" data-loading-text="Loading...">Refresh</button>
             <button type="button" class="btn btn-large btn-warning">Bookmark this notebook</button>
             -->
-
-            <a type="button" class="btn btn-large btn-success" href="#/timeline/${notebookId}">Timeline</a>
             <button type="button" class="btn btn-large btn-danger pull-right" id="nb-tab-close-${notebookId}">Close</button>
         </p>
     </div>
