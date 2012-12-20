@@ -58,6 +58,7 @@ define([
         self.asNotebooksMeta      = self.asApi + "notebooks/{id}/metadata";
         self.asAnnGraph           = self.asApi + "annotations/{id}/graph";
         self.asAnnItems           = self.asApi + "annotations/{id}/items"
+        self.asNotebooks          = self.asApi + "notebooks";
         self.asNotebooksGraph     = self.asApi + "notebooks/graph/";
         self.asCurrentNotebook    = self.asApi + "notebooks/current";
         self.asNotebooksActive    = self.asApi + "notebooks/active";

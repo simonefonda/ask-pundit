@@ -70,8 +70,51 @@ define(["dojo/_base/declare",
                 return false;
             });
             
+            // Create new notebook
+            on(dojo.query('#myAskCreateNotebookButton')[0], 'click', function() {
+                self._createNotebook();
+                return false;
+            });
+            
 
         },
+        
+        _createNotebook: function() {
+            var self = this,
+                name = dojo.query('#myAskCreateNotebook input')[0].value;
+            
+            if (name === '') {
+                console.log('Error creating a notebook: empty notebook name.');
+                return false;
+            }
+            
+            console.log('Creating notebook '+name);
+            
+            var post = {
+                url: ASK.ns.asNotebooks,
+                postData: dojo.toJson({NotebookName: name}),
+                headers: {"Content-Type":"application/json;charset=UTF-8;"},
+                handleAs: "json",
+                load: function(data) {
+                    console.log("Nb create response: ", data);
+                    dojo.query('#my-ask-messages')
+                        .append('<p><span class="label label-success">Done</span> Created notebook '+data.NotebookID+'!</p>');
+                    
+                    dojo.query('#myAskCreateNotebook input').val('');
+                    
+                    self.getOwnedNotebooks(function(data) {
+                        self.showOwnedNotebooks(data);
+                    });
+                        
+                }, 
+                error: function(e) {
+                    console.log('We had an error creating the notebook ', e);
+                    dojo.query('#my-ask-messages').append('<p><span class="label label-important">ERROR</span>There was an error creating the notebook .... :(</p>');
+                }
+            };
+            ASK.requester.xPost(post);
+            
+        }, // _createNotebook()
         
         _importFromTextArea: function() {
             var self = this;

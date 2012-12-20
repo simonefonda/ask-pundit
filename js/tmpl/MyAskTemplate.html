@@ -2,13 +2,26 @@
 
     <div class="row">
         <div class="login-logged">
-            <div class="span5">
-                <blockquote>
-                    <p>Logged in as .. </p>
-                    <small> .. more info</small>
-                </blockquote>
+            <div class="row">
+                <div class="span5">
+                    <blockquote>
+                        <p>Logged in as .. </p>
+                        <small> .. more info</small>
+                    </blockquote>
+                </div>
+                <button class="ask-logout btn btn-danger">Logout</button>
             </div>
-            <button class="ask-logout btn btn-danger">Logout</button>
+
+            <div class="row span6">
+                <legend data-toggle="collapse" data-target="#myAskCreateNotebook" class="interactive">
+                    Create a notebook
+                </legend>
+                <div class="collapse" id="myAskCreateNotebook">
+                    <input type="text" placeholder="Notebook name" />
+                    <button id="myAskCreateNotebookButton" class="ask-create-nb btn btn-primary">Create</button>
+                </div>
+            </div>
+
         </div>
 
         <div class="login-off">
@@ -19,9 +32,12 @@
         </div>
     </div>
     
-    <div id="my-ask-notebooks" class="row">
-        
-    </div>
+    <div id="my-ask-messages"></div>
+
+    <legend>
+        Your notebooks
+    </legend>
+    <div id="my-ask-notebooks" class="row"></div>
 
     <div id="my-ask-import" class="row well">
         <legend data-toggle="collapse" data-target="#myAskImportContent" class="interactive">
@@ -40,6 +56,5 @@
 
     </div>
 
-    <div id="my-ask-messages"></div>
 
 </div>
