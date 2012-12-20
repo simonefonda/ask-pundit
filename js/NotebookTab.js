@@ -111,7 +111,7 @@ define(["dojo/_base/declare",
                     for (var ann in data) {
                         var foo = new NotebookItemMetadata({
                             visibility: data[ann]['http://open.vocab.org/terms/visibility'][0].value,
-                            createdBy: data[ann]['http://purl.org/dc/terms/creator'][0].value,
+                            createdBy: data[ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
                             createdAt: data[ann]['http://purl.org/dc/terms/created'][0].value,
                             label: data[ann]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
                             includes: data[ann]['http://purl.org/pundit/ont/ao#includes'] || 0
