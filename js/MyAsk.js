@@ -2,12 +2,13 @@ define(["dojo/_base/declare",
         "dojo/_base/lang",
         "dojo/on", 
         "dojo/dom-construct",
+        "dojo/dom-attr",
         "dojo/json",
         "dojo/text!ask/tmpl/MyAskTemplate.html", 
         "ask/NotebookItem",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, lang, on, domConstruct, JSON, myAskTemplate, NotebookItem, _WidgetBase, _TemplatedMixin) {
+    function(declare, lang, on, domConstruct, domAttr, JSON, myAskTemplate, NotebookItem, _WidgetBase, _TemplatedMixin) {
 
     return declare("ask.MyAsk", [_WidgetBase, _TemplatedMixin], {
         templateString: myAskTemplate,
@@ -75,9 +76,49 @@ define(["dojo/_base/declare",
                 self._createNotebook();
                 return false;
             });
+
+            // Delete notebook
+            on(dojo.byId('tab-myAsk'), on.selector('.delete-notebook', 'click'), function(e) {
+                var nbId = domAttr.get(e.target, 'data-target-nb');
+                self._deleteNotebook(nbId);
+                return false;
+            });
             
 
         },
+        
+        _deleteNotebook: function(id) {
+            var self = this,
+                url = lang.replace(ASK.ns.asNotebookId, {id: id});
+
+            if (!confirm("Deleting this notebook will delete all of its annotation. Do you want to continue?")) {
+                return;
+            }
+
+            console.log('Deleting notebook '+ id);
+            
+            var args = {
+                url: url,
+                headers: {"Content-Type":"application/json;charset=UTF-8;"},
+                handleAs: "json",
+                load: function(data) {
+                    console.log("Nb delete response: ", data);
+                    dojo.query('#my-ask-messages')
+                        .append('<p><span class="label label-success">Done</span> Deleted notebook '+id+'!</p>');
+                    
+                    self.getOwnedNotebooks(function(data) {
+                        self.showOwnedNotebooks(data);
+                    });
+
+                }, 
+                error: function(e) {
+                    console.log('We had an error deleting the notebook ', e);
+                    dojo.query('#my-ask-messages').append('<p><span class="label label-important">ERROR</span>There was an error deleting the notebook .... :(</p>');
+                }
+            };
+            ASK.requester.xDelete(args);
+            
+        }, // _deleteNotebook()
         
         _createNotebook: function() {
             var self = this,
@@ -101,7 +142,7 @@ define(["dojo/_base/declare",
                         .append('<p><span class="label label-success">Done</span> Created notebook '+data.NotebookID+'!</p>');
                     
                     dojo.query('#myAskCreateNotebook input').val('');
-                    
+                        
                     self.getOwnedNotebooks(function(data) {
                         self.showOwnedNotebooks(data);
                     });
@@ -290,11 +331,13 @@ define(["dojo/_base/declare",
                         }
                         
                         dojo.query('#tab-myAsk #nb-item-'+id+' p').innerHTML('<span class="label label-'+visibLabel+'">'+visibility+'</span> ' +name);
-                        dojo.query('#tab-myAsk #nb-item-'+id+' div').innerHTML(name.toLowerCase());
+                        dojo.query('#tab-myAsk #nb-item-'+id+' div.hidden').innerHTML(name.toLowerCase());
                         dojo.query('#tab-myAsk #nb-item-'+id+' small.id-createdAt-createdBy')
                             .innerHTML(createdAt);
                             
                         dojo.query('#my-ask-import-select option[value='+id+']').innerHTML(name);
+                        
+                        dojo.query('#tab-myAsk #nb-item-'+id+' .buttons-container').append('<button class="delete-notebook btn btn-mini btn-danger" data-target-nb="'+id+'">Delete</button>');
                         
                     }
 

@@ -59,6 +59,7 @@ define([
         self.asAnnGraph           = self.asApi + "annotations/{id}/graph";
         self.asAnnItems           = self.asApi + "annotations/{id}/items"
         self.asNotebooks          = self.asApi + "notebooks";
+        self.asNotebookId         = self.asApi + "notebooks/{id}";
         self.asNotebooksGraph     = self.asApi + "notebooks/graph/";
         self.asCurrentNotebook    = self.asApi + "notebooks/current";
         self.asNotebooksActive    = self.asApi + "notebooks/active";
