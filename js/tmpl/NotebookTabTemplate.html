@@ -5,14 +5,6 @@
     </div>
 
     <div class="row">
-        <div class="span5">
-            <span class="label label-important">BETA</span>
-            Timeline is a prototypal visualization for data journalists. <br />For more info see: 
-            <a href="http://thepund.it/journalism-how-to.php" target="_blank">http://thepund.it/journalism-how-to.php</a>
-        </div>
-        <div class="span2">
-            <a type="button" class="btn btn-large btn-success" href="#/timeline/${notebookId}">Timeline</a>
-        </div>
         <p>
 
             <!-- DEBUG: removed unused buttons
@@ -25,6 +17,32 @@
         
     <!-- will contain metadata -->
     <div class="well ask-notebook-item-metadata"></div>
+
+    <div class="well">
+
+        <div class="row">
+            <div class="span5">
+                <span class="label label-important">BETA</span>
+                Timeline is a prototypal visualization for data journalists. <br />For more info see: 
+                <a href="http://thepund.it/journalism-how-to.php" target="_blank">http://thepund.it/journalism-how-to.php</a>
+            </div>
+            <div class="span4">
+                <a type="button" class="btn btn-large btn-success" href="#/timeline/${notebookId}">Timeline vs STOXX 600</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span5">
+                <span class="label label-important">BETA</span>
+                EdgeMaps visualizing influences among philospahers  <br />For more info see: 
+                <a href="http://thepund.it/apps.php" target="_blank">http://thepund.it/apps.php</a>
+            </div>
+            <div class="span4">
+                <a type="button" class="btn btn-large btn-success" target="_blank" href="http://thepund.it/edgemaps_demo/demo.html?nbs={${notebookId}}&source={freebase,pundit}">Edgemaps influence graph</a>
+            </div>
+        </div>
+        
+    </div>
 
     <!-- will contain annotations -->
     <div class="ask-notebook-item-annotations"></div>
