@@ -235,7 +235,7 @@ define(["dojo/_base/declare",
                         }
                             
                         dojo.query('#tab-notebooks #nb-item-'+id+' p').innerHTML(name);
-                        dojo.query('#tab-notebooks #nb-item-'+id+' div').innerHTML(name.toLowerCase());
+                        dojo.query('#tab-notebooks #nb-item-'+id+' div.hidden').innerHTML(name.toLowerCase());
                         dojo.query('#tab-notebooks #nb-item-'+id+' small.id-createdAt-createdBy').innerHTML(createdAt);
                         
                     }
