@@ -1,5 +1,6 @@
 define(["dojo/_base/declare", 
         "dojo/_base/lang",
+        "dojo/_base/event",
         "dojo/on", 
         "dojo/dom-construct",
         "dojo/dom-attr",
@@ -8,7 +9,7 @@ define(["dojo/_base/declare",
         "ask/NotebookItem",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, lang, on, domConstruct, domAttr, JSON, myAskTemplate, NotebookItem, _WidgetBase, _TemplatedMixin) {
+    function(declare, lang, dojoEvent, on, domConstruct, domAttr, JSON, myAskTemplate, NotebookItem, _WidgetBase, _TemplatedMixin) {
 
     return declare("ask.MyAsk", [_WidgetBase, _TemplatedMixin], {
         templateString: myAskTemplate,
@@ -72,8 +73,9 @@ define(["dojo/_base/declare",
             });
             
             // Create new notebook
-            on(dojo.query('#myAskCreateNotebookButton')[0], 'click', function() {
+            on(dojo.query('#myAskCreateNotebookButton')[0], 'click', function(e) {
                 self._createNotebook();
+                dojoEvent.stop(e);
                 return false;
             });
 

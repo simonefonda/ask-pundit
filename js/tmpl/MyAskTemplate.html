@@ -1,26 +1,44 @@
 <div class="my-ask login-state-off">
 
-    <div class="row">
         <div class="login-logged">
+
             <div class="row">
-                <div class="span5">
-                    <blockquote>
-                        <p>Logged in as .. </p>
-                        <small> .. more info</small>
-                    </blockquote>
-                </div>
+                <blockquote class="span6">
+                    <p>Logged in as .. </p>
+                    <small> .. more info</small>
+                </blockquote>
                 <button class="ask-logout btn btn-danger">Logout</button>
             </div>
 
-            <div class="row span6">
-                <legend data-toggle="collapse" data-target="#myAskCreateNotebook" class="interactive">
-                    Create a notebook
+            <div id="my-ask-messages"></div>
+
+            <legend data-toggle="collapse" data-target="#myAskCreateNotebook" class="interactive">
+                Create a notebook
+            </legend>
+            <div class="collapse" id="myAskCreateNotebook">
+                <form class="form-inline">
+                    <input type="text" placeholder="Notebook name" />
+                    <button id="myAskCreateNotebookButton" class="ask-create-nb btn btn-success">Create</button>
+                </form>
+            </div>
+
+            <legend>
+                Your notebooks
+            </legend>
+            <div id="my-ask-notebooks" class="row"></div>
+
+            <div id="my-ask-import">
+                <legend data-toggle="collapse" data-target="#myAskImportContent" class="interactive">
+                    <span class="label label-important">BETA</span>
+                    Import your annotations here
                 </legend>
-                <div class="collapse" id="myAskCreateNotebook">
-                    <form class="form-inline">
-                        <input type="text" placeholder="Notebook name" />
-                        <button id="myAskCreateNotebookButton" class="ask-create-nb btn btn-success">Create</button>
-                    </form>
+        
+                <div class="collapse" id="myAskImportContent">
+                    <textarea rows="5"></textarea>
+
+                    <select id="my-ask-import-select"></select>
+
+                    <button id="my-ask-import-button" class="btn btn-info">Import</button>
                 </div>
             </div>
 
@@ -32,31 +50,5 @@
             </div>
             <button class="ask-login btn btn-primary">Login</button>
         </div>
-    </div>
-    
-    <div id="my-ask-messages"></div>
-
-    <legend>
-        Your notebooks
-    </legend>
-    <div id="my-ask-notebooks" class="row"></div>
-
-    <div id="my-ask-import" class="well">
-        <legend data-toggle="collapse" data-target="#myAskImportContent" class="interactive">
-            <span class="label label-important">BETA</span>
-            Import your annotations here
-        </legend>
-        
-        <div class="row collapse" id="myAskImportContent">
-            <textarea rows="5"></textarea>
-
-            <select id="my-ask-import-select">
-            </select>
-
-            <button id="my-ask-import-button" class="btn btn-info">Import</button>
-        </div>
-
-    </div>
-
 
 </div>
