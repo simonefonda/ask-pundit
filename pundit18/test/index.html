@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <title>Unit Tests</title>
+    </head>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="../../dojo/dojox/highlight/resources/highlight.css" />
+    <link rel="stylesheet" href="../../dojo/dojox/highlight/resources/pygments/fruity.css" />
+
+    <style>
+        pre {
+            background-color: #111;
+        }
+        code {
+            font: 12px monaco, monospace;
+        }
+        ul#mocha-stats {
+            background-color: #ddd;
+            padding: 5px;
+            -webkit-border-radius: 8px; 
+            border-radius: 8px; 
+        }
+    </style>
+
+    <script src="../../dojoConfig.js"></script>
+    <script type="text/javascript">
+        var coverage = false; /*COV*/
+        if (coverage) {
+            var cov, idx,
+                p = dojoConfig.packages,
+                len = p.length;
+                
+            for (var i=len; i--;)
+                if (p[i].name === 'cov') 
+                    cov = p[i].location;
+                else if (p[i].name === 'pundit') 
+                    idx = i;
+
+            dojoConfig.packages[idx].location = cov;
+        }
+    </script>
+    <script src="../../dojo/dojo/dojo.js"></script>
+    
+    <script>
+    
+        require(['require', 'chai/chai', 'mocha/mocha'], function(require, chai){
+
+            mocha.setup('tdd');
+            expect = chai.expect;
+            
+            _PUNDIT = {};
+
+            require([
+                'dojo/on',
+                'myTest/TestBaseComponent',
+                'myTest/TestAuthenticatedRequester',
+                'dojox/highlight',
+                'dojox/highlight/languages/javascript'
+            ], function(on) {
+                
+                Mocha.utils.highlightTags = function() {};
+
+                mocha.run(function() {
+
+                    dojo.query("code").forEach(function(node) {
+                        dojox.highlight.init(node);
+                    });
+                    dojo.query("pre").forEach(function(node) {
+                        node.style.display = "none";
+                    });
+                    
+                    on(dojo.byId('mocha'), on.selector('h2', 'click'), function(e) {
+                        var d = e.target.nextSibling.style.display;
+                        if (d === "none") {
+                            dojo.query("pre", e.target.parentNode).forEach(function(node){
+                                node.style.display = "block";
+                            });
+                        } else {
+                            dojo.query("pre", e.target.parentNode).forEach(function(node){
+                                node.style.display = "none";
+                            });
+                        }
+                    });
+                    
+                    
+                });
+                
+            });
+            
+        });
+    </script>
+
+<body>    
+    <div id="mocha"></div>
+</html></body>

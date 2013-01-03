@@ -1,3 +1,22 @@
+/**
+    Provides common facilities used by other pundit
+    components, such as callback creation, initialization, logging, etc.
+    
+    Every component extending this class will be able to use these methods,
+    and the options passed to the constructor.
+    
+    If the component has an .opts field, it will be used as defaults for the
+    component, overwritable when calling new
+    @class pundit.baseComponent
+    @module pundit
+    @constructor
+    @example
+        var x = new pundit.BaseComponent({
+                debug: true,
+                libName: 'myComponent'
+            });
+    @param options {object} See object properties
+**/
 define([
         "dojo/_base/declare"
     ], 
@@ -9,13 +28,26 @@ define([
     return declare("pundit.BaseComponent", [], {
 
     defaultOpts: {
+        /**
+            Enables debug messages for the component
+            @property debug
+            @type Boolean
+            @default false
+        **/
         debug: false,
+
+        /**
+            Name of the component, shown in debug messages
+            @property libName
+            @type String
+            @default this.declaredClass
+        **/
         libName: ''
     },
 
     /**
-    * @constructor
-    * @description Initializes the component
+    * Initializes the component
+    * @method constructor
     * @param options {object}
     * @param options.debug {boolean} wether or not to activate debug mode for the component
     * @param options.libName {string} component name visualized in debug messages. If not 
@@ -107,7 +139,7 @@ define([
     * @description Logs a debug message in the browser console or (if not
     * present) in a debug div appended to the document.
     * @param options {string} message to be logged.
-    * @returns boolean true if something has been logged, false otherwise
+    * @return boolean true if something has been logged, false otherwise
     */
     log: function(w) {
         var foo = this.opts.debug;

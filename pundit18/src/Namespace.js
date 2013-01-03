@@ -14,8 +14,8 @@ define([
     },
 
     /**
-    * @constructor
-    * @description Initializes the ns properties
+    * Initializes the ns properties
+    * @method constructor
     * @param options {object}
     */
     constructor: function() {

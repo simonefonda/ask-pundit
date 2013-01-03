@@ -1,6 +1,7 @@
 define(['pundit/BaseComponent', 'myTest/TestExtendedBaseComponent'], function(BaseComponent, TestExtendedBaseComponent) {
 
-    suite("BaseComponent and its extension", function() {
+    suite("BaseComponent", function() {
+        var comp; 
         
         setup(function() {
             comp = new BaseComponent();
@@ -16,13 +17,13 @@ define(['pundit/BaseComponent', 'myTest/TestExtendedBaseComponent'], function(Ba
         test('Well formed BaseComponent with user configuration', function() {
             var compName = "TestComponentUserConf",
                 comp1 = new BaseComponent({
-                    debug: true,
+                    debug: false,
                     libName: compName
                 });
                 
             expect(comp1.opts).to.be.a("object");
-            expect(comp1.opts.debug).equal(true)
-            expect(comp1.opts.libName).equal(compName)
+            expect(comp1.opts.debug).equal(false);
+            expect(comp1.opts.libName).equal(compName);
         });
 
         test('Extended BaseComponent with defaults', function() {
@@ -44,10 +45,10 @@ define(['pundit/BaseComponent', 'myTest/TestExtendedBaseComponent'], function(Ba
             var compName = "TestExtendedComponent1",
                 compE2 = new TestExtendedBaseComponent({
                     libName: compName,
-                    debug: true
+                    debug: false
             });
             expect(compE2.opts).to.be.a("object");
-            expect(compE2.opts.debug).equal(true)
+            expect(compE2.opts.debug).equal(false);
             expect(compE2.opts.libName).equal(compName);
         });
 
@@ -86,8 +87,7 @@ define(['pundit/BaseComponent', 'myTest/TestExtendedBaseComponent'], function(Ba
             // - a function to fire callbacks
             // - an empty array to store the callbacks
             expect(comp['on' + cbName]).to.be.a("function");
-            expect(comp[fireOn]).to.be.a("function")
-            expect(comp[arrayName]).to.be.a("object");
+            expect(comp[fireOn]).to.be.a("function");
             expect(comp[arrayName].length).equal(0);
         });
         
@@ -104,13 +104,12 @@ define(['pundit/BaseComponent', 'myTest/TestExtendedBaseComponent'], function(Ba
             // - a function to subscribe callbacks
             // - a function to fire callbacks
             // - an empty array to store the callbacks
-            for (var l=cbNames.length; l--;) {
-                var arrayName = "on"+cbNames[l]+"Callbacks",
-                    fireOn = "fireOn"+cbNames[l];
+            for (var j=cbNames.length; j--;) {
+                var arrayName = "on"+cbNames[j]+"Callbacks",
+                    fireOn = "fireOn"+cbNames[j];
 
-                expect(comp['on' + cbNames[l]]).to.be.a("function");
+                expect(comp['on' + cbNames[j]]).to.be.a("function");
                 expect(comp[fireOn]).to.be.a("function");
-                expect(comp[arrayName]).to.be.a("object");
                 expect(comp[arrayName].length).equal(0);
             }
             

@@ -53,8 +53,8 @@ define([
     blockedRequests: [],
 
     /**
-    * @constructor
-    * @description Initializes the component
+    * Initializes the component
+    * @method constructor
     * @param options {object}
     * @param options.debug {boolean} wether or not to activate debug mode for this component
     * @param options.loginTimerMS {number, milliseconds} Polling interval to check if the user

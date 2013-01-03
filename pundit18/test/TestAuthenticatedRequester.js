@@ -1,7 +1,8 @@
 define(['pundit/AuthenticatedRequester'], function(AuthenticatedRequester) {
 
     suite("Authenticated Requester", function() {
-        
+        var ar;
+                
         setup(function() {
             ar = new AuthenticatedRequester();
         });
