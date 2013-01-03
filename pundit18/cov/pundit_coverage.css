@@ -1,0 +1,9 @@
+td.source { background-color: #111; color: #fff; }
+td.source .c {color: #080; background-color: #0f140f; font-style: italic}
+td.source .k {color: #fb660a; font-weight: bold }
+td.source .n {color: #ff0086; font-weight: bold }
+td.source .s {color: #0086d2}
+tr.miss td.source { background: #440000; }
+tr.miss td.hits { color: #f00; }
+tr.hit td.hits { color: #333; }
+tr.hit td.hits, tr.hit td.line { background-color: #C5D8CE; }

@@ -17,6 +17,7 @@ test-cov:
 	@COVERAGE=1 \
 	$(MAKE) test REPORTER=html-cov > cov/tests-coverage.html_foo
 	@sed 's%</style>%</style><link rel="stylesheet" type="text/css" href="pundit_coverage.css">%g' cov/tests-coverage.html_foo > cov/tests-coverage.html
+	@cp bin/pundit_coverage.css cov
 	@rm cov/tests-coverage.html_foo
 	@echo "[Pundit] generated jscoverage static files"
 
