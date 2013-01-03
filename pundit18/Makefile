@@ -15,9 +15,9 @@ test-cov:
 	@echo "[Pundit] generated jscoverage source files"
 	@sed 's%/\*COV\*/%coverage=true;%g' test/index.html > cov/test-cov.html
 	@COVERAGE=1 \
-	$(MAKE) test REPORTER=html-cov > test/tests-coverage.html_foo
-	@sed 's%</style>%</style><link rel="stylesheet" type="text/css" href="pundit_coverage.css">%g' test/tests-coverage.html_foo > test/tests-coverage.html
-	@rm test/tests-coverage.html_foo
+	$(MAKE) test REPORTER=html-cov > cov/tests-coverage.html_foo
+	@sed 's%</style>%</style><link rel="stylesheet" type="text/css" href="pundit_coverage.css">%g' cov/tests-coverage.html_foo > cov/tests-coverage.html
+	@rm cov/tests-coverage.html_foo
 	@echo "[Pundit] generated jscoverage static files"
 
 docs:
@@ -28,7 +28,7 @@ docs-lint:
 
 clean:
 	rm -rf cov docs
-	rm -f test/tests-coverage.html
+	rm -f cov/tests-coverage.html
 	@echo "[Pundit] cleaned up everything"
 
 hello:
