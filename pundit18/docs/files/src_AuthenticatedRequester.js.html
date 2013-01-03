@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src&#x2F;AuthenticatedRequester.js - Pundit</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0pr2&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0pr2&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="http:&#x2F;&#x2F;thepund.it&#x2F;assets&#x2F;img&#x2F;pundit_500.png" title="Pundit"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: ASK Ask_0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/pundit.authenticatedRequester.html">pundit.authenticatedRequester</a></li>
+            
+                <li><a href="..&#x2F;classes/pundit.baseComponent.html">pundit.baseComponent</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/pundit.html">pundit</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: src&#x2F;AuthenticatedRequester.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+ * @class pundit.authenticatedRequester
+ * @extends pundit.baseComponent
+ * @description Provides facilities to interact with the pundit server, through
+ * authenticated API Calls. The authentication is granted by an OpenID workflow,
+ * initialized here and carried on by the server. When logged in, this component
+ * notifies the user and executes any previously blocked request, which needed
+ * authentication to work.
+ *&#x2F;
+define([
+        &quot;dojo&#x2F;on&quot;,
+        &quot;dojo&#x2F;_base&#x2F;declare&quot;,
+        &quot;dojo&#x2F;parser&quot;,
+        &quot;dojo&#x2F;request&#x2F;xhr&quot;,
+        &quot;pundit&#x2F;BaseComponent&quot;,
+        &quot;bootstrap&#x2F;Modal&quot;,
+        &quot;dojo&#x2F;text!pundit&#x2F;tmpl&#x2F;PunditLoginModalTemplate.html&quot;,
+        &quot;dijit&#x2F;_WidgetBase&quot;, 
+        &quot;dijit&#x2F;_TemplatedMixin&quot;
+    ], 
+        
+    function(
+        on,
+        declare, 
+        parser,
+        xhr,
+        BaseComponent,
+        BModal,
+        LoginModalTemplate,
+        _WidgetBase,
+        _TemplatedMixin
+    ) {
+
+    return declare(&quot;pundit.AuthenticatedRequester&quot;, [BaseComponent, _WidgetBase, _TemplatedMixin], {
+
+    templateString: LoginModalTemplate,
+    
+    &#x2F;&#x2F; TODO: can be removed from here and just taken from the first auth request or
+    &#x2F;&#x2F; is logged in
+    redirectURL: &quot;http:&#x2F;&#x2F;metasound.dibet.univpm.it&#x2F;annotationserver&#x2F;login.jsp&quot;,
+    
+    _loggedIn: false,
+    _logginInAs: {},
+    
+    HTTP_ERROR_FORBIDDEN: 403,
+    HTTP_CONNECTION_ERROR: 0,
+    
+    opts: {
+        loginTimerMS: 500,
+        loginAutomaticHideMS: 2000
+    },
+
+    blockedRequests: [],
+
+    &#x2F;**
+    * Initializes the component
+    * @method constructor
+    * @param options {object}
+    * @param options.debug {boolean} wether or not to activate debug mode for this component
+    * @param options.loginTimerMS {number, milliseconds} Polling interval to check if the user
+    * completed the login workflow in the external OpenID window
+    * @param options.loginAutomaticHideMS {number, milliseconds} Time to wait before automatically
+    * hide the login panel, when login has been completed.
+    *&#x2F;
+    constructor: function(options) {
+        var self = this;
+        
+        self.inherited(arguments);
+        	    
+	    &#x2F;**
+        * @event onLogin
+        * @param f(data) {function} function to be called.&lt;br&gt;
+        * data is the json object coming from the server on succesfull login. 
+        * @description Called when the user succesfully completes the OpenID 
+        * authentication workflow.
+        *&#x2F;
+
+	    &#x2F;**
+        * @event onLogout
+        * @param f(data) {function} function to be called.&lt;br&gt;
+        * data is the json object coming from the server on succesfull logout. 
+        * @description Called when the user succesfully logs out.
+        *&#x2F;
+        self.createCallback([&#x27;login&#x27;, &#x27;logout&#x27;]);
+        
+        self.log(&#x27;Authenticated requests component up and running!&#x27;);
+        
+    },
+    
+    startup: function() {
+        var self = this;
+        self._initLoginDialog();
+        self.log(&#x27;Startup done&#x27;);
+    },
+
+    &#x2F;**
+    * @method get
+    * @description Performs an HTTP get through an authenticated Ajax call.
+    * @param options {object} the same object one would pass to a 
+    * normal dojo xhr.get().
+    *&#x2F;
+    &#x2F;*
+    xGet: function(url, callParams) {
+        return xhr.get(url, this._setWrappingCallParams(callParams));
+    },
+    *&#x2F;
+    
+    get: function(url, callParams) {
+        var self = this,
+            foo = xhr.get(url, self._setWrappingCallParams(callParams)),
+            ref = {};
+            
+        &#x2F;&#x2F; create a new stub object, exposing a then() member, 
+        &#x2F;&#x2F; who just saves the functions in the stub object itself
+        ref.then = function(f, e, x){ 
+            this.orig_then = f;
+            this.orig_error = e;
+            return this;
+        }; 
+
+        
+        &#x2F;&#x2F; TODO: more methods to stub? 
+        
+
+        &#x2F;&#x2F; Specify our then on the original object: if there&#x27;s 
+        &#x2F;&#x2F; a login needed, show the login window, otherwise
+        &#x2F;&#x2F; we&#x27;re authenticated with the server already, pass it on
+        &#x2F;&#x2F; TODO: deal with error: r, e
+        foo.then(function(r){ 
+            if (r &amp;&amp; typeof(r.redirectTo) !== &quot;undefined&quot;) {
+                &#x2F;&#x2F; Save the request, along with the object which
+                &#x2F;&#x2F; will store any future .then() calls on our
+                &#x2F;&#x2F; fake object
+                self.blockedRequests.push({
+                    ref: ref,
+                    url: url, 
+                    params: callParams
+                });
+                self.redirectURL = r.redirectTo;
+                self.showLogin();
+            } else {
+                &#x2F;&#x2F; TODO: deal with error: r, e
+                ref.orig_then(r);
+            }
+            
+        }, function(r, e, x) {
+            if (typeof(ref.orig_error) === &quot;function&quot;) 
+                ref.orig_error(r, e, x);
+        });
+
+        return ref;
+    },
+    
+    _oldGet: function(args) {
+        return this
+            .get(args.url, this._setWrappingCallParams(args))
+            .then(args.load, args.error);
+    },
+	
+    &#x2F;**
+    * @method xPost
+    * @description Performs an HTTP post through an authenticated Ajax call.
+    * @param options {object} the same object one would pass to a 
+    * normal dojo xhrPost().
+    *&#x2F;
+    xPost: function(callParams) {
+        dojo.xhrPost(this._setWrappingCallParams(callParams));
+    },
+	
+    &#x2F;**
+    * @method xPut
+    * @description Performs an HTTP put through an authenticated Ajax call.
+    * @param options {object} the same object one would pass to a 
+    * normal dojo xhrPut().
+    *&#x2F;
+    xPut: function(callParams) {
+        dojo.xhrPut(this._setWrappingCallParams(callParams));
+    },
+	
+    &#x2F;**
+    * @method xDelete
+    * @description Performs an HTTP delete through an authenticated Ajax call.
+    * @param options {object} the same object one would pass to a 
+    * normal dojo xhrDelete().
+    *&#x2F;
+    xDelete: function(callParams) {
+        dojo.xhrDelete(this._setWrappingCallParams(callParams));
+    },
+
+    _initLoginDialog: function() {
+        var self = this;
+
+        self._setLoginState(&#x27;off&#x27;);
+
+        on(dojo.byId(&#x27;pundit-login-open-button&#x27;), &#x27;click&#x27;, function() {
+            self.log(&#x27;Opening the login dialog&#x27;);
+            self._openLoginPopUp();
+        });
+
+        on(dojo.byId(&#x27;pundit-login-open-button-again&#x27;), &#x27;click&#x27;, function() {
+            self.log(&#x27;Opening the login dialog&#x27;);
+            self._openLoginPopUp();
+        });
+        
+        on(dojo.byId(&#x27;pundit-login-close-button&#x27;), &#x27;click&#x27;, function() { 
+            self.log(&#x27;Closing the login dialog&#x27;);
+            self.hideLogin();
+            clearTimeout(self.loginTimer);
+        });
+
+        &#x2F;&#x2F; Clear the _checklogin timeout if the modal gets closed
+        on(dojo.byId(&#x27;pundit-login-modal&#x27;), &#x27;hidden&#x27;, function() {
+            clearTimeout(self.loginTimer);
+        });
+	    
+    },
+
+    _openLoginPopUp: function() {
+        var self = this;
+
+        window.open(self.redirectURL, &#x27;loginpopup&#x27;, &#x27;left=260,top=120,width=480,height=360&#x27;);
+
+        self._setLoginState(&#x27;waiting&#x27;);
+            
+        clearTimeout(self.loginTimer);
+        self._checkLogin();
+    },
+    
+    _setLoginState: function(s) {
+        dojo.query(&#x27;#pundit-login-modal&#x27;)
+            .removeClass(&#x27;pundit-login-state-off pundit-login-state-waiting pundit-login-state-logged&#x27;)
+            .addClass(&#x27;pundit-login-state-&#x27;+s);
+    },
+    
+    _checkLogin: function() {
+        var self = this;
+
+        clearTimeout(self.loginTimer);
+        self.loginTimer = setTimeout(function() {
+            self.log(&#x27;Not logged in.&#x27;);
+            self.isLoggedIn(function(b) {
+                if (!b) self._checkLogin();
+            });
+        }, self.opts.loginTimerMS);
+        
+    },
+
+    &#x2F;**
+      * @method isLoggedIn
+      * @description Checks with the server if an user is logged in. Will call
+      * the given callback passing true or false
+      * @param f {function} Callback to be called when the check is done
+      *&#x2F;
+    isLoggedIn: function(f) {
+        var self = this;
+        
+        var args = {
+            url: &quot;http:&#x2F;&#x2F;metasound.dibet.univpm.it&#x2F;annotationserver&#x2F;api&#x2F;users&#x2F;current&quot;,
+            handleAs: &quot;json&quot;,
+            headers: {
+                &quot;Accept&quot;:&quot;application&#x2F;json&quot;
+            },
+            load: function(data) {
+                return self._handleLoginLoad(data, f);
+            }, 
+            error: function(error) {
+                return self._handleLoginError(error, f);
+            }
+        }
+
+        self._oldGet(args);
+    }, &#x2F;&#x2F; isLoggedIn()
+
+    _handleLoginError: function(error, f) {
+        console.log(&#x27;si ma, ara che error .....&#x27;, error);
+        if (typeof(f) === &#x27;function&#x27;) f(false, error);
+        return false;
+    },
+
+    _handleLoginLoad: function(data, f) {
+        var self = this;
+        
+        &#x2F;&#x2F; If the json is not what we expect, normalize it a bit
+        if (typeof(data) === &#x27;undefined&#x27; || typeof(data.loginStatus) === &#x27;undefined&#x27;) { 
+            data = { loginStatus: 0 };
+                    
+        &#x2F;&#x2F; If we see a .loginServer field: save it as redirectURL
+        } else if (typeof(data.loginServer) !== &quot;undefined&quot;)
+            self.redirectURL = data.loginServer;
+
+        &#x2F;&#x2F; First time we see we&#x27;re logged: fire the onLogin(), modify 
+        &#x2F;&#x2F; the modal content etc. Same for logout.
+        if (data.loginStatus === 1) {
+            if (self._loggedIn === false) self._afterLogin(data);
+            if (typeof(f) === &#x27;function&#x27;) f(true, data);
+        } else {
+            if (self._loggedIn === true) self._afterLogout();
+            if (typeof(f) === &#x27;function&#x27;) f(false, data);
+        }
+        return false;
+    }, 
+
+
+    &#x2F;**
+      * @method login
+      * @description If the user is logged, does nothing. If not, starts the
+      * login procedures, opening the modal login dialog first
+      *&#x2F;
+    login: function() {
+        var self = this;
+        
+        &#x2F;&#x2F; If we&#x27;re logged in already, do nothing
+        self.isLoggedIn(function(b) {
+            if (b) return;
+            self.log(&#x27;Login() opening the login window&#x27;)
+            self._setLoginState(&#x27;off&#x27;);
+            self.showLogin();
+        });
+        
+    },
+    
+    &#x2F;**
+      * @method logout
+      * @description Logs out any logged in user by calling the relative
+      * server API
+      *&#x2F;
+    logout: function(f) {
+        var self = this;
+        
+        clearTimeout(self.loginTimer);
+        
+        var args = {
+            url: &quot;http:&#x2F;&#x2F;metasound.dibet.univpm.it&#x2F;annotationserver&#x2F;api&#x2F;users&#x2F;logout&quot;,
+            handleAs: &quot;json&quot;,
+            headers: {
+                &quot;Accept&quot;:&quot;application&#x2F;json&quot;
+            },
+            load: function(data) {
+                var msg;
+                if (typeof(data) !== &#x27;undefined&#x27; &amp;&amp; typeof(data.logout) !== &#x27;undefined&#x27;) {
+                    data.msg = (data.logout == 1) ? &#x27;Logged out succesfully&#x27; : &#x27;You werent logged in.. and you still arent.&#x27;;
+
+                    if (typeof(f) === &#x27;function&#x27;) f(data);
+                    if (self._loggedIn === true) self._afterLogout(data);
+                }
+            },
+            error: function(error) {}
+        }
+
+        self._oldGet(args);
+    },
+
+    &#x2F;**
+      * @method showLogin
+      * @description Shows the login modal dialog
+      *&#x2F;
+    showLogin: function() {
+        if (dojo.query(&#x27;#pundit-login-modal&#x27;).length &gt; 0)
+            if (!dojo.hasClass(&#x27;pundit-login-modal&#x27;, &#x27;in&#x27;))
+                dojo.query(&#x27;#pundit-login-modal&#x27;).modal(&#x27;show&#x27;);
+    },
+    
+    &#x2F;**
+      * @method hideLogin
+      * @description Hides the login modal dialog
+      *&#x2F;
+    hideLogin: function() {
+        if (dojo.query(&#x27;#pundit-login-modal&#x27;).length &gt; 0)
+            if (dojo.hasClass(&#x27;pundit-login-modal&#x27;, &#x27;in&#x27;))
+                dojo.query(&#x27;#pundit-login-modal&#x27;).modal(&#x27;hide&#x27;);
+    },
+
+    &#x2F;&#x2F; Automatically called when the login happens
+    _afterLogin: function(data) {
+        var self = this;
+
+        self.log(&quot;Logged in as: &quot; + data.fullName+&quot; (&quot;+data.email+&quot;)&quot;);
+        
+        self._loggedIn = true;
+        self._loggedInAs = data;
+        
+        &#x2F;&#x2F; Modify the modal: we are logged in
+        self._setLoginState(&#x27;logged&#x27;);
+        dojo.query(&#x27;#pundit-login-modal .modal-body span.username&#x27;)
+            .html(data.fullName+&quot; (&quot;+data.email+&quot;)&quot;);
+            
+        &#x2F;&#x2F; exectue any pending blocked requests: get the stub
+        &#x2F;&#x2F; object out and do a new call at that url
+        for (var i = self.blockedRequests.length; i--;) {
+            var foo = self.blockedRequests[i];
+            self.get(foo.url, foo.params)
+                .then(foo.ref.orig_then, foo.ref.orig_error);
+        }
+      
+        &#x2F;&#x2F; Hide the modal, if open
+        setTimeout(function() { 
+            self.hideLogin();
+        }, self.opts.loginAutomaticHideMS);
+
+        self.fireOnLogin(data);
+        
+    },
+    
+    &#x2F;&#x2F; Automatically called when the logout happens
+    _afterLogout: function(data) {
+        var self = this;
+
+        self._loggedIn = false;
+        self._loggedInAs = {};
+
+        dojo.query(&#x27;#pundit-login-modal .modal-body span.username&#x27;)
+            .html(&quot;&quot;);
+            
+        self._setLoginState(&#x27;off&#x27;);
+        self.fireOnLogout(data);
+        
+    },
+
+    _setWrappingCallParams: function(originalCallParams) {
+        var self = this,
+            wrappedParams = {
+                &#x27;withCredentials&#x27;: true
+            },
+            key;
+
+        for (key in originalCallParams) 
+            if (key !== &quot;load&quot;) 
+                wrappedParams[key] = originalCallParams[key];
+            else 
+                wrappedParams[key] = function(r) {
+                    if (r &amp;&amp; typeof(r.redirectTo) !== &quot;undefined&quot;) {
+                        self.blockedRequests.push(wrappedParams);
+                        self.redirectURL = r.redirectTo;
+                        self.showLogin();
+                    } else 
+                        originalCallParams.load(r);
+                }
+
+        return wrappedParams;
+    }
+
+    });
+});
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

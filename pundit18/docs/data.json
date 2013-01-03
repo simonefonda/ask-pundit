@@ -1,0 +1,367 @@
+{
+    "project": {
+        "name": "Pundit",
+        "description": "Augment web pages with semantically structured annotations.",
+        "version": "ASK Ask_0.1",
+        "url": "http://thepund.it/docs",
+        "logo": "http://thepund.it/assets/img/pundit_500.png"
+    },
+    "files": {
+        "src/AuthenticatedRequester.js": {
+            "name": "src/AuthenticatedRequester.js",
+            "modules": {},
+            "classes": {
+                "pundit.authenticatedRequester": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/BaseComponent.js": {
+            "name": "src/BaseComponent.js",
+            "modules": {
+                "pundit": 1
+            },
+            "classes": {
+                "pundit.baseComponent": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/Namespace.js": {
+            "name": "src/Namespace.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "pundit": {
+            "name": "pundit",
+            "submodules": {},
+            "classes": {
+                "pundit.authenticatedRequester": 1,
+                "pundit.baseComponent": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/BaseComponent.js",
+            "line": 1,
+            "description": "Provides common facilities used by other pundit\ncomponents, such as callback creation, initialization, logging, etc.\n\nEvery component extending this class will be able to use these methods,\nand the options passed to the constructor.\n\nIf the component has an .opts field, it will be used as defaults for the\ncomponent, overwritable when calling new"
+        }
+    },
+    "classes": {
+        "pundit.authenticatedRequester": {
+            "name": "pundit.authenticatedRequester",
+            "shortname": "pundit.authenticatedRequester",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "pundit",
+            "file": "src/AuthenticatedRequester.js",
+            "line": 1,
+            "extends": "pundit.baseComponent",
+            "description": "Provides facilities to interact with the pundit server, through\nauthenticated API Calls. The authentication is granted by an OpenID workflow,\ninitialized here and carried on by the server. When logged in, this component\nnotifies the user and executes any previously blocked request, which needed\nauthentication to work."
+        },
+        "pundit.baseComponent": {
+            "name": "pundit.baseComponent",
+            "shortname": "pundit.baseComponent",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "pundit",
+            "file": "src/BaseComponent.js",
+            "line": 1,
+            "description": "Provides common facilities used by other pundit\ncomponents, such as callback creation, initialization, logging, etc.\n\nEvery component extending this class will be able to use these methods,\nand the options passed to the constructor.\n\nIf the component has an .opts field, it will be used as defaults for the\ncomponent, overwritable when calling new",
+            "is_constructor": 1,
+            "example": [
+                "\n    var x = new pundit.BaseComponent({\n            debug: true,\n            libName: 'myComponent'\n        });"
+            ],
+            "params": [
+                {
+                    "name": "options",
+                    "description": "See object properties",
+                    "type": "Object"
+                }
+            ]
+        }
+    },
+    "classitems": [
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 55,
+            "description": "Initializes the component",
+            "itemtype": "method",
+            "name": "constructor",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "debug",
+                            "description": "wether or not to activate debug mode for this component",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "loginTimerMS",
+                            "description": "Polling interval to check if the user\ncompleted the login workflow in the external OpenID window",
+                            "type": "Number, milliseconds"
+                        },
+                        {
+                            "name": "loginAutomaticHideMS",
+                            "description": "Time to wait before automatically\nhide the login panel, when login has been completed.",
+                            "type": "Number, milliseconds"
+                        }
+                    ]
+                }
+            ],
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 70,
+            "itemtype": "event",
+            "name": "onLogin",
+            "params": [
+                {
+                    "name": "f(data)",
+                    "description": "function to be called.<br>\ndata is the json object coming from the server on succesfull login.",
+                    "type": "Function"
+                }
+            ],
+            "description": "Called when the user succesfully completes the OpenID \nauthentication workflow.",
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 78,
+            "itemtype": "event",
+            "name": "onLogout",
+            "params": [
+                {
+                    "name": "f(data)",
+                    "description": "function to be called.<br>\ndata is the json object coming from the server on succesfull logout.",
+                    "type": "Function"
+                }
+            ],
+            "description": "Called when the user succesfully logs out.",
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 96,
+            "itemtype": "method",
+            "name": "get",
+            "description": "Performs an HTTP get through an authenticated Ajax call.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "the same object one would pass to a \nnormal dojo xhr.get().",
+                    "type": "Object"
+                }
+            ],
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 160,
+            "itemtype": "method",
+            "name": "xPost",
+            "description": "Performs an HTTP post through an authenticated Ajax call.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "the same object one would pass to a \nnormal dojo xhrPost().",
+                    "type": "Object"
+                }
+            ],
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 170,
+            "itemtype": "method",
+            "name": "xPut",
+            "description": "Performs an HTTP put through an authenticated Ajax call.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "the same object one would pass to a \nnormal dojo xhrPut().",
+                    "type": "Object"
+                }
+            ],
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 180,
+            "itemtype": "method",
+            "name": "xDelete",
+            "description": "Performs an HTTP delete through an authenticated Ajax call.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "the same object one would pass to a \nnormal dojo xhrDelete().",
+                    "type": "Object"
+                }
+            ],
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 248,
+            "itemtype": "method",
+            "name": "isLoggedIn",
+            "description": "Checks with the server if an user is logged in. Will call\nthe given callback passing true or false",
+            "params": [
+                {
+                    "name": "f",
+                    "description": "Callback to be called when the check is done",
+                    "type": "Function"
+                }
+            ],
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 304,
+            "itemtype": "method",
+            "name": "login",
+            "description": "If the user is logged, does nothing. If not, starts the\nlogin procedures, opening the modal login dialog first",
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 322,
+            "itemtype": "method",
+            "name": "logout",
+            "description": "Logs out any logged in user by calling the relative\nserver API",
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 353,
+            "itemtype": "method",
+            "name": "showLogin",
+            "description": "Shows the login modal dialog",
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/AuthenticatedRequester.js",
+            "line": 363,
+            "itemtype": "method",
+            "name": "hideLogin",
+            "description": "Hides the login modal dialog",
+            "class": "pundit.authenticatedRequester"
+        },
+        {
+            "file": "src/BaseComponent.js",
+            "line": 31,
+            "description": "Enables debug messages for the component",
+            "itemtype": "property",
+            "name": "debug",
+            "type": "Boolean",
+            "default": "false",
+            "class": "pundit.baseComponent",
+            "module": "pundit"
+        },
+        {
+            "file": "src/BaseComponent.js",
+            "line": 39,
+            "description": "Name of the component, shown in debug messages",
+            "itemtype": "property",
+            "name": "libName",
+            "type": "String",
+            "default": "this.declaredClass",
+            "class": "pundit.baseComponent",
+            "module": "pundit"
+        },
+        {
+            "file": "src/BaseComponent.js",
+            "line": 48,
+            "description": "Initializes the component",
+            "itemtype": "method",
+            "name": "constructor",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "debug",
+                            "description": "wether or not to activate debug mode for the component",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "libName",
+                            "description": "component name visualized in debug messages. If not \nassigned explicitly dojo's 'declaredClass' field will be used.",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ],
+            "class": "pundit.baseComponent",
+            "module": "pundit"
+        },
+        {
+            "file": "src/BaseComponent.js",
+            "line": 86,
+            "itemtype": "method",
+            "name": "createCallback",
+            "description": "Creates one or more callbacks for the component. For each 'name' passed\nas parameter two methods will be created:<br>\nonName(f) (first letter is automatically capitalized): used by other components to\nsubscribe a function to be called when the event hits. Optional parameters. <br>\nfireOnName(data) (first letter is automatically capitalized): fires the event \ncalling all of the subscribed callbacks passing data as parameter. This \nfunction must be called by the component when needed.",
+            "params": [
+                {
+                    "name": "names",
+                    "description": "Names of the callbacks to be created.",
+                    "type": "String or array of strings"
+                }
+            ],
+            "class": "pundit.baseComponent",
+            "module": "pundit"
+        },
+        {
+            "file": "src/BaseComponent.js",
+            "line": 137,
+            "itemtype": "method",
+            "name": "log",
+            "description": "Logs a debug message in the browser console or (if not\npresent) in a debug div appended to the document.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "message to be logged.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "boolean true if something has been logged, false otherwise"
+            },
+            "class": "pundit.baseComponent",
+            "module": "pundit"
+        },
+        {
+            "file": "src/Namespace.js",
+            "line": 16,
+            "description": "Initializes the ns properties",
+            "itemtype": "method",
+            "name": "constructor",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "",
+            "module": "pundit"
+        }
+    ],
+    "warnings": []
+}
