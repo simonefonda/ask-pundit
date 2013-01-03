@@ -1,0 +1,13 @@
+{  
+  "name": "ASK",  
+  "version": "0.0.1",  
+  "dependencies" : {  
+    "mocha" : "1.7.0",
+    "chai" : "1.4.2",
+    "yuidocjs" : "0.3.35",
+    "jsdom" : "0.3.3"
+  },  
+  "engine": {  
+    "node": ">=0.8"  
+  }  
+}
