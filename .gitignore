@@ -1,3 +1,4 @@
 .DS_STORE
 dojoConfig.js
 server/data/collections.db
+pundit18/node_modules/
