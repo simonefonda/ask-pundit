@@ -37,7 +37,7 @@ define([
     
     // TODO: can be removed from here and just taken from the first auth request or
     // is logged in
-    redirectURL: "http://metasound.dibet.univpm.it/annotationserver/login.jsp",
+    redirectURL: "http://as.thepund.it/annotationserver/login.jsp",
     
     _loggedIn: false,
     _logginInAs: {},
@@ -255,7 +255,7 @@ define([
         var self = this;
         
         var args = {
-            url: "http://metasound.dibet.univpm.it/annotationserver/api/users/current",
+            url: "http://as.thepund.it:8080/annotationserver/api/users/current",
             handleAs: "json",
             headers: {
                 "Accept":"application/json"
@@ -330,7 +330,7 @@ define([
         clearTimeout(self.loginTimer);
         
         var args = {
-            url: "http://metasound.dibet.univpm.it/annotationserver/api/users/logout",
+            url: "http://as.thepund.it:8080/annotationserver/api/users/logout",
             handleAs: "json",
             headers: {
                 "Accept":"application/json"
