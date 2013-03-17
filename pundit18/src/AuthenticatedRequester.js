@@ -218,7 +218,7 @@ define([
     _openLoginPopUp: function() {
         var self = this;
 
-        window.open(self.redirectURL, 'loginpopup', 'left=260,top=120,width=480,height=360');
+        window.open(self.redirectURL, 'loginpopup', 'left=260,top=120,width=580,height=360');
 
         self._setLoginState('waiting');
             

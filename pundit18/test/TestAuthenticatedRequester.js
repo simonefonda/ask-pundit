@@ -36,14 +36,14 @@ define(['pundit/AuthenticatedRequester'], function(AuthenticatedRequester) {
             var json = {loginStatus: 1};
             ar._handleLoginLoad(json, function(b, data) {
                 expect(b).equal(true);
-            })
+            });
         });
 
         test('_handleLoginLoad() with .loginStatus: 0', function() {
             var json = {loginStatus: 0};
             ar._handleLoginLoad(json, function(b, data) {
                 expect(b).equal(false);
-            })
+            });
         });
         
         test('BlockedRequests must be empty', function() {
