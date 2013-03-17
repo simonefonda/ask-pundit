@@ -51,7 +51,7 @@ define([
         self.pundit_VocabCategory = "http://purl.org/pundit/vocab/category";
         
         // Annotation server constants
-        self.as                   = "http://metasound.dibet.univpm.it:8080/annotationserver/";
+        self.as                   = "http://as.thepund.it:8080/annotationserver/";
         self.asApi                = self.as + "api/";
 
         self.asNbAnnList          = self.asApi + "notebooks/{id}/annotations/metadata";
