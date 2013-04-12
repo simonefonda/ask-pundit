@@ -332,7 +332,9 @@ define(["dojo/_base/declare",
 
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me-as-subject="'+uri_enc+'"]')
                                     .forEach(function(__e) {
-                                        dojo.query(__e).empty().innerHTML(desc);
+                                        var content = depic !== '' ? "<img src='"+depic+"'><br/>" : '';
+                                        content += desc !== "" ? desc : "";
+                                        dojo.query(__e).empty().innerHTML(content);
                                     });
 
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me-as-predicate="'+uri_enc+'"]')
