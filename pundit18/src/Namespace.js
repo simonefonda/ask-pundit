@@ -1,9 +1,11 @@
 define([
-        "dojo/_base/declare"
+        "dojo/_base/declare",
+        "dojo/_base/config"
     ], 
 
     function(
-        declare
+        declare,
+        config
     ) {
 
     return declare("pundit.ns", [], {
@@ -51,7 +53,8 @@ define([
         self.pundit_VocabCategory = "http://purl.org/pundit/vocab/category";
         
         // Annotation server constants
-        self.as                   = "http://as.thepund.it:8080/annotationserver/";
+        self.as                   = config.ask.annotationServer;
+
         self.asApi                = self.as + "api/";
 
         self.asNbAnnList          = self.asApi + "notebooks/{id}/annotations/metadata";

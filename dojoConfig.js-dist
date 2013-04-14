@@ -5,7 +5,13 @@ dojoConfig = {
     ask: {
         // address of the nodejs instance running the server (js/server/server.js)
         nodeServerAddress: 'http://localhost'
-        nodeServerPort: 53000
+        nodeServerPort: 53000,
+        
+        // Instance of the annotation server to query
+        annotationServer: "http://as.thepund.it:8080/annotationserver/"
+
+        // Metasound is the legacy dev server
+        // annotationServer: "http://metasound.dibet.univpm.it:8080/annotationserver/"
     },
 
     isDebug: 1,
