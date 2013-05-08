@@ -1,9 +1,10 @@
 define(["dojo/_base/declare", 
         "dojo/json",
-        "dojo/text!ask/tmpl/nbTab/ACPredicate.html", 
+        "dojo/text!ask/tmpl/nbTab/ACPredicate.html",
+        "bootstrap/Popover",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, json, annotationPredicateTemplate, _WidgetBase, _TemplatedMixin) {
+    function(declare, json, annotationPredicateTemplate, Popover, _WidgetBase, _TemplatedMixin) {
 
     return declare("ask.AnnotationPredicate", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
@@ -43,6 +44,9 @@ define(["dojo/_base/declare",
             if (typeof(c[u][ASK.ns.items.description]) !== "undefined")
                 self.desc = c[u][ASK.ns.items.description][0].value;
             
+        },
+        startup: function() {
+            dojo.query('[data-toggle="popover"]').popover();
         }
     });
 

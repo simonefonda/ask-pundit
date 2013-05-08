@@ -90,7 +90,7 @@ define([
 
                     for (var subject in data) {
                                             
-                        var ann = new ACAnnotationSubject({
+                        var sub = new ACAnnotationSubject({
                             createdBy: annotationMeta.createdBy,
                             createdAt: annotationMeta.createdAt,
                             pageContext: annotationMeta.pageContext,
@@ -98,10 +98,7 @@ define([
                             annotationId: annotationId,
                             notebookId: self.notebookId
                         }).placeAt(dojo.query('.askACAnn.annotation-'+annotationId)[0]);
-                    
-                        if (dojo.indexOf(self.itemsURIs[annotationId], subject) === -1) 
-                            self.itemsURIs[annotationId].push(subject);
-                    
+                                        
                         for (var predicate in data[subject]) {
                         
                             var pre = new ACAnnotationPredicate({
@@ -110,36 +107,26 @@ define([
                                 subject_enc: BASE64.encode(subject),
                                 uri: predicate,
                                 objects_num: data[subject][predicate].length
-                            }).placeAt(dojo.query('.askACAnn..annotation-'+annotationId+' [about="predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
-
-                            if (dojo.indexOf(self.itemsURIs[annotationId], predicate) === -1)
-                                self.itemsURIs[annotationId].push(predicate);
+                            }).placeAt(dojo.query('.askACAnn.annotation-'+annotationId+' [data-askreplace="predicates-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
+                            pre.startup();
 
                             for (var object in data[subject][predicate]) {
 
                                 var object_value = data[subject][predicate][object].value,
                                     sel = '.askACAnn.annotation-'+annotationId+
-                                        ' [about="object-'+annotationId+'-'+BASE64.encode(subject)+
+                                        ' [data-askreplace="objects-'+annotationId+'-'+BASE64.encode(subject)+
                                         '-'+BASE64.encode(predicate)+'"]';
 
-                                var pre = new ACAnnotationObject({
+                                var obj = new ACAnnotationObject({
                                     notebookId: self.notebookId,
                                     annotationId: annotationId,
                                     uri: object_value,
                                     uri_enc: BASE64.encode(object_value)
                                 }).placeAt(dojo.query(sel)[0]);
                             
-                                if (dojo.indexOf(self.itemsURIs[annotationId], object_value) === -1)
-                                    if (data[subject][predicate][object].type === "uri")
-                                        self.itemsURIs[annotationId].push(object_value);
-
                             } // for object in data[subject][predicate]
                         } // for predicate in data[subject]
-                    } // for subject and data
-                
-                    // Once we have the triples, get the item descriptions
-                    // self.loadAnnotationItems(annotationId);
-                
+                    } // for subject and data                
                 }, 
                 function(error) {
                     console.log('error :|');

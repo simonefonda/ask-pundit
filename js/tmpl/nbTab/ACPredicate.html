@@ -1,10 +1,8 @@
-<div class="accordion-group">
-    <div style="border:1px solid green">
-        <div>${label} (${objects_num})</div>
-        <div>${desc}</div>
-    </div>
+<div class="media">
+    
+    <h4><a data-toggle="popover" data-placement="right" data-content="${desc}">${label} (${objects_num})</a></h4>
 
-    <div about="object-${annotationId}-${subject_enc}-${uri_enc}">
+    <div data-askreplace="objects-${annotationId}-${subject_enc}-${uri_enc}">
         <!-- will contain objects -->
     </div>
 </div>
