@@ -5,29 +5,21 @@ define(["dojo/_base/declare",
         "dojo/dom-attr",
         "dojo/on", 
         "dojo/router", 
-
-        "dojo/text!ask/tmpl/NotebookTabTemplate.html", 
         "bootstrap/Collapse",
         "bootstrap/Dropdown",
-
+        "dojo/text!ask/tmpl/NotebookTabTemplate.html", 
         "ask/NotebookItemMetadata",
-        "ask/NotebookItemAnnotation",
-        "ask/NotebookItemAnnotationContent",
-        "ask/AnnotationPredicate",
-        "ask/AnnotationObject",
-        
+        "ask/ACAnnotation",
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane", 
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, lang, request, domConstruct, domAttr, on, router, 
-        
-                notebookTabTemplate, BCollapse, BDropdown,
-                
-                NotebookItemMetadata, NotebookItemAnnotation, NotebookItemAnnotationContent,
-                AnnotationPredicate, AnnotationObject,
-                
-                TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
+    function(
+        declare, lang, request, domConstruct, domAttr, on, router, 
+        BCollapse, BDropdown,
+        notebookTabTemplate, NotebookItemMetadata, ACAnnotation,
+        TabContainer, ContentPane, _WidgetBase, _TemplatedMixin
+    ) {
 
     return declare("ask.NotebookTab", [_WidgetBase, _TemplatedMixin], {
         parentTabContainer: '',
@@ -163,16 +155,14 @@ define(["dojo/_base/declare",
             }).then(
                 function(data){
                         
-                    // TODO: sanitize data[i][][].[].... if it exists ..
                     for (var nb_ann in data) {
 
                         var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value;
-                        // self.loadAnnotationItems(annotationId);
 
                         ASK._cache['nb-'+self.notebookId]['ann-rdf-'+annotationId] = data[nb_ann];
                         
                         // Annotation item
-                        ASK._cache['nb-'+self.notebookId]['ann-'+annotationId] = new NotebookItemAnnotation({
+                        ASK._cache['nb-'+self.notebookId]['ann-'+annotationId] = new ACAnnotation({
                             notebookId: self.notebookId,
                             annotationId: annotationId,
                             createdBy: data[nb_ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
@@ -180,20 +170,7 @@ define(["dojo/_base/declare",
                             pageContext: data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
                             isOwner: self.isOwner
                         }).placeAt(placeAt);
-                        
-                        
-                        /*
-                        // Given the annotation ID, get the content
-                        self.loadAnnotationContent({
-                            annotationId: annotationId,
-                            createdBy: data[nb_ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
-                            createdAt: data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
-                            pageContext: data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value
-                        });
-                        */
-
                     } // for
-
                 }, 
                 function(error) {
                     if (("response" in error) && ("status" in error.response)) {
@@ -208,201 +185,8 @@ define(["dojo/_base/declare",
                 }
             ); // then
             
-        }, // loadNotebookAnnotations()
+        } // loadNotebookAnnotations()
 
-        /*
-        // Will build the main annotation content:
-        // grouped by annotation id, grouped by subject, grouped by predicate
-        loadAnnotationContent: function(annotationMeta) {
-            var self = this,
-                def, url,
-                annotationId = annotationMeta.annotationId;
-                
-            // Use authenticated API if we're owning the notebook
-            if (self.isOwner) {
-                def = ASK.requester;
-                url = lang.replace(ASK.ns.asAnnGraph, { id: annotationId });
-            } else {
-                def = request;
-                url = lang.replace(ASK.ns.asOpenAnnGraph, { id: annotationId });
-            }
-
-            self.itemsURIs[annotationId] = [];
-            
-            def.get(url, {
-                handleAs: "json",
-                headers: { "Accept": "application/json" }
-            }).then(
-                function(data){
-
-                    for (var subject in data) {
-                                                
-                        var ann = new NotebookItemAnnotationContent({
-                            createdBy: annotationMeta.createdBy,
-                            createdAt: annotationMeta.createdAt,
-                            pageContext: annotationMeta.pageContext,
-                            subject: subject,
-                            annotationId: annotationId
-                        }).placeAt(dojo.query('.askNotebookItemAnnotation.annotation-'+annotationId+' .askNotebookItemAnnotationContent')[0]);
-                        
-                        if (dojo.indexOf(self.itemsURIs[annotationId], subject) === -1) 
-                            self.itemsURIs[annotationId].push(subject);
-                        
-                        for (var predicate in data[subject]) {
-                            
-                            var pre = new AnnotationPredicate({
-                                annotationId: annotationId,
-                                subject_enc: BASE64.encode(subject),
-                                uri: predicate,
-                                objects_num: data[subject][predicate].length
-                            }).placeAt(dojo.query('.annotation-'+annotationId+' [about="predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
-
-                            if (dojo.indexOf(self.itemsURIs[annotationId], predicate) === -1)
-                                self.itemsURIs[annotationId].push(predicate);
-
-                            for (var object in data[subject][predicate]) {
-
-                                var object_value = data[subject][predicate][object].value;
-                                
-                                var pre = new AnnotationObject({
-                                    annotationId: annotationId,
-                                    object_uri: object,
-                                    object_value: object_value,
-                                    object_uri_enc: BASE64.encode(object_value)
-                                }).placeAt(dojo.query('.annotation-'+annotationId+' [about="object-'+annotationId+'-'+BASE64.encode(subject)+'-'+BASE64.encode(predicate)+'"]')[0]);
-                                
-                                if (dojo.indexOf(self.itemsURIs[annotationId], object_value) === -1)
-                                    if (data[subject][predicate][object].type === "uri")
-                                        self.itemsURIs[annotationId].push(object_value);
-
-                            } // for object in data[subject][predicate]
-                        } // for predicate in data[subject]
-                    } // for subject and data
-                    
-                    // Once we have the triples, get the item descriptions
-                    self.loadAnnotationItems(annotationId);
-                    
-                }, 
-                function(error) {
-                    console.log('error :|');
-                }
-            ); // then
-            
-        }, // loadAnnotationContent()
-*/
-        
-        // As we get informations for the items, we will build their
-        // widget guessing their type, replacing the placeholders
-        loadAnnotationItems: function(annotationId) {
-            var self = this,
-                def, url,
-                placeAt = dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0];
-                
-            // Use authenticated API if we're owning the notebook
-            if (self.isOwner) {
-                def = ASK.requester;
-                url = lang.replace(ASK.ns.asAnnItems, { id: annotationId });
-            } else {
-                def = request;
-                url = lang.replace(ASK.ns.asOpenAnnItems, { id: annotationId });
-            }
-            
-            def.get(url, {
-                handleAs: "json",
-                headers: { "Accept": "application/json" }
-            }).then(
-                function(data){
-                    
-                    ASK._cache['ite-'+annotationId] = data;
-                    // Annotation item
-                    ASK._cache['ann-'+annotationId] = new NotebookItemAnnotation({
-                        annotationId: annotationId,
-                        createdBy: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/dc/elements/1.1/creator'][0].value,
-                        createdAt: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/dc/terms/created'][0].value,
-                        pageContext: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
-                        isOwner: self.isOwner
-                    }).placeAt(placeAt);
-                    
-                    /*
-                                        
-                    // TODO: use a namespace helper or something smarter!
-                    var _type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-                        _tf = "http://purl.org/pundit/ont/ao#text-fragment",
-                        _prop = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
-                        _lab = "http://www.w3.org/2000/01/rdf-schema#label",
-                        _desc = "http://purl.org/dc/elements/1.1/description",
-                        _depic = "http://xmlns.com/foaf/0.1/depiction";
-                    
-                    // Look for items starting from itemsURIs
-                    for (var current in self.itemsURIs[annotationId]) {
-                        
-                        var uri = self.itemsURIs[annotationId][current];
-                        
-                        if (uri in data) {
-                            
-                            if (_type in data[uri]) {
-                                
-                                var uri_enc = BASE64.encode(uri),
-                                    label = data[uri][_lab][0].value,
-                                    label_short = label.length > 50 ? label.substr(0, self.titleChars)+' ..' : label,
-                                    desc = "",
-                                    depic = (_depic in data[uri]) ? data[uri][_depic][0].value : '';
-                                    
-                                if (typeof(data[uri][_desc]) !== "undefined")
-                                    desc = data[uri][_desc][0].value;
-
-                                // First step: put the titles
-                                dojo.query('.annotation-'+annotationId+' [data-replace-me-as-title="'+uri_enc+'"]')
-                                    .forEach(function(__e) {
-                                        var content = depic !== '' ? "<img class='small' src='"+depic+"'>" : '';
-                                        content += label_short
-                                        dojo.query(__e).empty().innerHTML(content);
-                                    });
-
-                                dojo.query('.annotation-'+annotationId+' [data-replace-me-as-subject="'+uri_enc+'"]')
-                                    .forEach(function(__e) {
-                                        var content = depic !== '' ? "<img class='small' src='"+depic+"'><br/>" : '';
-                                        content += desc !== "" ? desc : "";
-                                        dojo.query(__e).empty().innerHTML(content);
-                                    });
-
-                                dojo.query('.annotation-'+annotationId+' [data-replace-me-as-predicate="'+uri_enc+'"]')
-                                    .forEach(function(__e) {
-                                        var num = domAttr.get(__e, 'data-objects-num'),
-                                            content = num > 1 ? label + ' ('+num+')' : label;
-                                        dojo.query(__e).empty().innerHTML(content);
-                                    });
-
-                                // TODO : create a new template and use it to render an item with a bit more
-                                // details .. 
-                                dojo.query('.annotation-'+annotationId+' [data-replace-me-as-object="'+uri_enc+'"]')
-                                    .forEach(function(__e) {
-                                        var content = "<h3>" + label + "</h3>";
-                                        content += depic !== '' ? "<img class='small' src='"+depic+"'>" : '';
-                                        content += desc !== "" ? desc : "";
-                                        content += "<br/><a href='"+uri+"'>More info<i class='icon-share'></i></a>";
-                                        dojo.query(__e).empty().innerHTML(content);
-                                    });
-                                
-                            } else {
-                                console.log('ERROR? No type: this should NOT happen.');
-                            }
-                            
-                        } else { // if uri in data 
-                            console.log('ERROR? Uri not in data __'+ uri +'__', data, typeof(data[uri]), typeof(uri));
-                        }
-                       
-                    } // for i in self.itemsURIs 
-                    */
-                    
-                }, 
-                function(error) {
-                    console.log('error :|');
-                }
-            );
-            
-        } // loadAnnotationItems()
-        
 	});
 
 });

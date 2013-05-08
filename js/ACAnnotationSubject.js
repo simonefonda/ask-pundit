@@ -1,11 +1,11 @@
 define(["dojo/_base/declare", 
-        "dojo/text!ask/tmpl/nbTab/ACAnnotationContent.html", 
+        "dojo/text!ask/tmpl/nbTab/ACAnnotationSubject.html", 
         "bootstrap/Tooltip",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, notebookItemAnnotationContentTemplate, BTooltip, _WidgetBase, _TemplatedMixin) {
+    function(declare, ACAnnotationSubjectTemplate, BTooltip, _WidgetBase, _TemplatedMixin) {
 
-    return declare("ask.NotebookItemAnnotationContent", [_WidgetBase, _TemplatedMixin], {
+    return declare("ask.ACAnnotationSubject", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
         annotationId: '',
         createdBy: '',
@@ -17,7 +17,7 @@ define(["dojo/_base/declare",
         uri: '',
         subject_enc: '',
         
-        templateString: notebookItemAnnotationContentTemplate,
+        templateString: ACAnnotationSubjectTemplate,
         postMixInProperties: function() {
             var self = this;
             self.inherited(arguments);
@@ -39,7 +39,7 @@ define(["dojo/_base/declare",
             if ((nbid in ASK._cache) && (anrd in ASK._cache[nbid]))
                 c = ASK._cache[nbid][anrd];
             else {
-                console.log('ouch?');
+                // console.log('Subject ouch?');
                 return;
             }
 

@@ -1,19 +1,19 @@
 define([
         "dojo/_base/declare", 
         "dojo/_base/lang",
-        "dojo/text!ask/tmpl/NotebookItemAnnotationTemplate.html", 
-        "ask/NotebookItemAnnotationContent",
-        "ask/AnnotationPredicate",
-        "ask/AnnotationObject",
+        "dojo/text!ask/tmpl/nbTab/ACAnnotation.html", 
+        "ask/ACAnnotationSubject",
+        "ask/ACAnnotationPredicate",
+        "ask/ACAnnotationObject",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"
     ], function(
-        declare, lang, notebookItemAnnotationTemplate, 
-        NotebookItemAnnotationContent, AnnotationPredicate, AnnotationObject,
+        declare, lang, ACAnnotationTemplate, 
+        ACAnnotationSubject, ACAnnotationPredicate, ACAnnotationObject,
         _WidgetBase, _TemplatedMixin
     ) {
 
-    return declare("ask.NotebookItemAnnotation", [_WidgetBase, _TemplatedMixin], {
+    return declare("ask.ACAnnotation", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
         annotationId: '',
         createdBy: '',
@@ -22,24 +22,13 @@ define([
         isOwner: false,
         body: '',
         itemsURIs: [],
-        templateString: notebookItemAnnotationTemplate,
+        templateString: ACAnnotationTemplate,
         startup: function() {
             var self = this;
             
             self.loadAnnotationItems(self.annotationId);
-            /*
-            self.loadAnnotationContent({
-                annotationId: self.annotationId,
-                createdBy: self.createdBy,
-                createdAt: self.createdAt,
-                pageContext: self.pageContext
-            });
-            */
-                
         },
 
-        // As we get informations for the items, we will build their
-        // widget guessing their type, replacing the placeholders
         loadAnnotationItems: function(annotationId) {
             var self = this,
                 def, url;
@@ -67,16 +56,6 @@ define([
                         pageContext: self.pageContext
                     });
                     
-                    /*
-                    // Annotation item
-                    ASK._cache['ann-'+annotationId] = new NotebookItemAnnotation({
-                        annotationId: annotationId,
-                        createdBy: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/dc/elements/1.1/creator'][0].value,
-                        createdAt: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/dc/terms/created'][0].value,
-                        pageContext: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
-                        isOwner: self.isOwner
-                    }).placeAt(placeAt);
-                    */
                 }, 
                 function(error) {
                     console.log('error :|');
@@ -111,7 +90,7 @@ define([
 
                     for (var subject in data) {
                                             
-                        var ann = new NotebookItemAnnotationContent({
+                        var ann = new ACAnnotationSubject({
                             createdBy: annotationMeta.createdBy,
                             createdAt: annotationMeta.createdAt,
                             pageContext: annotationMeta.pageContext,
@@ -125,7 +104,7 @@ define([
                     
                         for (var predicate in data[subject]) {
                         
-                            var pre = new AnnotationPredicate({
+                            var pre = new ACAnnotationPredicate({
                                 notebookId: self.notebookId,
                                 annotationId: annotationId,
                                 subject_enc: BASE64.encode(subject),
@@ -142,8 +121,8 @@ define([
                                     sel = '.askACAnn.annotation-'+annotationId+
                                         ' [about="object-'+annotationId+'-'+BASE64.encode(subject)+
                                         '-'+BASE64.encode(predicate)+'"]';
-                                console.log('ann'+ subject +' %%% '+predicate+' %%% '+object_value);
-                                var pre = new AnnotationObject({
+
+                                var pre = new ACAnnotationObject({
                                     notebookId: self.notebookId,
                                     annotationId: annotationId,
                                     uri: object_value,
