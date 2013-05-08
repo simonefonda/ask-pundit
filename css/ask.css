@@ -32,25 +32,25 @@ legend.interactive:hover {
 .very-hidden {
   display: none; }
 
-/* line 37, ask.scss */
-div.accordion-group .accordion-heading {
-  background-color: #eee; }
-/* line 41, ask.scss */
-div.accordion-group img {
+/* line 35, ask.scss */
+img.small {
   border: 1px solid black;
   max-width: 100px;
   max-height: 100px;
-  float: left;
   margin-right: 20px; }
-/* line 49, ask.scss */
+
+/* line 44, ask.scss */
+div.accordion-group .accordion-heading {
+  background-color: #eee; }
+/* line 48, ask.scss */
 div.accordion-group a i {
   margin-left: 5px;
   opacity: 0.6; }
-/* line 53, ask.scss */
+/* line 52, ask.scss */
 div.accordion-group a:hover i {
   opacity: 1; }
 
-/* line 57, ask.scss */
+/* line 56, ask.scss */
 div.nb-item {
   height: 180px; }
 

@@ -39,6 +39,7 @@ define(["dojo/_base/declare",
         notebookLoaded: false,
         bookmarkLoaded: false,
         myAskLoaded: false,
+        _cache: {},
         postMixInProperties: function() {
             this.inherited(arguments);
         },

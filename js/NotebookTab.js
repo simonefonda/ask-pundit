@@ -29,7 +29,7 @@ define(["dojo/_base/declare",
                 
                 TabContainer, ContentPane, _WidgetBase, _TemplatedMixin) {
 
-	return declare("ask.NotebookTab", [_WidgetBase, _TemplatedMixin], {
+    return declare("ask.NotebookTab", [_WidgetBase, _TemplatedMixin], {
         parentTabContainer: '',
         notebookId: '',
         itemsURIs: [],
@@ -67,6 +67,7 @@ define(["dojo/_base/declare",
                 // with the new authenticated API
             }
 
+            ASK._cache['nb-'+self.notebookId] = {};
             self.loadNotebookMetadata();
             self.loadNotebookAnnotations();
      
@@ -166,12 +167,22 @@ define(["dojo/_base/declare",
                     for (var nb_ann in data) {
 
                         var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value;
+                        // self.loadAnnotationItems(annotationId);
 
+                        ASK._cache['nb-'+self.notebookId]['ann-rdf-'+annotationId] = data[nb_ann];
+                        
                         // Annotation item
-                        new NotebookItemAnnotation({
-                            annotationId: annotationId
+                        ASK._cache['nb-'+self.notebookId]['ann-'+annotationId] = new NotebookItemAnnotation({
+                            notebookId: self.notebookId,
+                            annotationId: annotationId,
+                            createdBy: data[nb_ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
+                            createdAt: data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
+                            pageContext: data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
+                            isOwner: self.isOwner
                         }).placeAt(placeAt);
-
+                        
+                        
+                        /*
                         // Given the annotation ID, get the content
                         self.loadAnnotationContent({
                             annotationId: annotationId,
@@ -179,6 +190,7 @@ define(["dojo/_base/declare",
                             createdAt: data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
                             pageContext: data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value
                         });
+                        */
 
                     } // for
 
@@ -198,6 +210,7 @@ define(["dojo/_base/declare",
             
         }, // loadNotebookAnnotations()
 
+        /*
         // Will build the main annotation content:
         // grouped by annotation id, grouped by subject, grouped by predicate
         loadAnnotationContent: function(annotationMeta) {
@@ -242,7 +255,7 @@ define(["dojo/_base/declare",
                                 subject_enc: BASE64.encode(subject),
                                 uri: predicate,
                                 objects_num: data[subject][predicate].length
-                            }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
+                            }).placeAt(dojo.query('.annotation-'+annotationId+' [about="predicate-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
 
                             if (dojo.indexOf(self.itemsURIs[annotationId], predicate) === -1)
                                 self.itemsURIs[annotationId].push(predicate);
@@ -256,7 +269,7 @@ define(["dojo/_base/declare",
                                     object_uri: object,
                                     object_value: object_value,
                                     object_uri_enc: BASE64.encode(object_value)
-                                }).placeAt(dojo.query('.annotation-'+annotationId+' [about="insert-object-'+annotationId+'-'+BASE64.encode(subject)+'-'+BASE64.encode(predicate)+'"]')[0]);
+                                }).placeAt(dojo.query('.annotation-'+annotationId+' [about="object-'+annotationId+'-'+BASE64.encode(subject)+'-'+BASE64.encode(predicate)+'"]')[0]);
                                 
                                 if (dojo.indexOf(self.itemsURIs[annotationId], object_value) === -1)
                                     if (data[subject][predicate][object].type === "uri")
@@ -276,12 +289,14 @@ define(["dojo/_base/declare",
             ); // then
             
         }, // loadAnnotationContent()
-
+*/
+        
         // As we get informations for the items, we will build their
         // widget guessing their type, replacing the placeholders
         loadAnnotationItems: function(annotationId) {
             var self = this,
-                def, url;
+                def, url,
+                placeAt = dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0];
                 
             // Use authenticated API if we're owning the notebook
             if (self.isOwner) {
@@ -297,6 +312,18 @@ define(["dojo/_base/declare",
                 headers: { "Accept": "application/json" }
             }).then(
                 function(data){
+                    
+                    ASK._cache['ite-'+annotationId] = data;
+                    // Annotation item
+                    ASK._cache['ann-'+annotationId] = new NotebookItemAnnotation({
+                        annotationId: annotationId,
+                        createdBy: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/dc/elements/1.1/creator'][0].value,
+                        createdAt: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/dc/terms/created'][0].value,
+                        pageContext: ASK._cache['ann-rdf-'+annotationId]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
+                        isOwner: self.isOwner
+                    }).placeAt(placeAt);
+                    
+                    /*
                                         
                     // TODO: use a namespace helper or something smarter!
                     var _type = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
@@ -327,12 +354,14 @@ define(["dojo/_base/declare",
                                 // First step: put the titles
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me-as-title="'+uri_enc+'"]')
                                     .forEach(function(__e) {
-                                        dojo.query(__e).empty().innerHTML(label_short);
+                                        var content = depic !== '' ? "<img class='small' src='"+depic+"'>" : '';
+                                        content += label_short
+                                        dojo.query(__e).empty().innerHTML(content);
                                     });
 
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me-as-subject="'+uri_enc+'"]')
                                     .forEach(function(__e) {
-                                        var content = depic !== '' ? "<img src='"+depic+"'><br/>" : '';
+                                        var content = depic !== '' ? "<img class='small' src='"+depic+"'><br/>" : '';
                                         content += desc !== "" ? desc : "";
                                         dojo.query(__e).empty().innerHTML(content);
                                     });
@@ -349,7 +378,7 @@ define(["dojo/_base/declare",
                                 dojo.query('.annotation-'+annotationId+' [data-replace-me-as-object="'+uri_enc+'"]')
                                     .forEach(function(__e) {
                                         var content = "<h3>" + label + "</h3>";
-                                        content += depic !== '' ? "<img src='"+depic+"'>" : '';
+                                        content += depic !== '' ? "<img class='small' src='"+depic+"'>" : '';
                                         content += desc !== "" ? desc : "";
                                         content += "<br/><a href='"+uri+"'>More info<i class='icon-share'></i></a>";
                                         dojo.query(__e).empty().innerHTML(content);
@@ -363,7 +392,8 @@ define(["dojo/_base/declare",
                             console.log('ERROR? Uri not in data __'+ uri +'__', data, typeof(data[uri]), typeof(uri));
                         }
                        
-                    } // for i in self.itemsURIs
+                    } // for i in self.itemsURIs 
+                    */
                     
                 }, 
                 function(error) {
