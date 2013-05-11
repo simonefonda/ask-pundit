@@ -1,13 +1,18 @@
 /* @import 'http://fonts.googleapis.com/css?family=Lato:400,900'; */
 
 @import 'http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,300';
+@import 'http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700';
 
 $blue_dark: #2a697a;
 $blue_light: #51a0b5;
+$blue_gray: #d8e5e8;
 
 #ask_container {
     font-family: 'Roboto';
-    h1,h2,h3,h4,h5,h6 { color: $blue_dark; };
+    h1,h2,h3,h4,h5,h6 { 
+        font-family: 'Roboto Condensed';
+        color: $blue_dark; 
+    };
 }
 
 #askTabContainer .tab-content {
@@ -57,10 +62,40 @@ div.nb-item {
     height: 180px;
 }
 
+.sub-textfragment {
+    img { display: none; }
+    div { 
+        text-align: justify;
+        background-color: $blue_gray;
+        max-height: 100px;
+        overflow-y: auto;
+    }
+}
 .obj-literal {
     img, h4, a.more-info { display: none; }
     div { text-align: justify; }
 }
+.media.obj {
+    margin-left: 20px;
+}
+
+.askACAnn {
+    div.desc {
+        -webkit-transition-property: height, maxHeight;
+        -webkit-transition-duration: 1s, 1s;
+        /*    -moz-transition-property: margin-top, background-position-y, margin-right, scroll-top, scrollTop;
+            -moz-transition-duration: 1s, 1s, 1s, 1s;
+          */  
+    }
+
+    
+    &.collapsed {
+        div.desc { max-height: 42px; overflow-y: hidden; }
+        a.more-info { display: none; }
+        div.footer { display: none; }
+    }
+}
+
 
 
 @import "ask_timeline";

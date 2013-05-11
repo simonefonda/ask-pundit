@@ -112,7 +112,7 @@ define([
                             uri: subject,
                             annotationId: annotationId,
                             notebookId: self.notebookId
-                        }).placeAt(dojo.query('.askACAnn.annotation-'+annotationId)[0]);
+                        }).placeAt(dojo.query('.askACAnn .annotation-'+annotationId)[0]);
                                         
                         for (var predicate in data[subject]) {
                         
@@ -122,13 +122,13 @@ define([
                                 subject_enc: BASE64.encode(subject),
                                 uri: predicate,
                                 objects_num: data[subject][predicate].length
-                            }).placeAt(dojo.query('.askACAnn.annotation-'+annotationId+' [data-askreplace="predicates-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
+                            }).placeAt(dojo.query('.askACAnn .annotation-'+annotationId+' [data-askreplace="predicates-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
                             pre.startup();
 
                             for (var object in data[subject][predicate]) {
 
                                 var object_value = data[subject][predicate][object].value,
-                                    sel = '.askACAnn.annotation-'+annotationId+
+                                    sel = '.askACAnn .annotation-'+annotationId+
                                         ' [data-askreplace="objects-'+annotationId+'-'+BASE64.encode(subject)+
                                         '-'+BASE64.encode(predicate)+'"]';
 

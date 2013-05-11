@@ -42,6 +42,11 @@ define(["dojo/_base/declare",
                 console.log('Subject ouch?');
                 return;
             }
+            
+            if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.text)) {
+                console.log('We haz a text fragment!');
+                self.type = 'textfragment';
+            }
         
             self.label = c[u][ASK.ns.items.label][0].value,
             label_short = this.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : this.label,
@@ -52,6 +57,12 @@ define(["dojo/_base/declare",
             if (typeof(c[u][ASK.ns.items.description]) !== "undefined")
                 self.desc = c[u][ASK.ns.items.description][0].value;
 
+        },
+        _inTypesArray: function(a, t) {
+            for (var l=a.length; l--;)
+                if (a[l].type === "literal" && a[l].value === t)
+                    return l;
+            return -1;
         },
         startup: function() {
         }
