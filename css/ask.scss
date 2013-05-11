@@ -1,12 +1,13 @@
-@import 'http://fonts.googleapis.com/css?family=Lato:400,900';
+/* @import 'http://fonts.googleapis.com/css?family=Lato:400,900'; */
 
-@font-face {
-    font-family: "Rockwell";
-    src: url("Rockwell.otf");
-}
+@import 'http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,300';
+
+$blue_dark: #2a697a;
+$blue_light: #51a0b5;
 
 #ask_container {
-    font-family: 'Rockwell';
+    font-family: 'Roboto';
+    h1,h2,h3,h4,h5,h6 { color: $blue_dark; };
 }
 
 #askTabContainer .tab-content {
@@ -33,10 +34,9 @@ legend.interactive:hover {
 .very-hidden { display: none; }
 
 img.small {
-    border: 1px solid black;
     max-width: 100px;
     max-height: 100px;
-    margin-right: 20px;
+    margin-left: 20px;
 }
 
 div.accordion-group {
@@ -57,6 +57,10 @@ div.nb-item {
     height: 180px;
 }
 
+.obj-literal {
+    img, h4, a.more-info { display: none; }
+    div { text-align: justify; }
+}
 
 
 @import "ask_timeline";

@@ -1,6 +1,7 @@
 define([
         "dojo/_base/declare", 
         "dojo/_base/lang",
+        "dojo/request", 
         "dojo/text!ask/tmpl/nbTab/ACAnnotation.html", 
         "ask/ACAnnotationSubject",
         "ask/ACAnnotationPredicate",
@@ -8,7 +9,7 @@ define([
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"
     ], function(
-        declare, lang, ACAnnotationTemplate, 
+        declare, lang, request, ACAnnotationTemplate, 
         ACAnnotationSubject, ACAnnotationPredicate, ACAnnotationObject,
         _WidgetBase, _TemplatedMixin
     ) {
@@ -21,11 +22,23 @@ define([
         pageContext: '',
         isOwner: false,
         body: '',
-        itemsURIs: [],
+        pageContext_short_length: 20,
+        pageContext_short: '',
         templateString: ACAnnotationTemplate,
-        startup: function() {
+        postMixInProperties: function() {
             var self = this;
             
+            // Page context: show the first part of the URL
+            var start = 0;
+            if (self.pageContext.match(/^http:\/\/www\./))
+                start = 11; 
+            else if (self.pageContext.match(/^http:\/\//))
+                start = 7;
+            self.pageContext_short = self.pageContext.substr(start, start + self.pageContext_short_length) + " ..";
+        },
+        startup: function() {
+            var self = this;
+
             self.loadAnnotationItems(self.annotationId);
         },
 
@@ -79,14 +92,16 @@ define([
                 def = request;
                 url = lang.replace(ASK.ns.asOpenAnnGraph, { id: annotationId });
             }
-
-            self.itemsURIs[annotationId] = [];
+            
+            
         
             def.get(url, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
             }).then(
                 function(data){
+                    
+                    ASK._cache['nb-'+self.notebookId]['anc-'+annotationId] = data;
 
                     for (var subject in data) {
                                             
@@ -121,7 +136,8 @@ define([
                                     notebookId: self.notebookId,
                                     annotationId: annotationId,
                                     uri: object_value,
-                                    uri_enc: BASE64.encode(object_value)
+                                    uri_enc: BASE64.encode(object_value),
+                                    original: data[subject][predicate][object]
                                 }).placeAt(dojo.query(sel)[0]);
                             
                             } // for object in data[subject][predicate]

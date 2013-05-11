@@ -21,8 +21,8 @@ define(["dojo/_base/declare",
             this.uri_enc = BASE64.encode(this.uri);
 
             var self = this,
-                u = this.uri,
-                c,
+                u = self.uri,
+                c = {},
                 nbid = 'nb-'+self.notebookId,
                 anrd = 'ite-rdf-'+self.annotationId;
                 
@@ -33,15 +33,26 @@ define(["dojo/_base/declare",
                 return;
             }
 
-            // console.log(c, 'cool', self.notebookId, self.annotationId);
+            // DEBUG: why some items are missing the hastag and hascomment 
+            // triples??!
+            if (!(u in c)) 
+                c[u] = {};
             
-            self.label = c[u][ASK.ns.items.label][0].value,
-            label_short = this.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : this.label,
+            if (u === ASK.ns.pundit_hasTag) {
+                self.label = "Has tag";
+                self.desc = "Some kind of resource has been tagged with a semantic entity";
+            } else if (u === ASK.ns.pundit_hasComment) {
+                self.label = "Has comment";
+                self.desc = "Some kind of resource has been commented";
+            }
+
+            self.label = (ASK.ns.items.label in c[u]) ? c[u][ASK.ns.items.label][0].value : self.label || 'no label :(',
+            label_short = self.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : self.label,
             self.depic = (ASK.ns.items.image in c[u]) ? c[u][ASK.ns.items.image][0].value : 'http://placehold.it/120x100/ffcc00';
             if (self.depic === "http://api.freebase.com/api/trans/image_thumb/guid/")
                 self.depic = 'http://placehold.it/120x100/cc00cc';
             
-            if (typeof(c[u][ASK.ns.items.description]) !== "undefined")
+            if (ASK.ns.items.description in c[u])
                 self.desc = c[u][ASK.ns.items.description][0].value;
             
         },

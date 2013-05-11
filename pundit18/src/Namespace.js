@@ -29,6 +29,7 @@ define([
         self.rdf_XMLLiteral = "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral";
         
         self.rdfs_label = "http://www.w3.org/2000/01/rdf-schema#label";
+        // DEBUG: two comments? rdfs_ and pundit_
         self.rdfs_comment = "http://www.w3.org/2000/01/rdf-schema#comment";
         self.rdfs_resource = "http://www.w3.org/2000/01/rdf-schema#Resource";
 		self.rdfs_literal = "http://www.w3.org/2000/01/rdf-schema#Literal";

@@ -1,9 +1,9 @@
 define(["dojo/_base/declare", 
-        "dojo/text!ask/tmpl/nbTab/ACAnnotationSubject.html", 
+        "dojo/text!ask/tmpl/nbTab/ACSubject.html", 
         "bootstrap/Tooltip",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, ACAnnotationSubjectTemplate, BTooltip, _WidgetBase, _TemplatedMixin) {
+    function(declare, ACSubjectTemplate, BTooltip, _WidgetBase, _TemplatedMixin) {
 
     return declare("ask.ACAnnotationSubject", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
@@ -16,8 +16,8 @@ define(["dojo/_base/declare",
 
         uri: '',
         subject_enc: '',
-        
-        templateString: ACAnnotationSubjectTemplate,
+        type: 'default',
+        templateString: ACSubjectTemplate,
         postMixInProperties: function() {
             var self = this;
             self.inherited(arguments);
@@ -39,11 +39,9 @@ define(["dojo/_base/declare",
             if ((nbid in ASK._cache) && (anrd in ASK._cache[nbid]))
                 c = ASK._cache[nbid][anrd];
             else {
-                // console.log('Subject ouch?');
+                console.log('Subject ouch?');
                 return;
             }
-
-            // console.log(c, 'cool', self.notebookId, self.annotationId);
         
             self.label = c[u][ASK.ns.items.label][0].value,
             label_short = this.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : this.label,

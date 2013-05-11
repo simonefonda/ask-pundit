@@ -1,19 +1,19 @@
-@import 'http://fonts.googleapis.com/css?family=Lato:400,900';
-@font-face {
-  font-family: "Rockwell";
-  src: url("Rockwell.otf"); }
-
+@import 'http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,300';
+/* @import 'http://fonts.googleapis.com/css?family=Lato:400,900'; */
 /* line 8, ask.scss */
 #ask_container {
-  font-family: 'Rockwell'; }
+  font-family: 'Roboto'; }
+  /* line 10, ask.scss */
+  #ask_container h1, #ask_container h2, #ask_container h3, #ask_container h4, #ask_container h5, #ask_container h6 {
+    color: #2a697a; }
 
-/* line 12, ask.scss */
+/* line 13, ask.scss */
 #askTabContainer .tab-content {
   position: relative;
   top: 50px;
   padding: 0px 20px; }
 
-/* line 18, ask.scss */
+/* line 19, ask.scss */
 #ask-pills {
   width: 100%;
   position: fixed;
@@ -23,21 +23,20 @@
   background-color: white;
   z-index: 1000; }
 
-/* line 28, ask.scss */
+/* line 29, ask.scss */
 legend.interactive:hover {
   cursor: pointer;
   color: #FAA732; }
 
-/* line 33, ask.scss */
+/* line 34, ask.scss */
 .very-hidden {
   display: none; }
 
-/* line 35, ask.scss */
+/* line 36, ask.scss */
 img.small {
-  border: 1px solid black;
   max-width: 100px;
   max-height: 100px;
-  margin-right: 20px; }
+  margin-left: 20px; }
 
 /* line 44, ask.scss */
 div.accordion-group .accordion-heading {
@@ -53,6 +52,13 @@ div.accordion-group a:hover i {
 /* line 56, ask.scss */
 div.nb-item {
   height: 180px; }
+
+/* line 61, ask.scss */
+.obj-literal img, .obj-literal h4, .obj-literal a.more-info {
+  display: none; }
+/* line 62, ask.scss */
+.obj-literal div {
+  text-align: justify; }
 
 /* line 1, _ask_timeline.scss */
 .ti-progress-container {
