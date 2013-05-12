@@ -37,7 +37,7 @@ define(["dojo/_base/declare",
                 c[u] = {};
                 if (self.original.type === "literal") {
                     self.type = "literal";
-                    console.log('Am i a literla?!', u.substr(0,30), self.annotationId, self.original);
+                    console.log('Am i a literal?!', u.substr(0,30), self.annotationId, self.original);
                     self.desc = ASK.linkify(u);
                     self.label = u;
                 } else {
