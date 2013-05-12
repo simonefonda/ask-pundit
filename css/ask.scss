@@ -79,20 +79,24 @@ div.nb-item {
     margin-left: 20px;
 }
 
+// Annotation centric annotation view
 .askACAnn {
     div.desc {
         -webkit-transition-property: height, maxHeight;
         -webkit-transition-duration: 1s, 1s;
+        font-style: italic;
         /*    -moz-transition-property: margin-top, background-position-y, margin-right, scroll-top, scrollTop;
             -moz-transition-duration: 1s, 1s, 1s, 1s;
           */  
     }
+    div.footer { border-top: 1px dashed $blue_dark; margin-top: 5px; }
 
-    
+    // collapsed annotation: smaller desc, no more info links, no footer
     &.collapsed {
+        h4 { margin-top: 0px; }
         div.desc { max-height: 42px; overflow-y: hidden; }
         a.more-info { display: none; }
-        div.footer { display: none; }
+        div.footer .created-at { display: none; }
     }
 }
 

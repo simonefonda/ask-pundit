@@ -76,22 +76,30 @@ div.nb-item {
 .media.obj {
   margin-left: 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000383}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000384}}
 .askACAnn div.desc {
   -webkit-transition-property: height, maxHeight;
   -webkit-transition-duration: 1s, 1s;
+  font-style: italic;
   /*    -moz-transition-property: margin-top, background-position-y, margin-right, scroll-top, scrollTop;
       -moz-transition-duration: 1s, 1s, 1s, 1s;
     */ }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000393}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000392}}
+.askACAnn div.footer {
+  border-top: 1px dashed #2a697a;
+  margin-top: 5px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000396}}
+.askACAnn.collapsed h4 {
+  margin-top: 0px; }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000397}}
 .askACAnn.collapsed div.desc {
   max-height: 42px;
   overflow-y: hidden; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000394}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000398}}
 .askACAnn.collapsed a.more-info {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000395}}
-.askACAnn.collapsed div.footer {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000399}}
+.askACAnn.collapsed div.footer .created-at {
   display: none; }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\000031}}
