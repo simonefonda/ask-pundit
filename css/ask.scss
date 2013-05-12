@@ -73,6 +73,19 @@ div.nb-item {
 
 // Annotation centric annotation view
 .askACAnn {
+    &.well { border: 1px solid $blue_light; }
+    h4 { margin-top: 0px; }
+    .header {
+        margin: -20px -20px -16px -20px;
+        background-color: $blue_light;
+        color: white;
+        border-radius: 6px 6px 0px 0px;
+        padding: 2px 5px;
+    }
+    img { 
+        -webkit-transition-property: height, maxHeight;
+        -webkit-transition-duration: 1s, 1s;
+    }
     .desc {
         -webkit-transition-property: height, maxHeight;
         -webkit-transition-duration: 1s, 1s;
@@ -82,15 +95,22 @@ div.nb-item {
         */  
     }
     .footer { 
-        border-top: 1px dashed $blue_dark; 
         margin-top: 5px; 
     }
 
-    .sub {
-        border-top: 1px dashed $blue_dark; 
-        margin-top: 5px; 
-        .meta span { display: none; }
+    .subject-container {
+        border-bottom: 1px dashed $blue_dark;
+        padding-top: 5px;
+        margin-top: 15px;
+        &:nth-child(1) { border-top: 0px; };
     }
+    .pre {
+        background-color: white;
+    }
+
+    
+    .meta span { display: none; }
+    
     .sub-textfragment {
         img { display: none; }
         .desc { 
@@ -98,6 +118,7 @@ div.nb-item {
             background-color: $blue_gray;
             max-height: 100px;
             overflow-y: auto;
+            padding: 2px 5px;
         }
         .meta {
             .part-of { display: block; }
@@ -105,15 +126,46 @@ div.nb-item {
         }
     }
     
+    .obj-default {
+        img { height: 150px; margin-top: 30px;}
+        .desc { 
+            text-align: justify;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        .meta {
+            .more-info { display: block; }
+            .types { display: block; }
+        }
+    }
+    
 
     // collapsed annotation: smaller desc, no more info links, no footer
     &.collapsed {
-        h4 { margin-top: 0px; }
+        img { max-height: 75px; margin: 1px 0px 2px 4px;}
         div.desc { max-height: 42px; overflow: hidden; }
         .meta span { display: none !important; }
+        .media.obj { margin-left: 0px; border: 0px solid blue;}
         div.footer .created-at { display: none; }
-        .pre>h4 { width: 120px; float: left; }
-        .pre-objects { width: 250px; float: right; }
+        .pre>h4 { width: 100px; float: left; border: 0px solid black;}
+        .pre-objects { width: 280px; float: right; margin: 0px; }
+
+        // 1st triple: show it as it is
+        // 2nd triple: show just first object
+        // hide the rest
+        .subject-container { display: none; }
+        .subject-container:nth-child(1) { 
+            display: block; 
+            .sub div.desc { max-height: 58px; }
+        }
+        .subject-container:nth-child(2) {
+            display: block;
+            .pre { display: none; }
+            .pre:nth-child(1) { display: block; }
+        }
+        
+        .summary { display: block; }
+        
     }
 }
 

@@ -26,6 +26,7 @@ define([
         body: '',
         pageContext_short_length: 20,
         pageContext_short: '',
+        summary: '',
         templateString: ACAnnotationTemplate,
         postMixInProperties: function() {
             var self = this;
@@ -99,8 +100,8 @@ define([
                 url = lang.replace(ASK.ns.asOpenAnnGraph, { id: annotationId });
             }
             
+            self.subs = [];
             
-        
             def.get(url, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
@@ -119,6 +120,7 @@ define([
                             annotationId: annotationId,
                             notebookId: self.notebookId
                         }).placeAt(dojo.query('.askACAnn .annotation-'+annotationId)[0]);
+                        self.subs.push(sub);
                                         
                         for (var predicate in data[subject]) {
                         
@@ -149,6 +151,12 @@ define([
                             } // for object in data[subject][predicate]
                         } // for predicate in data[subject]
                     } // for subject and data                
+                    
+                    if (self.subs.length > 1) {
+                        // TODO: what to do when the collapsed annotation is not showing
+                        // a couple of triples?
+                        // dojo.query('[data-acann="'+annotationId+'"] .summary').html('MORE TO SEE');
+                    }
                 }, 
                 function(error) {
                     console.log('error :|');
