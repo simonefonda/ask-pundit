@@ -97,7 +97,6 @@ define([
         // TODO x marco: move this into the component using these urls, as configurable parameters
         self.dbpediaSpotlightAnnotate = "http://spotlight.dbpedia.org/rest/annotate?text=";
         self.dbpediaKeywordSearch = "http://lookup.dbpedia.org/api/search.asmx/KeywordSearch";
-        
  
         // RDF predicates used in items to translate to RDF the item's fields.
         // Not present in this list: 

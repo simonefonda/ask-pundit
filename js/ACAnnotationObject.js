@@ -45,6 +45,19 @@ define(["dojo/_base/declare",
                 }
             }
             
+            self.rdfTypes = '';
+            var fooTypesArray = [];
+            for (var ty in c[u][ASK.ns.items.type]) {
+                var footype = c[u][ASK.ns.items.type][ty].value;
+                if ((footype in c) && ASK.ns.items.label in c[footype])
+                    fooTypesArray.push(c[footype][ASK.ns.items.label][0].value);
+                else
+                    fooTypesArray.push(footype);
+
+            }
+            self.rdfTypes = fooTypesArray.join(', ');
+            
+            
             self.label = (ASK.ns.items.label in c[u]) ? c[u][ASK.ns.items.label][0].value : self.label || 'no label :(',
             self.label_short = this.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : this.label,
             self.depic = (ASK.ns.items.image in c[u]) ? c[u][ASK.ns.items.image][0].value : 'http://placehold.it/120x100/ffcc00';

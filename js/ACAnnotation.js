@@ -2,6 +2,8 @@ define([
         "dojo/_base/declare", 
         "dojo/_base/lang",
         "dojo/request", 
+        "dojo/on",
+        "dojo/dom-class",
         "dojo/text!ask/tmpl/nbTab/ACAnnotation.html", 
         "ask/ACAnnotationSubject",
         "ask/ACAnnotationPredicate",
@@ -9,7 +11,7 @@ define([
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"
     ], function(
-        declare, lang, request, ACAnnotationTemplate, 
+        declare, lang, request, on, domClass, ACAnnotationTemplate, 
         ACAnnotationSubject, ACAnnotationPredicate, ACAnnotationObject,
         _WidgetBase, _TemplatedMixin
     ) {
@@ -38,7 +40,11 @@ define([
         },
         startup: function() {
             var self = this;
-
+            
+            // collapse / expand
+            on(dojo.query('[data-ACAnn="'+self.annotationId+'"] .header .collapse')[0], 'click',function(){
+                domClass.toggle(dojo.query('[data-ACAnn="'+self.annotationId+'"]')[0], 'collapsed');
+            });
             self.loadAnnotationItems(self.annotationId);
         },
 

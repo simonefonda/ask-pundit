@@ -62,15 +62,7 @@ div.nb-item {
     height: 180px;
 }
 
-.sub-textfragment {
-    img { display: none; }
-    div { 
-        text-align: justify;
-        background-color: $blue_gray;
-        max-height: 100px;
-        overflow-y: auto;
-    }
-}
+
 .obj-literal {
     img, h4, a.more-info { display: none; }
     div { text-align: justify; }
@@ -81,21 +73,44 @@ div.nb-item {
 
 // Annotation centric annotation view
 .askACAnn {
-    div.desc {
+    .desc {
         -webkit-transition-property: height, maxHeight;
         -webkit-transition-duration: 1s, 1s;
         font-style: italic;
-        /*    -moz-transition-property: margin-top, background-position-y, margin-right, scroll-top, scrollTop;
+        /*   -moz-transition-property: margin-top, background-position-y, margin-right, scroll-top, scrollTop;
             -moz-transition-duration: 1s, 1s, 1s, 1s;
-          */  
+        */  
     }
-    div.footer { border-top: 1px dashed $blue_dark; margin-top: 5px; }
+    .footer { 
+        border-top: 1px dashed $blue_dark; 
+        margin-top: 5px; 
+    }
+
+    .sub {
+        border-top: 1px dashed $blue_dark; 
+        margin-top: 5px; 
+        .meta span { display: none; }
+    }
+    .sub-textfragment {
+        img { display: none; }
+        .desc { 
+            text-align: justify;
+            background-color: $blue_gray;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        .meta {
+            .part-of { display: block; }
+            .types { display: block; }
+        }
+    }
+    
 
     // collapsed annotation: smaller desc, no more info links, no footer
     &.collapsed {
         h4 { margin-top: 0px; }
-        div.desc { max-height: 42px; overflow-y: hidden; }
-        a.more-info { display: none; }
+        div.desc { max-height: 42px; overflow: hidden; }
+        .meta span { display: none !important; }
         div.footer .created-at { display: none; }
         .pre>h4 { width: 120px; float: left; }
         .pre-objects { width: 250px; float: right; }
