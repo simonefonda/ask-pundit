@@ -1,21 +1,21 @@
 @import 'http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,300';
 @import 'http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700';
 /* @import 'http://fonts.googleapis.com/css?family=Lato:400,900'; */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000310}}
+/* line 10, ask.scss */
 #ask_container {
   font-family: 'Roboto'; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000312}}
+  /* line 12, ask.scss */
   #ask_container h1, #ask_container h2, #ask_container h3, #ask_container h4, #ask_container h5, #ask_container h6 {
     font-family: 'Roboto Condensed';
     color: #2a697a; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000318}}
+/* line 18, ask.scss */
 #askTabContainer .tab-content {
   position: relative;
   top: 50px;
   padding: 0px 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000324}}
+/* line 24, ask.scss */
 #ask-pills {
   width: 100%;
   position: fixed;
@@ -25,58 +25,58 @@
   background-color: white;
   z-index: 1000; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000334}}
+/* line 34, ask.scss */
 legend.interactive:hover {
   cursor: pointer;
   color: #FAA732; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000339}}
+/* line 39, ask.scss */
 .very-hidden {
   display: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000341}}
+/* line 41, ask.scss */
 img.small {
   max-width: 100px;
   max-height: 100px;
   margin-left: 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000349}}
+/* line 49, ask.scss */
 div.accordion-group .accordion-heading {
   background-color: #eee; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000353}}
+/* line 53, ask.scss */
 div.accordion-group a i {
   margin-left: 5px;
   opacity: 0.6; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000357}}
+/* line 57, ask.scss */
 div.accordion-group a:hover i {
   opacity: 1; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000361}}
+/* line 61, ask.scss */
 div.nb-item {
   height: 180px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000366}}
+/* line 66, ask.scss */
 .sub-textfragment img {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000367}}
+/* line 67, ask.scss */
 .sub-textfragment div {
   text-align: justify;
   background-color: #d8e5e8;
   max-height: 100px;
   overflow-y: auto; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000375}}
+/* line 75, ask.scss */
 .obj-literal img, .obj-literal h4, .obj-literal a.more-info {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000376}}
+/* line 76, ask.scss */
 .obj-literal div {
   text-align: justify; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000378}}
+/* line 78, ask.scss */
 .media.obj {
   margin-left: 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000384}}
+/* line 84, ask.scss */
 .askACAnn div.desc {
   -webkit-transition-property: height, maxHeight;
   -webkit-transition-duration: 1s, 1s;
@@ -84,47 +84,55 @@ div.nb-item {
   /*    -moz-transition-property: margin-top, background-position-y, margin-right, scroll-top, scrollTop;
       -moz-transition-duration: 1s, 1s, 1s, 1s;
     */ }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000392}}
+/* line 92, ask.scss */
 .askACAnn div.footer {
   border-top: 1px dashed #2a697a;
   margin-top: 5px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000396}}
+/* line 96, ask.scss */
 .askACAnn.collapsed h4 {
   margin-top: 0px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000397}}
+/* line 97, ask.scss */
 .askACAnn.collapsed div.desc {
   max-height: 42px;
   overflow-y: hidden; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000398}}
+/* line 98, ask.scss */
 .askACAnn.collapsed a.more-info {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/ask\.scss}line{font-family:\0000399}}
+/* line 99, ask.scss */
 .askACAnn.collapsed div.footer .created-at {
   display: none; }
+/* line 100, ask.scss */
+.askACAnn.collapsed .pre > h4 {
+  width: 120px;
+  float: left; }
+/* line 101, ask.scss */
+.askACAnn.collapsed .pre-objects {
+  width: 250px;
+  float: right; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\000031}}
+/* line 1, _ask_timeline.scss */
 .ti-progress-container {
   padding: 20px 90px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\000035}}
+/* line 5, _ask_timeline.scss */
 .progress-percentage {
   display: block;
   margin: 10px;
   color: white;
   text-align: center; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000310}}
+  /* line 10, _ask_timeline.scss */
   .progress-percentage .progress {
     margin-top: 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000315}}
+/* line 15, _ask_timeline.scss */
 .timeline-pane {
   background-color: #424242; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000318}}
+  /* line 18, _ask_timeline.scss */
   .timeline-pane h1 {
     color: white;
     padding: 6px 10px;
     font-weight: normal; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000324}}
+  /* line 24, _ask_timeline.scss */
   .timeline-pane a.ti-credits {
     text-decoration: none;
     -webkit-transition: background-color 0.6s;
@@ -137,125 +145,125 @@ div.nb-item {
     height: 22px;
     text-align: center;
     line-height: 22px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000336}}
+    /* line 36, _ask_timeline.scss */
     .timeline-pane a.ti-credits:hover {
       color: black;
       background-color: #ccc; }
 
 /* PEOPLE COLUMN */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000346}}
+/* line 46, _ask_timeline.scss */
 .ti-people-title,
 .ti-tags .ti-title span,
 .ti-timeline-title {
   font-size: 1.5em;
   color: white; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000353}}
+/* line 53, _ask_timeline.scss */
 .ti-people-picture {
   width: 50px;
   height: 40px;
   text-align: center; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000358}}
+  /* line 58, _ask_timeline.scss */
   .ti-people-picture div {
     width: 50px;
     height: 40px;
     min-height: 40px;
     display: table-cell;
     vertical-align: middle; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000366}}
+    /* line 66, _ask_timeline.scss */
     .ti-people-picture div img {
       max-height: 40px;
       max-width: 50px;
       vertical-align: middle; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000374}}
+/* line 74, _ask_timeline.scss */
 .ti-people {
   width: 180px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000376}}
+  /* line 76, _ask_timeline.scss */
   .ti-people li {
     display: block;
     height: 40px;
     margin-bottom: 4px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000381}}
+  /* line 81, _ask_timeline.scss */
   .ti-people li > div {
     float: left;
     height: 40px;
     border: 0px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000386}}
+  /* line 86, _ask_timeline.scss */
   .ti-people .ti-people-title {
     height: 30px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000389}}
+  /* line 89, _ask_timeline.scss */
   .ti-people ul {
     list-style: none;
     margin: 0px;
     padding: 0px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\0000396}}
+/* line 96, _ask_timeline.scss */
 .ti-people-color {
   width: 10px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003100}}
+/* line 100, _ask_timeline.scss */
 .ti-people-item {
   cursor: pointer;
   -webkit-transition: background-color 0.6s;
   background-color: #979797; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003105}}
+  /* line 105, _ask_timeline.scss */
   .ti-people-item.active {
     background-color: #dedede; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003110}}
+/* line 110, _ask_timeline.scss */
 .ti-people-name {
   width: 115px;
   font-size: 1.1em; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003114}}
+  /* line 114, _ask_timeline.scss */
   .ti-people-name p {
     padding: 1px 5px; }
 
 /* TIMELINE */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003121}}
+/* line 121, _ask_timeline.scss */
 .ti-timeline {
   margin-left: 260px;
   height: 290px;
   width: 600px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003127}}
+/* line 127, _ask_timeline.scss */
 .ti-timeline-title {
   height: 25px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003130}}
+/* line 130, _ask_timeline.scss */
 .ti-title-name {
   display: inline;
   float: left; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003134}}
+/* line 134, _ask_timeline.scss */
 .ti-timeline-title ul {
   list-style: none;
   float: right; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003138}}
+/* line 138, _ask_timeline.scss */
 .ti-timeline-title ul li {
   display: inline;
   color: #aaa; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003142}}
+/* line 142, _ask_timeline.scss */
 .ti-timeline-title ul li.selected {
   color: white; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003146}}
+/* line 146, _ask_timeline.scss */
 .ti-left-col {
   width: 250px;
   display: block;
   float: left; }
 
 /* TAGS */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003155}}
+/* line 155, _ask_timeline.scss */
 .ti-tags {
   margin-top: 15px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003158}}
+  /* line 158, _ask_timeline.scss */
   .ti-tags .ti-tag {
     cursor: pointer; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003163}}
+/* line 163, _ask_timeline.scss */
 a.ti-reset-button {
   position: absolute;
   margin-left: 209px;
@@ -267,23 +275,23 @@ a.ti-reset-button {
   padding: 0px 5px;
   color: #aaa;
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003176}}
+  /* line 176, _ask_timeline.scss */
   a.ti-reset-button.active {
     -webkit-transition: background-color 0.6s;
     display: inline;
     color: #444;
     background-color: #aaa; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003182}}
+    /* line 182, _ask_timeline.scss */
     a.ti-reset-button.active:hover {
       color: white;
       cursor: pointer;
       text-decoration: none; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003190}}
+/* line 190, _ask_timeline.scss */
 .ti-title {
   display: block; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003193}}
+/* line 193, _ask_timeline.scss */
 .ti-tag {
   display: inline-block;
   padding: 1px 7px;
@@ -291,32 +299,32 @@ a.ti-reset-button {
   color: black;
   -webkit-transition: background-color 0.6s;
   background-color: #979797; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003201}}
+  /* line 201, _ask_timeline.scss */
   .ti-tag.active {
     background-color: white; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003206}}
+/* line 206, _ask_timeline.scss */
 .ti-left-col {
   padding: 1px 4px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003210}}
+/* line 210, _ask_timeline.scss */
 .ti-annotations .slot, .ti-left-col {
   -webkit-transition: opacity 2s;
   opacity: 1.0; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003213}}
+  /* line 213, _ask_timeline.scss */
   .ti-annotations .slot.ti-invisible, .ti-left-col.ti-invisible {
     opacity: 0; }
 
 /* ANNOTATIONS */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003220}}
+/* line 220, _ask_timeline.scss */
 .ti-annotations {
   margin-left: 260px;
   height: 400px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003224}}
+  /* line 224, _ask_timeline.scss */
   .ti-annotations .slots-header {
     width: 600px;
     margin-top: -6px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003228}}
+    /* line 228, _ask_timeline.scss */
     .ti-annotations .slots-header table {
       width: 600px;
       text-align: center;
@@ -324,16 +332,16 @@ a.ti-reset-button {
       font-size: 0.9em;
       margin-bottom: 1px;
       font-decoration: italic; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003236}}
+      /* line 236, _ask_timeline.scss */
       .ti-annotations .slots-header table td.ti-month-0 {
         background-color: rgba(255, 255, 255, 0.1);
         border-right: 1px solid #424242; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003240}}
+      /* line 240, _ask_timeline.scss */
       .ti-annotations .slots-header table td.ti-month-1 {
         background-color: rgba(255, 255, 255, 0.15);
         border-left: 1px solid #424242; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003250}}
+/* line 250, _ask_timeline.scss */
 .ti-annotations .slot {
   display: block;
   position: absolute;
@@ -341,145 +349,145 @@ a.ti-reset-button {
   height: 20px; }
 
 /* Position 30 slots from left to right */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-1 {
   margin-left: 20px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-2 {
   margin-left: 40px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-3 {
   margin-left: 60px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-4 {
   margin-left: 80px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-5 {
   margin-left: 100px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-6 {
   margin-left: 120px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-7 {
   margin-left: 140px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-8 {
   margin-left: 160px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-9 {
   margin-left: 180px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-10 {
   margin-left: 200px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-11 {
   margin-left: 220px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-12 {
   margin-left: 240px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-13 {
   margin-left: 260px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-14 {
   margin-left: 280px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-15 {
   margin-left: 300px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-16 {
   margin-left: 320px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-17 {
   margin-left: 340px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-18 {
   margin-left: 360px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-19 {
   margin-left: 380px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-20 {
   margin-left: 400px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-21 {
   margin-left: 420px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-22 {
   margin-left: 440px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-23 {
   margin-left: 460px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-24 {
   margin-left: 480px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-25 {
   margin-left: 500px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-26 {
   margin-left: 520px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-27 {
   margin-left: 540px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-28 {
   margin-left: 560px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-29 {
   margin-left: 580px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003259}}
+/* line 259, _ask_timeline.scss */
 .ti-annotations .slot.slot-30 {
   margin-left: 600px; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003263}}
+/* line 263, _ask_timeline.scss */
 .ti-ann-item {
   -webkit-transition: opacity 0.6s;
   z-index: 10;
   position: relative;
   /* &.collapsed */ }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003268}}
+  /* line 268, _ask_timeline.scss */
   .ti-ann-item.collapsed {
     width: 20px;
     z-index: 0; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003272}}
+    /* line 272, _ask_timeline.scss */
     .ti-ann-item.collapsed:hover {
       z-index: 1000; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003275}}
+    /* line 275, _ask_timeline.scss */
     .ti-ann-item.collapsed .box {
       display: block;
       width: 19px;
       height: 19px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003279}}
+      /* line 279, _ask_timeline.scss */
       .ti-ann-item.collapsed .box:hover {
         -webkit-transition: width 0.3s, height 0.3s, margin 0.3s, border 0.3s;
         z-index: 1000;
@@ -491,29 +499,29 @@ a.ti-reset-button {
         margin-bottom: -6px;
         border: 1px solid #424242;
         opacity: 1.0; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003298}}
+    /* line 298, _ask_timeline.scss */
     .ti-ann-item.collapsed .ti-boxes {
       display: block; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003299}}
+    /* line 299, _ask_timeline.scss */
     .ti-ann-item.collapsed .ti-ann-content {
       display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003301}}
+  /* line 301, _ask_timeline.scss */
   .ti-ann-item .ti-boxes {
     display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003302}}
+  /* line 302, _ask_timeline.scss */
   .ti-ann-item .ti-ann-content {
     display: block;
     width: 250px;
     background: #dedede; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003309}}
+  /* line 309, _ask_timeline.scss */
   .ti-ann-item.collapsed.deactive {
     opacity: 0.10; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003312}}
+  /* line 312, _ask_timeline.scss */
   .ti-ann-item.active.collapsed .box {
     opacity: 1.0; }
 
 /* .ti-ann-item */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003317}}
+/* line 317, _ask_timeline.scss */
 .ti-ann-close {
   position: absolute;
   left: 0px;
@@ -523,13 +531,13 @@ a.ti-reset-button {
   color: white;
   font-weight: bold;
   text-align: center; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003327}}
+  /* line 327, _ask_timeline.scss */
   .ti-ann-close:hover {
     background-color: rgba(255, 255, 255, 0.5);
     color: #666;
     cursor: pointer; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003337}}
+/* line 337, _ask_timeline.scss */
 .ti-ann-content-picture {
   width: 50px;
   height: 50px;
@@ -537,180 +545,180 @@ a.ti-reset-button {
   margin-right: 5px;
   margin-bottom: 5px;
   text-align: center; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003345}}
+  /* line 345, _ask_timeline.scss */
   .ti-ann-content-picture div {
     width: 50px;
     height: 50px;
     min-height: 50px;
     display: table-cell;
     vertical-align: middle; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003352}}
+    /* line 352, _ask_timeline.scss */
     .ti-ann-content-picture div img {
       margin: 1px;
       max-height: 50px;
       max-width: 50px;
       vertical-align: middle; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003361}}
+/* line 361, _ask_timeline.scss */
 .ti-ann-content-name {
   margin-left: 50px;
   color: black;
   font-weight: bold; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003366}}
+/* line 366, _ask_timeline.scss */
 .ti-ann-content-text {
   padding: 5px;
   color: black;
   max-height: 200px;
   overflow: auto; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003372}}
+/* line 372, _ask_timeline.scss */
 .ti-ann-content-link {
   padding: 1px 6px; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003375}}
+  /* line 375, _ask_timeline.scss */
   .ti-ann-content-link a i {
     margin-left: 5px;
     opacity: 0.6; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003379}}
+  /* line 379, _ask_timeline.scss */
   .ti-ann-content-link a:hover i {
     opacity: 1; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003381}}
+/* line 381, _ask_timeline.scss */
 .ti-ann-content-source {
   color: #666;
   font-style: italic; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003385}}
+/* line 385, _ask_timeline.scss */
 .ti-ann-content-date {
   color: #666; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003390}}
+/* line 390, _ask_timeline.scss */
 .ti-boxes {
   border-bottom: 1px solid #424242;
   border-right: 1px solid #424242;
   cursor: pointer; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003395}}
+/* line 395, _ask_timeline.scss */
 .ti-ann-content {
   border-left: 20px solid;
   margin-bottom: 1px; }
 
 /* Boxes COLORS */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003405}}
+/* line 405, _ask_timeline.scss */
 .ti-ann-content-color-0 {
   border-color: #6abcd1; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003406}}
+/* line 406, _ask_timeline.scss */
 .box.color-0 {
   background-color: #6abcd1; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003407}}
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-0 {
   background-color: #6abcd1; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003405}}
+/* line 405, _ask_timeline.scss */
 .ti-ann-content-color-1 {
   border-color: #a6534b; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003406}}
+/* line 406, _ask_timeline.scss */
 .box.color-1 {
   background-color: #a6534b; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003407}}
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-1 {
   background-color: #a6534b; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003405}}
+/* line 405, _ask_timeline.scss */
 .ti-ann-content-color-2 {
   border-color: #f3ce7f; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003406}}
+/* line 406, _ask_timeline.scss */
 .box.color-2 {
   background-color: #f3ce7f; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003407}}
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-2 {
   background-color: #f3ce7f; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003405}}
+/* line 405, _ask_timeline.scss */
 .ti-ann-content-color-3 {
   border-color: #5d8476; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003406}}
+/* line 406, _ask_timeline.scss */
 .box.color-3 {
   background-color: #5d8476; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003407}}
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-3 {
   background-color: #5d8476; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003405}}
+/* line 405, _ask_timeline.scss */
 .ti-ann-content-color-4 {
   border-color: #ca6f47; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003406}}
+/* line 406, _ask_timeline.scss */
 .box.color-4 {
   background-color: #ca6f47; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003407}}
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-4 {
   background-color: #ca6f47; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003405}}
+/* line 405, _ask_timeline.scss */
 .ti-ann-content-color-5 {
   border-color: #a76ea1; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003406}}
+/* line 406, _ask_timeline.scss */
 .box.color-5 {
   background-color: #a76ea1; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003407}}
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-5 {
   background-color: #a76ea1; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003405}}
+/* line 405, _ask_timeline.scss */
 .ti-ann-content-color-6 {
   border-color: #693b94; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003406}}
+/* line 406, _ask_timeline.scss */
 .box.color-6 {
   background-color: #693b94; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003407}}
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-6 {
   background-color: #693b94; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003405}}
+/* line 405, _ask_timeline.scss */
 .ti-ann-content-color-7 {
   border-color: #a99c43; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003406}}
+/* line 406, _ask_timeline.scss */
 .box.color-7 {
   background-color: #a99c43; }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_ask_timeline\.scss}line{font-family:\00003407}}
+/* line 407, _ask_timeline.scss */
 .ti-people-color.color-7 {
   background-color: #a99c43; }
 
 /* Hide stuff depending on login state: off, waiting, logged */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_my_ask\.scss}line{font-family:\000034}}
+/* line 4, _my_ask.scss */
 .my-ask.login-state-off .login-waiting, .my-ask.login-state-off .login-logged {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_my_ask\.scss}line{font-family:\000037}}
+/* line 7, _my_ask.scss */
 .my-ask.login-state-waiting .login-off, .my-ask.login-state-waiting .login-logged {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_my_ask\.scss}line{font-family:\0000310}}
+/* line 10, _my_ask.scss */
 .my-ask.login-state-logged .login-off, .my-ask.login-state-logged .login-waiting {
   display: none; }
 
 /* TODO: move this in pundit.scss? */
 /* Hide text depending on login state: off, waiting, logged */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_pundit_login_modal\.scss}line{font-family:\000034}}
+/* line 4, _pundit_login_modal.scss */
 #pundit-login-modal.pundit-login-state-off .pundit-login-waiting, #pundit-login-modal.pundit-login-state-off .pundit-login-logged {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_pundit_login_modal\.scss}line{font-family:\000037}}
+/* line 7, _pundit_login_modal.scss */
 #pundit-login-modal.pundit-login-state-waiting .pundit-login-off, #pundit-login-modal.pundit-login-state-waiting .pundit-login-logged {
   display: none; }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/fonda\/Documents\/semlib\/ask-pundit\/css\/_pundit_login_modal\.scss}line{font-family:\0000310}}
+/* line 10, _pundit_login_modal.scss */
 #pundit-login-modal.pundit-login-state-logged .pundit-login-off, #pundit-login-modal.pundit-login-state-logged .pundit-login-waiting {
   display: none; }

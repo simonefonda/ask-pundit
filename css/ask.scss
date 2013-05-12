@@ -97,6 +97,8 @@ div.nb-item {
         div.desc { max-height: 42px; overflow-y: hidden; }
         a.more-info { display: none; }
         div.footer .created-at { display: none; }
+        .pre>h4 { width: 120px; float: left; }
+        .pre-objects { width: 250px; float: right; }
     }
 }
 
