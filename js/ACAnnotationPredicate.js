@@ -15,6 +15,7 @@ define(["dojo/_base/declare",
         depic: '',
         uri_enc: '',
         subject_enc: '',
+        type: 'default',
         templateString: annotationPredicateTemplate,
         postMixInProperties: function() {
             this.inherited(arguments);
@@ -39,12 +40,18 @@ define(["dojo/_base/declare",
                 c[u] = {};
             
             if (u === ASK.ns.pundit_hasTag) {
-                self.label = "Has tag";
+                self.label = "Tags";
                 self.desc = "Some kind of resource has been tagged with a semantic entity";
+                self.type = "tags";
             } else if (u === ASK.ns.pundit_hasComment) {
-                self.label = "Has comment";
+                self.label = "Comment";
                 self.desc = "Some kind of resource has been commented";
+                self.type = "comment";
             }
+
+            // TODO: collapse in fondo, no puntini, drag drop, colori collapsed/hover
+            // posizionamento: solo 1 sub 1 pred 1 obj?
+            // comprimere la vista un po'? 
 
             self.label = (ASK.ns.items.label in c[u]) ? c[u][ASK.ns.items.label][0].value : self.label || 'no label :(',
             label_short = self.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : self.label,

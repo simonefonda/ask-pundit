@@ -228,7 +228,7 @@ define(["dojo/_base/declare",
                         var name = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
                             annotationNum = 0,
                             createdAt = data[i]['http://purl.org/dc/terms/created'][0].value,
-                            createdBy = data[i]['http://purl.org/dc/terms/creator'][0].value;
+                            createdBy = data[i]['http://purl.org/dc/elements/1.1/creator'][0].value;
                         
                         if (typeof(data[i]['http://purl.org/pundit/ont/ao#includes']) !== "undefined") {
                             annotationNum = data[i]['http://purl.org/pundit/ont/ao#includes'].length;
@@ -237,7 +237,7 @@ define(["dojo/_base/declare",
                             
                         dojo.query('#tab-notebooks #nb-item-'+id+' p').innerHTML(name);
                         dojo.query('#tab-notebooks #nb-item-'+id+' div.hidden').innerHTML(name.toLowerCase());
-                        dojo.query('#tab-notebooks #nb-item-'+id+' small.id-createdAt-createdBy').innerHTML(createdAt);
+                        dojo.query('#tab-notebooks #nb-item-'+id+' small.id-createdAt-createdBy').innerHTML(createdBy+ ' '+ createdAt);
                         
                     }
 

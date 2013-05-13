@@ -35,9 +35,12 @@ define(["dojo/_base/declare",
                 return;
             }
             
-            if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.text)) {
+            if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.text) !== -1) {
                 console.log('We haz a text fragment!');
                 self.type = 'textfragment';
+            } else if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.image) !== -1) {
+                console.log('We haz a image fragment!!1!');
+                self.type = 'imagefragment';
             }
             
             self.rdfTypes = '';
@@ -72,8 +75,9 @@ define(["dojo/_base/declare",
 
         },
         _inTypesArray: function(a, t) {
+            console.log(a,t);
             for (var l=a.length; l--;)
-                if (a[l].type === "literal" && a[l].value === t)
+                if (a[l].type === "uri" && a[l].value === t)
                     return l;
             return -1;
         },

@@ -24,7 +24,7 @@ define([
         pageContext: '',
         isOwner: false,
         body: '',
-        pageContext_short_length: 20,
+        pageContext_short_length: 30,
         pageContext_short: '',
         summary: '',
         templateString: ACAnnotationTemplate,
@@ -38,12 +38,16 @@ define([
             else if (self.pageContext.match(/^http:\/\//))
                 start = 7;
             self.pageContext_short = self.pageContext.substr(start, start + self.pageContext_short_length) + " ..";
+            
+            var foo = new Date(self.createdAt);
+            self.createdAt = foo.toString();
+            
         },
         startup: function() {
             var self = this;
             
             // collapse / expand
-            on(dojo.query('[data-ACAnn="'+self.annotationId+'"] .header .collapse')[0], 'click',function(){
+            on(dojo.query('[data-ACAnn="'+self.annotationId+'"] .controls .collapse-ann')[0], 'click',function(){
                 domClass.toggle(dojo.query('[data-ACAnn="'+self.annotationId+'"]')[0], 'collapsed');
             });
             self.loadAnnotationItems(self.annotationId);
@@ -152,11 +156,13 @@ define([
                         } // for predicate in data[subject]
                     } // for subject and data                
                     
-                    if (self.subs.length > 1) {
-                        // TODO: what to do when the collapsed annotation is not showing
-                        // a couple of triples?
-                        // dojo.query('[data-acann="'+annotationId+'"] .summary').html('MORE TO SEE');
-                    }
+                    // TODO: shall we write there's n statements somewhere?
+                    // if (self.subs.length === 1) 
+                    //    self.summary = "Expand to see the details of this statement.";
+                    // else 
+                    //    self.summary = "Expand to see the details of "+self.subs.length+" statements.";
+                    
+                    dojo.query('[data-acann="'+annotationId+'"] .summary').html('...');
                 }, 
                 function(error) {
                     console.log('error :|');

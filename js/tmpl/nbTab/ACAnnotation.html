@@ -1,16 +1,19 @@
 <div class="row span5 well clearfix askACAnn collapsed" data-ACAnn="${annotationId}">
-    <div class="header">
-        <span class="collapse collapsed">expand/collapse</span>
-    </div>
     <div class="annotation-${annotationId}"></div>
-    <div class="summary">${summary}</div>
+    <h4 class="summary">${summary}</h4>
     <div class="footer">
-        <span class="created-by"><em> <i class="icon-user"></i> ${createdBy}</em></span>
+        <span class="created-by"><i class="icon-user"></i> Author: <em>${createdBy}</em></span>
         <span class="created-at"><i class="icon-calendar"></i> ${createdAt}</span>
         <span class="page-context">
-            <i class="icon-bookmark"></i>
+            <i class="icon-bookmark"></i> Page:
             <a rel="tooltip" title="${pageContext}" target="_blank" href="${pageContext}">${pageContext_short}</a>
         </span>
+    </div>
+    <div class="controls">
+        <div class="collapse-ann">
+            <i class="icon-plus icon-white"></i>
+            <i class="icon-minus icon-white"></i>
+        </div>
     </div>
 </div>
     
