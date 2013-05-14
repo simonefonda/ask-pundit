@@ -58,8 +58,21 @@ div.accordion-group {
 
 }
 
+#tab-notebooks .ask-stats {
+    font-size: 1.5em;
+    font-family: 'Roboto Condensed';
+    color: $blue_dark;
+    em { 
+        font-size:1.15em; 
+        color: $blue_light;
+        text-shadow: 1px 1px 1px #999;
+    }
+}
+
 div.nb-item {
-    height: 180px;
+    height: 155px;
+    .buttons-container {
+    }
 }
 
 

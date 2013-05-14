@@ -20,13 +20,15 @@ define(["dojo/_base/declare",
         "pundit/Namespace",
         
         "bootstrap/Tab",
+        "bootstrap/Typeahead",
+        
         "dijit/layout/TabContainer", 
         "dijit/layout/ContentPane"], 
     function(declare, lang, router, on, request, config, encode,
         indexTemplate, _WidgetBase, _TemplatedMixin, 
         NotebookItem, NotebookTab, TimelineTab, BookmarkCollectionTab, BookmarkList, IOHelper, 
         MyAsk, PAuthenticatedRequester, PNamespace,
-        BTab, 
+        BTab, BTypeahead, 
         TabContainer, ContentPane) {
 
 	return declare("ask.Ask", [_WidgetBase, _TemplatedMixin], {
@@ -100,10 +102,12 @@ define(["dojo/_base/declare",
             });
             
             // Handle search input 
-            on(dojo.byId('tabNotebooksSearchInput'), 'keyup', function(e) {
+            on(dojo.byId('tabNotebooksSearchInput'), 'keyup,change', function(e) {
 
                 if (e.keyCode === 13) {
                     self.filterNotebooks()
+                    e.preventDefault();
+                    e.stopPropagation();
                 } else {
                     clearTimeout(self.liveSearchTimer);
                     self.liveSearchTimer = setTimeout(function() {
@@ -113,8 +117,27 @@ define(["dojo/_base/declare",
                 return false;
             });
             
+            dojo.query('#tabNotebooksSearchInput').typeahead({
+                source: function() { return self.getAuthors(); },
+                highlighter: function(a) {
+                    var foo = '<div class="typeahead">'+a+'';
+                    foo += '<span style="margin-left:10px" class="badge pull-right badge-info">'+self.stats.authors[a].nbks+' nb</span>';
+                    foo += '</div>'
+                    return foo;
+                    
+                    var html = '';
+                    html = '<div class="typeahead">';
+                    html += '<a class="pull-left" href="#">'+a+'</a>'
+                    html += '<span class="badge badge-success">'+self.stats.authors[a].nbks+' nb</span>';
+                    html += '<span class="badge badge-info">'+self.stats.authors[a].anns+' ann</span>';
+                    html += '</div>';
+                    return html;
+                }
+            });
+            
             // Reset search
-            on(dojo.byId('tabNotebooksSearchButton'), 'click', function() {
+            on(dojo.byId('tabNotebooksResetButton'), 'click', function() {
+                dojo.query('#tabNotebooksSearchInput').val('');
                 dojo.query('div.nb-item').style('display', 'block');
                 return false;
             });
@@ -192,6 +215,13 @@ define(["dojo/_base/declare",
         loadNotebookList: function() {
             var self = this;
 
+            self.stats = {
+                nbks: 0,
+                auth: 0,
+                anns: 0,
+                authors: {}
+            };
+
             request.get(ASK.ns.asPublicNotebooks, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
@@ -203,13 +233,43 @@ define(["dojo/_base/declare",
                             .placeAt(dojo.byId('notebooksContainer'));
                             
                         self.loadNotebooksMeta(data.NotebookIDs[i]);
+                        self.stats.nbks++;
                     }
+                    self.updateStats();
                 }, 
                 function(error) {
                     console.log('error :|');
                 }
             );
             
+        },
+        
+        updateStats: function() {
+            var self = this;
+            
+            dojo.query('#tab-notebooks .ask-stats .nbks em').innerHTML(self.stats.nbks);
+            dojo.query('#tab-notebooks .ask-stats .auth em').innerHTML(self.stats.auth);
+            dojo.query('#tab-notebooks .ask-stats .anns em').innerHTML(self.stats.anns);
+            
+            dojo.query('#tab-notebooks .author-list ul').empty();
+            self.stats.authorList = [];
+            for (var a in self.stats.authors) {
+                var curr = self.stats.authors[a], 
+                    cont = '';
+                self.stats.authorList.push(a);
+                /*
+                cont += '<li>';
+                cont += '<span class="badge badge-success">'+self.stats.authors[a].nbks+' nb</span> ';
+                cont += '<span class="badge badge-info">'+self.stats.authors[a].anns+' ann</span> ';
+                cont += a+ '</li>';
+                dojo.query('#tab-notebooks ul.author-list').append(cont);
+                */
+            }
+            
+        },
+        
+        getAuthors: function() {
+            return this.stats.authorList;
         },
         
         // TODO: to show notebook's meta.. this is duplicating a call:
@@ -225,21 +285,37 @@ define(["dojo/_base/declare",
                     
                     for (var i in data) {
                         
-                        var name = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
+                        var title = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
                             annotationNum = 0,
-                            createdAt = data[i]['http://purl.org/dc/terms/created'][0].value,
-                            createdBy = data[i]['http://purl.org/dc/elements/1.1/creator'][0].value;
+                            createdAt = '',
+                            createdBy = 'Uknown author';
+                            
+                        if (ASK.ns.notebooks.creatorName in data[i])
+                            createdBy = data[i][ASK.ns.notebooks.creatorName][0].value;
+
+                        if (ASK.ns.notebooks.created in data[i])
+                            createdAt = data[i][ASK.ns.notebooks.created][0].value;
                         
                         if (typeof(data[i]['http://purl.org/pundit/ont/ao#includes']) !== "undefined") {
                             annotationNum = data[i]['http://purl.org/pundit/ont/ao#includes'].length;
-                            dojo.query('#tab-notebooks #nb-item-'+id+' small.annotationNum').innerHTML(annotationNum + " annotations");
+                            dojo.query('#tab-notebooks [data-nb-item="'+id+'"] .annotationNum').innerHTML(annotationNum + " annotations");
                         }
                             
-                        dojo.query('#tab-notebooks #nb-item-'+id+' p').innerHTML(name);
-                        dojo.query('#tab-notebooks #nb-item-'+id+' div.hidden').innerHTML(name.toLowerCase());
-                        dojo.query('#tab-notebooks #nb-item-'+id+' small.id-createdAt-createdBy').innerHTML(createdBy+ ' '+ createdAt);
+                        dojo.query('#tab-notebooks [data-nb-item="'+id+'"] .title').innerHTML(title);
+                        dojo.query('#tab-notebooks [data-nb-item="'+id+'"] .createdBy').innerHTML(createdBy);
+                        dojo.query('#tab-notebooks [data-nb-item="'+id+'"] .createdAt').innerHTML(createdAt);
+                        dojo.query('#tab-notebooks [data-nb-item="'+id+'"] div.hidden').innerHTML((name+createdBy+createdAt).toLowerCase());
                         
+                        self.stats.anns += annotationNum;
+                        if (createdBy in self.stats.authors) {
+                            self.stats.authors[createdBy].nbks++;
+                            self.stats.authors[createdBy].anns += annotationNum;
+                        } else {
+                            self.stats.authors[createdBy] = {nbks: 1, anns: annotationNum};
+                            self.stats.auth++;
+                        }
                     }
+                    self.updateStats();
 
                 }, 
                 function(error) {

@@ -3,36 +3,39 @@
         
         <ul class="nav nav-tabs" id="ask-pills">
             <li class="active"><a href="#tab-notebooks" data-toggle="tab">Notebooks</a></li>
-
-<!--
-            <li><a href="#tab-bookmarks" data-toggle="tab">Bookmarks</a></li>
--->
-
+<!--        <li><a href="#tab-bookmarks" data-toggle="tab">Bookmarks</a></li> -->
             <li><a href="#tab-myAsk" data-toggle="tab">My Ask</a></li>
         </ul>
  
         <div class="tab-content" id="ask-tab-content">
             <div class="tab-pane active" id="tab-notebooks">
-                <div class="well">
-                    <form class="form-search">
-                      <input id="tabNotebooksSearchInput" type="text" class="input-medium search-query" placeholder="Search .." autofocus="autofocus">
-                      <button id="tabNotebooksSearchButton" type="submit" class="btn btn-info">Reset</button>
-                    </form>
+                <div class="well clearfix">
+                    <div class='ask-stats pull-right'>
+                        <div class='nbks'><em></em> public notebooks</div>
+                        <div class='auth'><em></em> authors</div>
+                        <div class='anns'><em></em> annotations</div>
+                    </div>
+                    
+                    <div class="form-search">
+                      <input id="tabNotebooksSearchInput" autocomplete="off" type="text" class="input-medium search-query" placeholder="Search .." autofocus="autofocus">
+                      <ul class="author-list typeahead dropdown-menu"></ul>
+                      <button id="tabNotebooksResetButton" class="btn btn-info">Reset</button>
+                    </div>
+                    
+                    <div class='author-list'><ul></ul></div>
                 </div>
+                
                 <div id="notebooksContainer" class="row"></div>
             </div>
-
 <!-- 
                 <div class="tab-pane" id="tab-bookmarks">
                     <div id="bookmarksContainer"></div>
                 </div>
 -->
-
             <div class="tab-pane" id="tab-myAsk">
                 <div id="myAskContainer"></div>
             </div>
-
-        </div>
+        </div><!-- /tab-content -->
         
     </div>
 </div>

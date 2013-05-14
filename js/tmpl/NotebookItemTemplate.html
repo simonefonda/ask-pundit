@@ -1,14 +1,12 @@
-<div class="well span4 nb-item">
-    <div class="row span3" id="nb-item-${notebookId}">
-        <blockquote>
-            <p>${notebookId}</p>
-            <small class="id-createdBy">Unknown author name</small>
-            <small class="id-createdAt"></small>
-            <small class="annotationNum"></small>
-        </blockquote>
-        <div class="hidden" style="display:none"></div>
-        <div class="span3 buttons-container">
-            <a class="btn btn-mini btn-success" href='${href}'>Browse</a>
-        </div>
+<div class="well span3 nb-item" data-nb-item="${notebookId}">
+    <h4 class="title">${notebookId}</h4>
+    <blockquote>
+        <span class="label label-info createdBy">Unknown author name</span>
+        <small class="createdAt"></small>
+        <small class="annotationNum"></small>
+    </blockquote>
+    <div class="hidden" style="display:none"></div>
+    <div class="buttons-container">
+        <a class="btn btn-block btn-mini btn-success" href='${href}'>Browse</a>
     </div>
 </div>
