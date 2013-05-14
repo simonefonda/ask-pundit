@@ -1,11 +1,20 @@
 <div class="media obj obj-${type}">
     <img class='small pull-right' src='${depic}'>
     <h4>${label_short}</h4>
-    <div class="desc">${desc}</div>
-
     <div class="meta">
-        <span class="types">Types: ${rdfTypes}</span>
-        <span class="more-info"><i class='icon-share'></i> <a href='${uri}'>More info </a></span>
+        <div class="types">
+            <span class="label label-info">types</span> 
+            ${rdfTypes}
+        </div>
+        <div class="more-info">
+            <span class="label label-info"><i class='icon-share icon-white'></i> Source </span>
+            <a href='${uri}'>${uri_short}</a>
+        </div>
+        <div class="part-of">
+            <span class="label label-info">Part of</span>
+            <a href='${pageContext}'>${pageContext_short}</a>
+        </div>
     </div>
-
+    
+    <div class="desc">${desc}</div>
 </div>

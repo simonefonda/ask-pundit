@@ -64,15 +64,23 @@ div.nb-item {
 
 
 .obj-literal {
-    img, h4, a.more-info { display: none; }
+    img, h4, .more-info { display: none; }
     div { text-align: justify; }
 }
 .media.obj {
     margin-left: 20px;
 }
 
+@mixin anim($what...) {
+    -webkit-transition-property: $what;
+    -webkit-transition-duration: 0.5s;
+}
+
 // Annotation centric annotation view
 .askACAnn {
+    
+    @include anim(background-color);
+    
     &.well { border: 1px solid $blue_light; }
     h4 { margin-top: 0px; }
     .controls {
@@ -100,13 +108,9 @@ div.nb-item {
         i.icon-minus { display: none; };
         i.icon-plus { display: block; };
     }
-    img { 
-        -webkit-transition-property: height, max-height;
-        -webkit-transition-duration: 0.5s, 0.5s;
-    }
+    img { @include anim(heigth, max-height); }
     .desc {
-        -webkit-transition-property: height, max-height;
-        -webkit-transition-duration: 0.5s, 0.5s;
+        @include anim(heigth, max-height);
         font-style: italic;
     }
     .summary { 
@@ -115,22 +119,38 @@ div.nb-item {
     }
     .footer { 
         margin-top: 5px;
-        & span { display: block; }; 
+        &>div { 
+            display: block; 
+        } 
     }
 
     .subject-container {
         border-bottom: 1px dashed $blue_dark;
         padding-top: 0px;
         margin-bottom: 15px;
-        &:nth-child(1) { border-top: 0px; };
+        &:nth-child(1) { border-top: 0px; }
     }
     .pre {
         background-color: white;
     }
 
     
-    .meta span { display: none; }
+    .meta>div { display: none; }
     
+    .sub-default {
+        .desc { 
+            text-align: justify;
+            background-color: $blue_gray;
+            max-height: 100px;
+            overflow-y: auto;
+            padding: 2px 5px;
+        }
+        .meta {
+            .more-info { display: block; }
+            .part-of { display: block; }
+            .types { display: block; }
+        }
+    }
     .sub-textfragment {
         img { display: none; }
         .desc { 
@@ -146,13 +166,16 @@ div.nb-item {
         }
     }
 
-    &.collapsed .sub-imagefragment {
+    &.collapsed .sub-imagefragment,
+    &.collapsed .sub-image {
         img { 
-            max-height: 150px; 
-            max-width: 150px; 
+            max-height: 100px; 
+            max-width: 100px; 
             float: right; 
         }
     }
+
+    .sub-image,
     .sub-imagefragment {
         img { 
             margin: 5px;
@@ -174,11 +197,16 @@ div.nb-item {
     }
     
     .obj-default {
-        img { max-height: 150px; margin-top: 30px;}
+        img { 
+            max-height: 130px;
+            margin: 0px 10px 5px 10px;
+        }
         .desc { 
+            clear: both;
             text-align: justify;
-            max-height: 100px;
+            max-height: 150px;
             overflow-y: auto;
+            padding-right: 10px;
         }
         .meta {
             .more-info { display: block; }
@@ -198,11 +226,12 @@ div.nb-item {
         background-color: $blue_gray;
         .pre { background-color: $blue_gray; }
         
-        img { max-height: 75px; margin: 1px 0px 2px 4px;}
-        div.desc { max-height: 42px; overflow: hidden; }
-        .meta span { display: none !important; }
+        img { max-height: 30px; margin: 0px;}
+        div.desc { display: none; }
+        .meta>div { display: none !important; }
         .media.obj { margin-left: 0px; border: 0px solid blue;}
-        div.footer span { display: none; }
+        div.footer>div { display: none; }
+        
         .pre>h4 { width: 100px; float: left; border: 0px solid black;}
         .pre-objects { width: 280px; float: right; margin: 0px; }
 
@@ -211,8 +240,13 @@ div.nb-item {
         // hide the rest
         .subject-container { display: none; }
         .subject-container:nth-child(1) {
-            .sub div.desc { max-height: 58px; }
+            .sub div.desc { 
+                display: block; 
+                max-height: 58px; 
+                overflow: hidden;
+            }
             .pre:nth-child(2) { display: block; }
+            
         }
         .subject-container:nth-child(1),
         .subject-container:nth-child(2) {
@@ -220,7 +254,14 @@ div.nb-item {
             .pre { display: none; }
             .pre:nth-child(1) { display: block; }
             .obj { display: none; }
-            .obj:nth-child(1) { display: block; }
+            .obj:nth-child(1) { display: block; }            
+            .pre-tags .obj { 
+                display: block;
+                margin: 0px;
+                h4 { margin: 0px 0px 4px 0px; }
+                img { display: inline; float: left; max-height: 20px; margin: 0px 5px; }
+            }
+            .pre-comment .obj div.desc { display: block;}
         }
                 
         .summary { display: block; }

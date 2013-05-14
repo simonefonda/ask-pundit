@@ -36,11 +36,11 @@ define(["dojo/_base/declare",
             }
             
             if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.text) !== -1) {
-                console.log('We haz a text fragment!');
                 self.type = 'textfragment';
             } else if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.image) !== -1) {
-                console.log('We haz a image fragment!!1!');
                 self.type = 'imagefragment';
+            } else if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.image) !== -1) {
+                self.type = 'image';
             }
             
             self.rdfTypes = '';

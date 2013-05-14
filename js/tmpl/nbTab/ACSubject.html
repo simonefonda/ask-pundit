@@ -6,9 +6,15 @@
             ${desc}
         </div>
         <div class="meta">
-            <span class="types">Types: ${rdfTypes}</span>
-            <span class="more-info"><i class='icon-share'></i> <a href='${uri}'>More info </a></span>
-            <span class="part-of">Fragment of <a href='${pageContext}'>${pageContext_short}</a></span>
+            <div class="types"><span class="label label-info">types</span> ${rdfTypes}</div>
+            <div class="more-info">
+                <span class="label label-info"><i class='icon-share icon-white'></i> Source </span>
+                <a href='${uri}'>more info</a>
+            </div>
+            <div class="part-of">
+                <span class="label label-info">Part of</span>
+                <a href='${pageContext}'>${pageContext_short}</a>
+            </div>
         </div>
     </div>
     <div class="media sub-predicates" data-askreplace="predicates-${annotationId}-${subject_enc}"></div>

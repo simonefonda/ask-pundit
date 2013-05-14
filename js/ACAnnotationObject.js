@@ -12,12 +12,16 @@ define(["dojo/_base/declare",
         desc: '',
         depic: '',
         uri: '',
+        uri_short: '',
         uri_enc: '',
         value: '',
         type: 'default',
         original: {},
         templateString: annotationObjectTemplate,
         titleChars: 50,
+        uriChars: 15,
+        pageContext: '',
+        pageContext_short: '',
         postMixInProperties: function() {
             this.inherited(arguments);
             var self = this,
@@ -59,7 +63,8 @@ define(["dojo/_base/declare",
             
             
             self.label = (ASK.ns.items.label in c[u]) ? c[u][ASK.ns.items.label][0].value : self.label || 'no label :(',
-            self.label_short = this.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : this.label,
+            self.label_short = self.label.length > self.titlecChars ? self.label.substr(0, self.titleChars)+' ..' : self.label,
+            self.uri_short = self.uri.length > self.uriChars ? self.uri.substr(7, self.uriChars+7)+' ..' : self.uri,
             self.depic = (ASK.ns.items.image in c[u]) ? c[u][ASK.ns.items.image][0].value : 'http://placehold.it/120x100/ffcc00';
             if (self.depic === "http://api.freebase.com/api/trans/image_thumb/guid/")
                 self.depic = 'http://placehold.it/120x100/cc00cc';

@@ -32,7 +32,7 @@ define([
         // DEBUG: two comments? rdfs_ and pundit_
         self.rdfs_comment = "http://www.w3.org/2000/01/rdf-schema#comment";
         self.rdfs_resource = "http://www.w3.org/2000/01/rdf-schema#Resource";
-		self.rdfs_literal = "http://www.w3.org/2000/01/rdf-schema#Literal";
+        self.rdfs_literal = "http://www.w3.org/2000/01/rdf-schema#Literal";
         self.rdfs_seeAlso = "http://www.w3.org/2000/01/rdf-schema#seeAlso";
         
         // Types used to denote a webpage, a text fragment, an image, an annotation

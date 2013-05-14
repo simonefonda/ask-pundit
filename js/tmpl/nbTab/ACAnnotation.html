@@ -2,12 +2,18 @@
     <div class="annotation-${annotationId}"></div>
     <h4 class="summary">${summary}</h4>
     <div class="footer">
-        <span class="created-by"><i class="icon-user"></i> Author: <em>${createdBy}</em></span>
-        <span class="created-at"><i class="icon-calendar"></i> ${createdAt}</span>
-        <span class="page-context">
-            <i class="icon-bookmark"></i> Page:
+        <div class="created-by">
+            <span class="label"><i class="icon-user"></i> Author</span>
+            <em>${createdBy}</em>
+        </div>
+        <div class="created-at">
+            <span class="label"><i class="icon-calendar"></i> Date</span>
+            ${createdAt}
+        </div>
+        <div class="page-context">
+            <span class="label"><i class="icon-bookmark"></i> Page</span>
             <a rel="tooltip" title="${pageContext}" target="_blank" href="${pageContext}">${pageContext_short}</a>
-        </span>
+        </div>
     </div>
     <div class="controls">
         <div class="collapse-ann">
