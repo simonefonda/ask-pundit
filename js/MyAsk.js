@@ -123,8 +123,7 @@ define(["dojo/_base/declare",
                 var args = {
                     url: url,
                     headers: {"Content-Type":"application/json;charset=UTF-8;"},
-                    // data: { NotebookName: "SUPERCAZZODIGIGI" },
-                    content: JSON.stringify({NotebookName: "gigi"}),
+                    putData: JSON.stringify({NotebookName: name}),
                     load: function(data) {
                         console.log("Nb rename response: ", data);
                         dojo.query('#my-ask-messages')

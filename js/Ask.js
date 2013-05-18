@@ -95,7 +95,6 @@ define(["dojo/_base/declare",
                 } else if (id.match(/\/timeline\//) !== null) {
                     router.go(id);
                 } else if (id.match(/\/myNotebooks\//) !== null) {
-                    console.log('si ma id? ', id);
                     router.go(id);
                 } else 
                     router.go('/notebooks/'+ id.substr(-8, 8));
