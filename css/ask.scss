@@ -6,9 +6,17 @@
 $blue_dark: #2a697a;
 $blue_light: #51a0b5;
 $blue_gray: #d8e5e8;
+$gray: #f5f5f5;
+$gray_dark: #888;
+$gray_light: #ddd;
+
+@mixin anim($speed, $what...) {
+    -webkit-transition-property: $what;
+    -webkit-transition-duration: $speed;
+}
 
 #ask_container {
-    font-family: 'Roboto';
+    // font-family: 'Roboto';
     h1,h2,h3,h4,h5,h6 { 
         font-family: 'Roboto Condensed';
         color: $blue_dark; 
@@ -70,8 +78,39 @@ div.accordion-group {
 }
 
 div.nb-item {
-    height: 155px;
-    .buttons-container {
+    @include anim(0.2s, background-color);
+
+    background-color: $blue_gray;
+    float: left;
+    margin: 4px;
+    padding: 0px;
+    box-shadow: 1px 1px 1px #ddd;
+    div.content { 
+        padding: 4px 10px;
+        cursor: pointer;
+        h4 { 
+            margin-top: 0px;
+            border-bottom: 1px solid white; 
+        }
+        div {
+            height: 20px;
+            line-height: 20px;
+            color: $gray_dark;
+        }
+    }
+    &.loading {
+        opacity: 0.5;
+        .my-controls { display: none; }
+    }
+    &.loaded div.content:hover {
+        box-shadow: 2px 2px 2px #ccc;
+        background-color: $blue_dark;
+        h4,h5 { color: white !important; }
+        div { color: $gray_light; }
+    }
+    .my-controls {
+        padding: 5px;
+        .dropdown-menu li.hidden { display: none; }
     }
 }
 
@@ -84,25 +123,23 @@ div.nb-item {
     margin-left: 20px;
 }
 
-@mixin anim($what...) {
-    -webkit-transition-property: $what;
-    -webkit-transition-duration: 0.5s;
-}
-
 // Annotation centric annotation view
 .askACAnn {
     
-    @include anim(background-color);
-    
-    &.well { border: 1px solid $blue_light; }
+    @include anim(0.5s, background-color);
+    float: left;
+    width: 380px;
+    margin: 4px;
+    padding: 4px 10px;
+    border: 1px solid $blue_light;
+    background-color: $gray;
     h4 { margin-top: 0px; }
     .controls {
         position: relative;
-        bottom: -8px;
-        margin: 12px -24px -8px -24px; // 10px -20px -20px -20px;
+        bottom: 0px;
+        margin: 0px -10px -4px -10px;
         background-color: $blue_dark;
         height: 20px;
-        border-radius: 2px 2px 6px 6px;
         .collapse-ann {
             width: 24px;
             position: absolute;
@@ -111,7 +148,6 @@ div.nb-item {
             background-color: $blue_dark;
             height: 20px;
             cursor: pointer;
-            border-radius: 0px 2px 6px 0px;
             &:hover { background-color: $blue_light;}
         }
         i { display: none; }
@@ -121,9 +157,9 @@ div.nb-item {
         i.icon-minus { display: none; };
         i.icon-plus { display: block; };
     }
-    img { @include anim(heigth, max-height); }
+    img { @include anim(0.5s, heigth, max-height); }
     .desc {
-        @include anim(heigth, max-height);
+        @include anim(0.5s, heigth, max-height);
         font-style: italic;
     }
     .summary { 
@@ -276,8 +312,6 @@ div.nb-item {
             }
             .pre-comment .obj div.desc { display: block;}
         }
-                
-        .summary { display: block; }
         
     }
 }

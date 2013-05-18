@@ -80,22 +80,72 @@ define(["dojo/_base/declare",
             });
 
             // Delete notebook
-            on(dojo.byId('tab-myAsk'), on.selector('.delete-notebook', 'click'), function(e) {
-                var nbId = domAttr.get(e.target, 'data-target-nb');
-                self._deleteNotebook(nbId);
-                return false;
-            });
+            // on(dojo.byId('tab-myAsk'), on.selector('.delete-notebook', 'click'), function(e) {
+            //    var nbId = domAttr.get(e.target, 'data-target-nb');
+            //    self._deleteNotebook(nbId);
+            //    return false;
+            // });
             
 
+        },
+
+        _setNotebookVisibility: function(id, vis) {
+            var self = this;
+                url = lang.replace(ASK.ns.asNBSetVisibility, {id: id, visibility: vis});
+            console.log('setting '+id+' to '+vis+' : '+url);
+            var args = {
+                url: url,
+                handleAs: "text",
+                load: function(data) {
+                    console.log("Nb set visibility response: ", data);
+                    dojo.query('#my-ask-messages')
+                        .append('<p><span class="label label-success">Done</span> Notebook '+id+' is now '+vis+'</p>');
+                
+                    self.getOwnedNotebooks(function(data) {
+                        self.showOwnedNotebooks(data);
+                    });
+                },
+                error: function(error) {
+                    console.log('TODO: ERROR setting notebook visibility: '+ id +' to '+ vis);
+                    dojo.query('#my-ask-messages').append('<p><span class="label label-important">ERROR</span>There was an error setting notebook properties.</p>');
+                }
+            };
+            ASK.requester.xPut(args);
+            
+        },
+
+        _renameNotebook: function(id, name) {
+            var self = this,
+                url = lang.replace(ASK.ns.asNotebookId, {id: id});
+
+                console.log('Renaming notebook '+ id +' to '+ name);
+            
+                var args = {
+                    url: url,
+                    headers: {"Content-Type":"application/json;charset=UTF-8;"},
+                    // data: { NotebookName: "SUPERCAZZODIGIGI" },
+                    content: JSON.stringify({NotebookName: "gigi"}),
+                    load: function(data) {
+                        console.log("Nb rename response: ", data);
+                        dojo.query('#my-ask-messages')
+                            .append('<p><span class="label label-success">Done</span> Renamed notebook '+id+' to '+name+'</p>');
+                    
+                        self.getOwnedNotebooks(function(data) {
+                            self.showOwnedNotebooks(data);
+                        });
+
+                    }, 
+                    error: function(e) {
+                        console.log('We had an error renaming the notebook', e);
+                        dojo.query('#my-ask-messages').append('<p><span class="label label-important">ERROR</span>There was an error renaming the notebook .... :(</p>');
+                    }
+                };
+                ASK.requester.xPut(args);
         },
         
         _deleteNotebook: function(id) {
             var self = this,
                 url = lang.replace(ASK.ns.asNotebookId, {id: id});
-
-            if (!confirm("Deleting this notebook will delete all of its annotation. Do you want to continue?")) {
-                return;
-            }
 
             console.log('Deleting notebook '+ id);
             
@@ -114,7 +164,7 @@ define(["dojo/_base/declare",
 
                 }, 
                 error: function(e) {
-                    console.log('We had an error deleting the notebook ', e);
+                    console.log('We had an error deleting the notebook', e);
                     dojo.query('#my-ask-messages').append('<p><span class="label label-important">ERROR</span>There was an error deleting the notebook .... :(</p>');
                 }
             };
@@ -296,16 +346,14 @@ define(["dojo/_base/declare",
                         notebookId: ids[j],
                         isOwner: true,
                         canEdit: true
-                    })
-                    .placeAt(dojo.byId('my-ask-notebooks'));
+                    }).placeAt(dojo.byId('my-ask-notebooks'));
 
-                self.loadNotebooksMeta(ids[j]);
-                
-                // TODO : refactor Ask.loadNotebooksMeta into a READER, maybe from Pundit ? 
+                // self.loadNotebooksMeta(ids[j]);
             }
             
         },
         
+        /*
         // TODO: to show notebook's meta.. this is duplicating a call:
         // same as notebook item metadata ... AND in Ask.js ..... 
         loadNotebooksMeta: function(id) {
@@ -350,9 +398,10 @@ define(["dojo/_base/declare",
             ); // then
             
         },
+        */
         
 
 
-	});
+    });
 
 });

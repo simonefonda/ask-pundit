@@ -204,6 +204,10 @@ define(["dojo/_base/declare",
                 router.go("/notebooks/");
                 
         },
+        
+        routeTo: function(v) {
+            router.go(v);
+        },
 
         loadMyAsk: function() {
             var self = this;
@@ -229,10 +233,11 @@ define(["dojo/_base/declare",
                 function(data) {
                     dojo.query('#notebooksContainer').empty();
                     for (var i in data.NotebookIDs) {
-                        new NotebookItem({notebookId: data.NotebookIDs[i]})
+                        var id = data.NotebookIDs[i];
+                        new NotebookItem({notebookId: id})
                             .placeAt(dojo.byId('notebooksContainer'));
                             
-                        self.loadNotebooksMeta(data.NotebookIDs[i]);
+                        // self.loadNotebooksMeta(id);
                         self.stats.nbks++;
                     }
                     self.updateStats();
@@ -257,13 +262,6 @@ define(["dojo/_base/declare",
                 var curr = self.stats.authors[a], 
                     cont = '';
                 self.stats.authorList.push(a);
-                /*
-                cont += '<li>';
-                cont += '<span class="badge badge-success">'+self.stats.authors[a].nbks+' nb</span> ';
-                cont += '<span class="badge badge-info">'+self.stats.authors[a].anns+' ann</span> ';
-                cont += a+ '</li>';
-                dojo.query('#tab-notebooks ul.author-list').append(cont);
-                */
             }
             
         },
@@ -271,7 +269,7 @@ define(["dojo/_base/declare",
         getAuthors: function() {
             return this.stats.authorList;
         },
-        
+        /*
         // TODO: to show notebook's meta.. this is duplicating a call:
         // same as notebook item metadata ...
         loadNotebooksMeta: function(id) {
@@ -324,7 +322,8 @@ define(["dojo/_base/declare",
             ); // then
             
         },
-
+        */
+        
         loadBookmarkList: function() {
             var self = this;
             

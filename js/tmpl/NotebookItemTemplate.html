@@ -1,12 +1,43 @@
-<div class="well span3 nb-item" data-nb-item="${notebookId}">
-    <h4 class="title">${notebookId}</h4>
-    <blockquote>
-        <span class="label label-info createdBy">Unknown author name</span>
-        <small class="createdAt"></small>
-        <small class="annotationNum"></small>
-    </blockquote>
-    <div class="hidden" style="display:none"></div>
-    <div class="buttons-container">
-        <a class="btn btn-block btn-mini btn-success" href='${href}'>Browse</a>
+<div class="nb-item {{state}}" data-nb-item="{{notebookId}}">
+    {% if canEdit %}
+    <div class="my-controls">
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="icon-cog"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li class="rename-notebook"><a><i class="icon-pencil"></i> Rename..</a></li>
+                
+                {% if isOwner %}
+                    <li class="delete-notebook"><a><i class="icon-fire"></i> Delete</a></li>
+                    <li class="set-private {% if isPrivate %}hidden{% endif %}"><a><i class="icon-lock"></i> Set Private</a></li>
+                    <li class="set-public {% if isPublic %}hidden{% endif %}"><a><i class="icon-globe"></i> Set Public</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="content">
+        <div class="hidden" style="display:none">{{title.toLowerCase()}} {{createdBy.toLowerCase()}} {{createdAt.toLowerCase()}}</div>
+        <h4 class="title">{{title}}</h4>
+        <h5>{{createdBy}}</h5>
+        <div>
+        {% if annotationNum %}
+            {{annotationNum}} annotations
+        {% else %}
+            Empty :(
+        {% endif %}
+        </div>
+        <div>{{createdAt}}</div>
+        {% if canEdit %}
+        <div>Visibility: 
+            {% if isPublic %}
+            <span class="label label-success">public</span>
+            {% else %}
+            <span class="label label-important">private</span>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
 </div>

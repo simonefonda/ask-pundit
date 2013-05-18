@@ -68,6 +68,7 @@ define([
         self.asCurrentNotebook    = self.asApi + "notebooks/current";
         self.asNotebooksActive    = self.asApi + "notebooks/active";
         self.asOwnedNotebooks     = self.asApi + "notebooks/owned";
+        self.asNBSetVisibility    = self.asApi + "notebooks/{visibility}/{id}";
 
         self.asOpenNbAnnList      = self.asApi + "open/notebooks/{id}/annotations/metadata";
         self.asOpenNotebooksMeta  = self.asApi + "open/notebooks/{id}/metadata";
