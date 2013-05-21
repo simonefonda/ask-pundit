@@ -78,7 +78,6 @@ div.accordion-group {
 }
 
 div.nb-item {
-    @include anim(0.2s, background-color);
 
     background-color: $blue_gray;
     float: left;
@@ -86,6 +85,7 @@ div.nb-item {
     padding: 0px;
     box-shadow: 1px 1px 1px #ddd;
     div.content { 
+        @include anim(0.2s, background-color);
         padding: 4px 10px;
         cursor: pointer;
         h4 { 
@@ -185,6 +185,12 @@ div.nb-item {
 
     
     .meta>div { display: none; }
+    .meta .types {
+        @include anim(0.5s, heigth, max-height);
+        max-height: 60px;
+        overflow-y: auto;
+        overflow-x: none;
+    }
     
     .sub-default {
         .desc { 

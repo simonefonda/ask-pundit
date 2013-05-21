@@ -49,14 +49,14 @@ div.accordion-group a:hover i {
     text-shadow: 1px 1px 1px #999; }
 
 div.nb-item {
-  -webkit-transition-property: background-color;
-  -webkit-transition-duration: 0.2s;
   background-color: #d8e5e8;
   float: left;
   margin: 4px;
   padding: 0px;
   box-shadow: 1px 1px 1px #ddd; }
   div.nb-item div.content {
+    -webkit-transition-property: background-color;
+    -webkit-transition-duration: 0.2s;
     padding: 4px 10px;
     cursor: pointer; }
     div.nb-item div.content h4 {
@@ -149,6 +149,12 @@ div.nb-item {
     background-color: white; }
   .askACAnn .meta > div {
     display: none; }
+  .askACAnn .meta .types {
+    -webkit-transition-property: heigth, max-height;
+    -webkit-transition-duration: 0.5s;
+    max-height: 60px;
+    overflow-y: auto;
+    overflow-x: none; }
   .askACAnn .sub-default .desc {
     text-align: justify;
     background-color: #d8e5e8;
@@ -759,3 +765,5 @@ a.ti-reset-button {
   display: none; }
 #pundit-login-modal.pundit-login-state-logged .pundit-login-off, #pundit-login-modal.pundit-login-state-logged .pundit-login-waiting {
   display: none; }
+
+/*@ sourceMappingURL=ask.css.map */
