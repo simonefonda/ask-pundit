@@ -17,6 +17,10 @@ define(["dojo/_base/declare",
         uri: '',
         subject_enc: '',
         type: 'default',
+        label: "Uknown",
+        depic: '',
+        desc: 'Uknkown', 
+        rdfTypes: '',
         templateString: ACSubjectTemplate,
         postMixInProperties: function() {
             var self = this;
@@ -35,13 +39,19 @@ define(["dojo/_base/declare",
                 return;
             }
             
-            if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.text) !== -1) {
-                self.type = 'textfragment';
-            } else if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.image) !== -1) {
-                self.type = 'imagefragment';
-            } else if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.image) !== -1) {
-                self.type = 'image';
+            if (typeof(c) !== 'object' || !(u in c)) {
+                console.log('Very bad response is bad, empty items or what? BROKEN ANNOTATION?!', u, anrd, nbid);
+                return;
             }
+            
+            if (ASK.ns.items.type in c[u])
+                if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.text) !== -1) {
+                    self.type = 'textfragment';
+                } else if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.fragments.image) !== -1) {
+                    self.type = 'imagefragment';
+                } else if (self._inTypesArray(c[u][ASK.ns.items.type], ASK.ns.image) !== -1) {
+                    self.type = 'image';
+                }
             
             self.rdfTypes = '';
             var fooTypesArray = [];
@@ -75,7 +85,6 @@ define(["dojo/_base/declare",
 
         },
         _inTypesArray: function(a, t) {
-            console.log(a,t);
             for (var l=a.length; l--;)
                 if (a[l].type === "uri" && a[l].value === t)
                     return l;

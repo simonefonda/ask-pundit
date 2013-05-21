@@ -7,9 +7,9 @@ define(["dojo/_base/declare",
     return declare("ask.AnnotationObject", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
         annotationId: '',
-        label: '',
-        label_short: '',
-        desc: '',
+        label: 'Uknkown',
+        label_short: 'Uknkown',
+        desc: 'Uknkown',
         depic: '',
         uri: '',
         uri_short: '',
@@ -20,6 +20,7 @@ define(["dojo/_base/declare",
         templateString: annotationObjectTemplate,
         titleChars: 50,
         uriChars: 15,
+        rdfTypes: '',
         pageContext: '',
         pageContext_short: '',
         postMixInProperties: function() {
@@ -34,6 +35,11 @@ define(["dojo/_base/declare",
                 c = ASK._cache[nbid][anrd];
             else {
                 console.log('ouch?');
+                return;
+            }
+            
+            if (typeof(c) !== 'object') {
+                console.log('Very bad response is bad, empty items or what? BROKEN ANNOTATION?!', u, anrd, nbid);
                 return;
             }
 

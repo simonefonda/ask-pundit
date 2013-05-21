@@ -10,8 +10,8 @@ define(["dojo/_base/declare",
         notebookId: '',
         annotationId: '',
         uri: '',
-        label: '',
-        desc: '',
+        label: 'Uknkown',
+        desc: 'Uknkown',
         depic: '',
         uri_enc: '',
         subject_enc: '',
@@ -34,6 +34,11 @@ define(["dojo/_base/declare",
                 return;
             }
 
+            if (typeof(c) !== 'object') {
+                console.log('Very bad response is bad, empty items or what? BROKEN ANNOTATION?!', u, anrd, nbid);
+                return;
+            }
+            
             // DEBUG: why some items are missing the hastag and hascomment 
             // triples??!
             if (!(u in c)) 
