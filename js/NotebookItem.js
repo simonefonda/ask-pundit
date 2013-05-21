@@ -83,7 +83,10 @@ define(["dojo/_base/declare",
             }).then(
                 function(data) {
                     for (var i in data) {
-                        self.title = data[i][ASK.ns.rdfs_label][0].value;
+                        
+                        self.title = "Uknown title";
+                        if (ASK.ns.rdfs_label in data[i]) 
+                            self.title = data[i][ASK.ns.rdfs_label][0].value;
                         self.annotationNum = 0;
                         self.createdBy = 'unknown';
                             

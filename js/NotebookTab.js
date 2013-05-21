@@ -102,16 +102,33 @@ define(["dojo/_base/declare",
             }).then(
                 function(data){
                     for (var ann in data) {
-                        var foo = new NotebookItemMetadata({
+                        var createdBy, createdAt, label, foo;
+                        
+                        if (ASK.ns.notebooks.creatorName in data[ann])
+                            createdBy = data[ann][ASK.ns.notebooks.creatorName][0].value;
+                        else
+                            createdBy = "Unknown author";
+
+                        if (ASK.ns.notebooks.created in data[ann])
+                            createdAt = data[ann][ASK.ns.notebooks.created][0].value;
+                        else
+                            createdAt = "Unknown date";
+
+                        if (ASK.ns.rdfs_label in data[ann])
+                            label = data[ann][ASK.ns.rdfs_label][0].value;
+                        else
+                            label = "Unknown title";
+                            
+                        foo = new NotebookItemMetadata({
                             visibility: data[ann]['http://open.vocab.org/terms/visibility'][0].value,
-                            createdBy: data[ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
-                            createdAt: data[ann]['http://purl.org/dc/terms/created'][0].value,
-                            label: data[ann]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
+                            createdBy: createdBy,
+                            createdAt: createdAt,
+                            label: label,
                             includes: data[ann]['http://purl.org/pundit/ont/ao#includes'] || 0
                         });
                         foo.placeAt(placeAt);
 
-                        self.label = data[ann]['http://www.w3.org/2000/01/rdf-schema#label'][0].value;
+                        self.label = label;
                         dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
                         dojo.query('#tab-'+self.notebookId).innerHTML((self.isOwner ? "My N" : "N") +": "+ self.label);
                     }
