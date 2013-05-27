@@ -16,6 +16,7 @@ $gray_light: #ddd;
 }
 
 #ask_container {
+    // we should avoid using roboto on bootstrap interfaces
     // font-family: 'Roboto';
     h1,h2,h3,h4,h5,h6 { 
         font-family: 'Roboto Condensed';
@@ -35,8 +36,12 @@ $gray_light: #ddd;
     height: 37px;
     padding-top:  5px;
     top: 0px;
-    background-color: white;
+    background-color: #eee;
     z-index: 1000;
+    li>a {
+        padding-right: 20px;
+    }
+    span.close i { margin-top: 4px; margin-right:6px;}
 }
 
 legend.interactive:hover {

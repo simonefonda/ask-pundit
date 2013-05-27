@@ -41,23 +41,18 @@ define(["dojo/_base/declare",
 
             // place the tab button
             var own = self.isOwner,
-                b = "<li><a href='#/"+ (self.isOwner ? "myN" : "n") +"otebooks/"+this.notebookId+
-                    "' data-toggle='tab' id='tab-"+this.notebookId+
-                    "'>"+ (self.isOwner ? "My N" : "N") +": "+this.notebookId+"</a></li>";
+                b = "<li>"+
+                    "<span class='close' id='nb-tab-close-"+self.notebookId+"'><i class='icon-remove'></i></span>"+
+                    "<a href='#/"+ (own ? "myN" : "n") +"otebooks/"+self.notebookId+
+                    "' data-toggle='tab' id='tab-"+self.notebookId+
+                    "'> N: "+self.notebookId+"</a>"+
+                    "</li>";
             dojo.place(b, "ask-pills");
 
             on(dojo.query('#tab-'+self.notebookId), 'show', function(e) {
                 dojo.query('#ask-tab-content .tab-pane').removeClass('active');
                 dojo.query('#notebook-tab-'+self.notebookId).addClass('active');
             });
-
-            if (self.canEdit) {
-                console.log('OMG CAN EDIT OMG OMG OMG');
-                
-                // TODO: check with the auth api if GET /notebooks/owned answers
-                // that we own this notebook id, then start getting the info
-                // with the new authenticated API
-            }
 
             ASK._cache['nb-'+self.notebookId] = {};
             self.loadNotebookMetadata();
@@ -70,7 +65,7 @@ define(["dojo/_base/declare",
 
                 var node = dojo.query('#notebook-tab-'+self.notebookId)[0];
 
-                dijit.registry.forEach(function(w){ 
+                dijit.registry.forEach(function(w){
                     if (w.id === 'notebook-tab-'+self.notebookId) 
                         w.destroyRecursive();
                 });

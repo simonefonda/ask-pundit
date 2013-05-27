@@ -236,7 +236,6 @@ define(["dojo/_base/declare",
                         new NotebookItem({notebookId: id})
                             .placeAt(dojo.byId('notebooksContainer'));
                             
-                        // self.loadNotebooksMeta(id);
                         self.stats.nbks++;
                     }
                     self.updateStats();
@@ -268,60 +267,6 @@ define(["dojo/_base/declare",
         getAuthors: function() {
             return this.stats.authorList;
         },
-        /*
-        // TODO: to show notebook's meta.. this is duplicating a call:
-        // same as notebook item metadata ...
-        loadNotebooksMeta: function(id) {
-            var self = this;
-            
-            request.get(lang.replace(ASK.ns.asOpenNotebooksMeta, { id: id }), {
-                handleAs: "json",
-                headers: { "Accept": "application/json" }
-            }).then(
-                function(data){
-                    
-                    for (var i in data) {
-                        
-                        var title = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
-                            annotationNum = 0,
-                            createdAt = '',
-                            createdBy = 'Uknown author';
-                            
-                        if (ASK.ns.notebooks.creatorName in data[i])
-                            createdBy = data[i][ASK.ns.notebooks.creatorName][0].value;
-
-                        if (ASK.ns.notebooks.created in data[i])
-                            createdAt = data[i][ASK.ns.notebooks.created][0].value;
-                        
-                        if (typeof(data[i]['http://purl.org/pundit/ont/ao#includes']) !== "undefined") {
-                            annotationNum = data[i]['http://purl.org/pundit/ont/ao#includes'].length;
-                            dojo.query('#tab-notebooks [data-nb-item="'+id+'"] .annotationNum').innerHTML(annotationNum + " annotations");
-                        }
-                            
-                        dojo.query('#tab-notebooks [data-nb-item="'+id+'"] .title').innerHTML(title);
-                        dojo.query('#tab-notebooks [data-nb-item="'+id+'"] .createdBy').innerHTML(createdBy);
-                        dojo.query('#tab-notebooks [data-nb-item="'+id+'"] .createdAt').innerHTML(createdAt);
-                        dojo.query('#tab-notebooks [data-nb-item="'+id+'"] div.hidden').innerHTML((name+createdBy+createdAt).toLowerCase());
-                        
-                        self.stats.anns += annotationNum;
-                        if (createdBy in self.stats.authors) {
-                            self.stats.authors[createdBy].nbks++;
-                            self.stats.authors[createdBy].anns += annotationNum;
-                        } else {
-                            self.stats.authors[createdBy] = {nbks: 1, anns: annotationNum};
-                            self.stats.auth++;
-                        }
-                    }
-                    self.updateStats();
-
-                }, 
-                function(error) {
-                    console.log('error :|');
-                }
-            ); // then
-            
-        },
-        */
         
         loadBookmarkList: function() {
             var self = this;

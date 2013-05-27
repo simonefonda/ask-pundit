@@ -16,8 +16,13 @@
   height: 37px;
   padding-top: 5px;
   top: 0px;
-  background-color: white;
+  background-color: #eee;
   z-index: 1000; }
+  #ask-pills li > a {
+    padding-right: 20px; }
+  #ask-pills span.close i {
+    margin-top: 4px;
+    margin-right: 6px; }
 
 legend.interactive:hover {
   cursor: pointer;
