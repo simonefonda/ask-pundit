@@ -36,7 +36,7 @@ $gray_light: #ddd;
     height: 37px;
     padding-top:  5px;
     top: 0px;
-    background-color: #eee;
+    background-color: #f8f8f8;
     z-index: 1000;
     li>a {
         padding-right: 20px;
@@ -105,7 +105,12 @@ div.nb-item {
     }
     &.loading {
         opacity: 0.5;
-        .my-controls { display: none; }
+        background-image: url("askACAnn-loading.gif");
+        background-position: 70px 10px;
+        background-repeat: no-repeat;
+        min-width: 150px;
+        min-height: 30px;
+        .content { display: none; }
     }
     &.loaded div.content:hover {
         box-shadow: 2px 2px 2px #ccc;
@@ -129,6 +134,14 @@ div.nb-item {
 }
 
 // Annotation centric annotation view
+.askACAnn.loading {
+    opacity: 0.5;
+    background-image: url("askACAnn-loading.gif");
+    background-position: 190px 10px;
+    background-repeat: no-repeat;
+    min-height: 30px;
+    .controls { display: none; }
+}
 .askACAnn {
     
     @include anim(0.5s, background-color);

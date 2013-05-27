@@ -162,7 +162,8 @@ define([
                     // else 
                     //    self.summary = "Expand to see the details of "+self.subs.length+" statements.";
                     
-                    dojo.query('[data-acann="'+annotationId+'"] .summary').html('...');
+                    // dojo.query('[data-acann="'+annotationId+'"] .summary').html('...');
+                    dojo.query('[data-acann="'+annotationId+'"]').removeClass('loading');
                 }, 
                 function(error) {
                     console.log('error :|');

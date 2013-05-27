@@ -16,7 +16,7 @@
   height: 37px;
   padding-top: 5px;
   top: 0px;
-  background-color: #eee;
+  background-color: #f8f8f8;
   z-index: 1000; }
   #ask-pills li > a {
     padding-right: 20px; }
@@ -72,8 +72,13 @@ div.nb-item {
       line-height: 20px;
       color: #888888; }
   div.nb-item.loading {
-    opacity: 0.5; }
-    div.nb-item.loading .my-controls {
+    opacity: 0.5;
+    background-image: url("askACAnn-loading.gif");
+    background-position: 70px 10px;
+    background-repeat: no-repeat;
+    min-width: 150px;
+    min-height: 30px; }
+    div.nb-item.loading .content {
       display: none; }
   div.nb-item.loaded div.content:hover {
     box-shadow: 2px 2px 2px #ccc;
@@ -94,6 +99,15 @@ div.nb-item {
 
 .media.obj {
   margin-left: 20px; }
+
+.askACAnn.loading {
+  opacity: 0.5;
+  background-image: url("askACAnn-loading.gif");
+  background-position: 190px 10px;
+  background-repeat: no-repeat;
+  min-height: 30px; }
+  .askACAnn.loading .controls {
+    display: none; }
 
 .askACAnn {
   -webkit-transition-property: background-color;
