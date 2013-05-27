@@ -1,14 +1,12 @@
 <div class="askNotebookItemMetadata notebook-${notebookId}">
 
-    <dl class="dl-horizontal">
-      <dt>Visibility</dt>
-      <dd>${visibility}</dd>
-      <dt>By</dt>
-      <dd>${createdBy}</dd>
-      <dt>Created at</dt>
-      <dd>${createdAt}</dd>
-      <dt># annotations</dt>
-      <dd>${includes.length}</dd>
-    </dl>
+    <h3>${createdBy} <small>${createdAt}</small></h3>
+
+    <div>
+        Visibility: ${visibility}
+    </div>
+    <div>
+        ${includes.length} annotations
+    </div>
 
 </div>
