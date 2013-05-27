@@ -1,5 +1,5 @@
 define(["dojo/_base/declare", 
-        "dojo/text!ask/tmpl/nbTab/ACSubject.html", 
+        "dojo/text!ask/tmpl/ac/ACSubject.html", 
         "bootstrap/Tooltip",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 

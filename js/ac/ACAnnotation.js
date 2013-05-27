@@ -4,10 +4,10 @@ define([
         "dojo/request", 
         "dojo/on",
         "dojo/dom-class",
-        "dojo/text!ask/tmpl/nbTab/ACAnnotation.html", 
-        "ask/ACAnnotationSubject",
-        "ask/ACAnnotationPredicate",
-        "ask/ACAnnotationObject",
+        "dojo/text!ask/tmpl/ac/ACAnnotation.html", 
+        "ask/ac/ACSubject",
+        "ask/ac/ACPredicate",
+        "ask/ac/ACObject",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"
     ], function(

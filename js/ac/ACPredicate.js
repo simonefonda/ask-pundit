@@ -1,6 +1,6 @@
 define(["dojo/_base/declare", 
         "dojo/json",
-        "dojo/text!ask/tmpl/nbTab/ACPredicate.html",
+        "dojo/text!ask/tmpl/ac/ACPredicate.html",
         "bootstrap/Popover",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
