@@ -12,7 +12,8 @@ define(["dojo/_base/declare",
         createdAt: '',
         pageContext: '',
         pageContext_short: '',
-        pageContext_short_length: 20,
+        partOf: '',
+        partOf_short: '',
 
         uri: '',
         subject_enc: '',
@@ -71,14 +72,12 @@ define(["dojo/_base/declare",
             if (self.depic === "http://api.freebase.com/api/trans/image_thumb/guid/")
                 self.depic = 'http://placehold.it/320x400/cc00cc';
 
-            // Page context: show the first part of the URL
+            // Page context and Part of: show the first part of the URL
             self.pageContext = (ASK.ns.items.pageContext in c[u]) ? c[u][ASK.ns.items.pageContext][0].value : '#';
-            var start = 0;
-            if (self.pageContext.match(/^http:\/\/www\./))
-                start = 11; 
-            else if (self.pageContext.match(/^http:\/\//))
-                start = 7;
-            self.pageContext_short = self.pageContext.substr(start, start + self.pageContext_short_length) + " ..";
+            self.pageContext_short = ASK.shortenURL(self.pageContext);
+            
+            self.partOf = (ASK.ns.items.isPartOf in c[u]) ? c[u][ASK.ns.items.isPartOf][0].value : '#';
+            self.partOf_short = ASK.shortenURL(self.partOf);
             
             if (typeof(c[u][ASK.ns.items.description]) !== "undefined")
                 self.desc = c[u][ASK.ns.items.description][0].value;

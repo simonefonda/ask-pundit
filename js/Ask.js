@@ -31,7 +31,7 @@ define(["dojo/_base/declare",
         BTab, BTypeahead, 
         TabContainer, ContentPane) {
 
-	return declare("ask.Ask", [_WidgetBase, _TemplatedMixin], {
+    return declare("ask.Ask", [_WidgetBase, _TemplatedMixin], {
         name: '',
         bio: '',
         templateString: indexTemplate,
@@ -42,6 +42,7 @@ define(["dojo/_base/declare",
         bookmarkLoaded: false,
         myAskLoaded: false,
         _cache: {},
+        shortURLLength: 20,
         postMixInProperties: function() {
             this.inherited(arguments);
         },
@@ -346,9 +347,20 @@ define(["dojo/_base/declare",
                     pseudoUrlPattern = /(^|[^\/])(www\.[\S]+(\b|$))/gim,
                     emailAddressPattern = /(([a-zA-Z0-9_\-\.]+)@[a-zA-Z_]+?(?:\.[a-zA-Z]{2,6}))+/gim;
                 return text
-                    .replace(urlPattern, '<a target="_blank" href="$&">$&</a>')
+                    .replace(urlPattern, '<a target="_blank" href=$&>$&</a>')
                     .replace(pseudoUrlPattern, '$1<a target="_blank" href="http://$2">$2</a>')
                     .replace(emailAddressPattern, '<a target="_blank" href="mailto:$1">$1</a>');
+        },
+        
+        shortenURL: function(url) {
+            var self = this,
+                start = 0;
+                
+            if (url.match(/^http:\/\/www\./))
+                start = 11; 
+            else if (url.match(/^http:\/\//))
+                start = 7;
+            return url.substr(start, start + self.shortURLLength) + " ..";
         },
         
         placeErrorAt: function(title, text, placeAt) {

@@ -69,9 +69,18 @@ define(["dojo/_base/declare",
             self.label = (ASK.ns.items.label in c[u]) ? c[u][ASK.ns.items.label][0].value : self.label || 'no label :(',
             self.label_short = self.label.length > self.titlecChars ? self.label.substr(0, self.titleChars)+' ..' : self.label,
             self.uri_short = self.uri.length > self.uriChars ? self.uri.substr(7, self.uriChars+7)+' ..' : self.uri,
+
             self.depic = (ASK.ns.items.image in c[u]) ? c[u][ASK.ns.items.image][0].value: 'http://placehold.it/120x100/ffcc00';
             if (self.depic === "http://api.freebase.com/api/trans/image_thumb/guid/")
                 self.depic = 'http://placehold.it/120x100/cc00cc';
+
+            // Page context and Part of: show the first part of the URL
+            self.pageContext = (ASK.ns.items.pageContext in c[u]) ? c[u][ASK.ns.items.pageContext][0].value : '#';
+            self.pageContext_short = ASK.shortenURL(self.pageContext);
+        
+            self.partOf = (ASK.ns.items.isPartOf in c[u]) ? c[u][ASK.ns.items.isPartOf][0].value : '#';
+            self.partOf_short = ASK.shortenURL(self.partOf);
+
             
             if (typeof(c[u][ASK.ns.items.description]) !== "undefined")
                 self.desc = c[u][ASK.ns.items.description][0].value;
