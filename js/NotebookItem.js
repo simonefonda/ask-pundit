@@ -2,10 +2,11 @@ define(["dojo/_base/declare",
         "dojo/request",
         "dojo/_base/lang",
         "dojo/on", 
+        "dojo/mouse",
         "dojo/text!ask/tmpl/NotebookItemTemplate.html",
         "dojox/dtl/_DomTemplated",
         "dijit/_WidgetBase"],
-    function(declare, request, lang, on, notebookItemTemplate, _DTLDOMTemplated, _WidgetBase) {
+    function(declare, request, lang, on, mouse, notebookItemTemplate, _DTLDOMTemplated, _WidgetBase) {
 
     return declare("ask.NotebookItem", [_WidgetBase, _DTLDOMTemplated], {
         notebookId: '',
@@ -33,11 +34,7 @@ define(["dojo/_base/declare",
         startup: function() {
             var self = this,
                 sel = '[data-nb-item="'+self.notebookId+'"]';
-            
-            on(dojo.query(sel+' .content')[0], 'click', function() {
-                if (self.state === 'loaded') ASK.routeTo(self.href);
-            });
-            
+                                        
             if (self.canEdit) {
                 on(dojo.query(sel+' .delete-notebook')[0], 'click', function() {
                     if (!confirm("Deleting this notebook will delete all its annotation.\nAre you sure?")) return;
@@ -51,15 +48,21 @@ define(["dojo/_base/declare",
                 });
 
                 on(dojo.query(sel+' .set-private')[0], 'click', function() {
-                    console.log('zanta pazienza', sel);
                     ASK.myAsk._setNotebookVisibility(self.notebookId, 'private');
                 });
                 on(dojo.query(sel+' .set-public')[0], 'click', function() {
-                    console.log('zanta pazienza', sel);
                     ASK.myAsk._setNotebookVisibility(self.notebookId, 'public');
                 });
                 
-            } // if canEdit
+                on(dojo.query('#tab-myAsk '+sel+' .content')[0], 'click', function() {
+                    if (self.state === 'loaded') ASK.routeTo(self.href);
+                });
+                
+            } else {
+                on(dojo.query('#tab-notebooks '+sel+' .content')[0], 'click', function() {
+                    if (self.state === 'loaded') ASK.routeTo(self.href);
+                });
+            }
         }, // startup()
 
         // TODO: to show notebook's meta.. this is duplicating a call:
