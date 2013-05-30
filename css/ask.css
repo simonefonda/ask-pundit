@@ -67,28 +67,33 @@ div.accordion-group a:hover i {
     text-shadow: 1px 1px 1px #999; }
 
 /* line 85, ask.scss */
+.row.ask-notebook-item-annotations {
+  margin: 0px;
+  margin-bottom: 30px; }
+
+/* line 90, ask.scss */
 div.nb-item {
   background-color: #d8e5e8;
   float: left;
   margin: 4px;
   padding: 0px;
   box-shadow: 1px 1px 1px #ddd; }
-  /* line 92, ask.scss */
+  /* line 97, ask.scss */
   div.nb-item div.content {
     -webkit-transition-property: background-color;
     -webkit-transition-duration: 0.2s;
     padding: 4px 10px;
     cursor: pointer; }
-    /* line 96, ask.scss */
+    /* line 101, ask.scss */
     div.nb-item div.content h4 {
       margin-top: 0px;
       border-bottom: 1px solid white; }
-    /* line 100, ask.scss */
+    /* line 105, ask.scss */
     div.nb-item div.content div {
       height: 20px;
       line-height: 20px;
       color: #888888; }
-  /* line 106, ask.scss */
+  /* line 111, ask.scss */
   div.nb-item.loading {
     opacity: 0.5;
     background-image: url("askACAnn-loading.gif");
@@ -96,49 +101,49 @@ div.nb-item {
     background-repeat: no-repeat;
     min-width: 150px;
     min-height: 30px; }
-    /* line 113, ask.scss */
+    /* line 118, ask.scss */
     div.nb-item.loading .content {
       display: none; }
-  /* line 115, ask.scss */
+  /* line 120, ask.scss */
   div.nb-item.loaded div.content:hover {
     box-shadow: 2px 2px 2px #ccc;
     background-color: #2a697a; }
-    /* line 118, ask.scss */
+    /* line 123, ask.scss */
     div.nb-item.loaded div.content:hover h4, div.nb-item.loaded div.content:hover h5 {
       color: white !important; }
-    /* line 119, ask.scss */
+    /* line 124, ask.scss */
     div.nb-item.loaded div.content:hover div {
       color: #dddddd; }
-  /* line 121, ask.scss */
+  /* line 126, ask.scss */
   div.nb-item .my-controls {
     padding: 5px; }
-    /* line 123, ask.scss */
+    /* line 128, ask.scss */
     div.nb-item .my-controls .dropdown-menu li.hidden {
       display: none; }
 
-/* line 129, ask.scss */
+/* line 134, ask.scss */
 .obj-literal img, .obj-literal h4, .obj-literal .more-info {
   display: none; }
-/* line 130, ask.scss */
+/* line 135, ask.scss */
 .obj-literal div {
   text-align: justify; }
 
-/* line 132, ask.scss */
+/* line 137, ask.scss */
 .media.obj {
   margin-left: 20px; }
 
-/* line 137, ask.scss */
+/* line 142, ask.scss */
 .askACAnn.loading {
   opacity: 0.5;
   background-image: url("askACAnn-loading.gif");
   background-position: 190px 10px;
   background-repeat: no-repeat;
   min-height: 30px; }
-  /* line 143, ask.scss */
+  /* line 148, ask.scss */
   .askACAnn.loading .controls {
     display: none; }
 
-/* line 145, ask.scss */
+/* line 150, ask.scss */
 .askACAnn {
   -webkit-transition-property: background-color;
   -webkit-transition-duration: 0.5s;
@@ -148,17 +153,17 @@ div.nb-item {
   padding: 4px 10px;
   border: 1px solid #51a0b5;
   background-color: whitesmoke; }
-  /* line 154, ask.scss */
+  /* line 159, ask.scss */
   .askACAnn h4 {
     margin-top: 0px; }
-  /* line 155, ask.scss */
+  /* line 160, ask.scss */
   .askACAnn .controls {
     position: relative;
     bottom: 0px;
     margin: 0px -10px -4px -10px;
     background-color: #2a697a;
     height: 20px; }
-    /* line 161, ask.scss */
+    /* line 166, ask.scss */
     .askACAnn .controls .collapse-ann {
       width: 24px;
       position: absolute;
@@ -167,112 +172,115 @@ div.nb-item {
       background-color: #2a697a;
       height: 20px;
       cursor: pointer; }
-      /* line 169, ask.scss */
+      /* line 174, ask.scss */
       .askACAnn .controls .collapse-ann:hover {
         background-color: #51a0b5; }
-    /* line 171, ask.scss */
+    /* line 176, ask.scss */
     .askACAnn .controls i {
       display: none; }
-    /* line 172, ask.scss */
+    /* line 177, ask.scss */
     .askACAnn .controls i.icon-minus {
       display: block; }
-  /* line 175, ask.scss */
+  /* line 180, ask.scss */
   .askACAnn.collapsed .controls i.icon-minus {
     display: none; }
-  /* line 176, ask.scss */
+  /* line 181, ask.scss */
   .askACAnn.collapsed .controls i.icon-plus {
     display: block; }
-  /* line 178, ask.scss */
+  /* line 183, ask.scss */
   .askACAnn img {
     -webkit-transition-property: heigth, max-height;
     -webkit-transition-duration: 0.5s; }
-  /* line 179, ask.scss */
+  /* line 184, ask.scss */
   .askACAnn .desc {
     -webkit-transition-property: heigth, max-height;
     -webkit-transition-duration: 0.5s;
     font-style: italic; }
-  /* line 183, ask.scss */
+  /* line 188, ask.scss */
   .askACAnn .summary {
     display: none;
     text-align: center; }
-  /* line 187, ask.scss */
+  /* line 192, ask.scss */
   .askACAnn .footer {
-    margin-top: 5px; }
-    /* line 189, ask.scss */
+    margin-bottom: 10px; }
+    /* line 194, ask.scss */
     .askACAnn .footer > div {
       display: block; }
-  /* line 194, ask.scss */
+  /* line 199, ask.scss */
   .askACAnn .subject-container {
     border-bottom: 1px dashed #2a697a;
     padding-top: 0px;
     margin-bottom: 15px; }
-    /* line 198, ask.scss */
+    /* line 203, ask.scss */
     .askACAnn .subject-container:nth-child(1) {
       border-top: 0px; }
-  /* line 200, ask.scss */
+  /* line 205, ask.scss */
   .askACAnn .pre {
     background-color: white; }
-  /* line 205, ask.scss */
-  .askACAnn .meta > div {
-    display: none; }
-  /* line 206, ask.scss */
-  .askACAnn .meta .types {
-    -webkit-transition-property: heigth, max-height;
-    -webkit-transition-duration: 0.5s;
-    max-height: 60px;
-    overflow-y: auto;
-    overflow-x: none; }
-  /* line 214, ask.scss */
+  /* line 210, ask.scss */
+  .askACAnn .meta {
+    margin: 4px 0px 0px 20px; }
+    /* line 212, ask.scss */
+    .askACAnn .meta > div {
+      display: none; }
+    /* line 213, ask.scss */
+    .askACAnn .meta .types {
+      -webkit-transition-property: heigth, max-height;
+      -webkit-transition-duration: 0.5s;
+      max-height: 60px;
+      overflow-y: auto;
+      overflow-x: none; }
+  /* line 222, ask.scss */
   .askACAnn .sub-default .desc {
     text-align: justify;
     background-color: #d8e5e8;
     max-height: 100px;
     overflow-y: auto;
     padding: 2px 5px; }
-  /* line 222, ask.scss */
+  /* line 230, ask.scss */
   .askACAnn .sub-default .meta .more-info {
     display: block; }
-  /* line 223, ask.scss */
+  /* line 231, ask.scss */
   .askACAnn .sub-default .meta .part-of {
     display: block; }
-  /* line 224, ask.scss */
+  /* line 232, ask.scss */
   .askACAnn .sub-default .meta .page-context {
     display: block; }
-  /* line 225, ask.scss */
+  /* line 233, ask.scss */
   .askACAnn .sub-default .meta .types {
     display: block; }
-  /* line 229, ask.scss */
+  /* line 237, ask.scss */
   .askACAnn .sub-textfragment img {
     display: none; }
-  /* line 230, ask.scss */
+  /* line 238, ask.scss */
   .askACAnn .sub-textfragment .desc {
     text-align: justify;
     background-color: #d8e5e8;
     max-height: 100px;
     overflow-y: auto;
     padding: 2px 5px; }
-  /* line 238, ask.scss */
+  /* line 246, ask.scss */
   .askACAnn .sub-textfragment .meta .part-of {
     display: block; }
-  /* line 239, ask.scss */
+  /* line 247, ask.scss */
   .askACAnn .sub-textfragment .meta .types {
     display: block; }
-  /* line 240, ask.scss */
+  /* line 248, ask.scss */
   .askACAnn .sub-textfragment .meta .page-context {
     display: block; }
-  /* line 246, ask.scss */
+  /* line 254, ask.scss */
   .askACAnn.collapsed .sub-imagefragment img, .askACAnn.collapsed .sub-image img {
     max-height: 100px;
     max-width: 100px;
     float: right; }
-  /* line 255, ask.scss */
+  /* line 263, ask.scss */
   .askACAnn .sub-image img,
   .askACAnn .sub-imagefragment img {
     margin: 5px;
     display: block;
     max-width: 370px;
     max-height: 370px; }
-  /* line 261, ask.scss */
+  /* line 269, ask.scss */
   .askACAnn .sub-image .desc,
   .askACAnn .sub-imagefragment .desc {
     text-align: justify;
@@ -280,120 +288,163 @@ div.nb-item {
     max-height: 100px;
     overflow-y: auto;
     padding: 2px 5px; }
-  /* line 269, ask.scss */
+  /* line 277, ask.scss */
   .askACAnn .sub-image .meta .part-of,
   .askACAnn .sub-imagefragment .meta .part-of {
     display: block; }
-  /* line 270, ask.scss */
+  /* line 278, ask.scss */
   .askACAnn .sub-image .meta .types,
   .askACAnn .sub-imagefragment .meta .types {
     display: block; }
-  /* line 275, ask.scss */
+  /* line 283, ask.scss */
   .askACAnn .obj-default img {
     max-height: 130px;
     margin: 0px 10px 5px 10px; }
-  /* line 279, ask.scss */
+  /* line 287, ask.scss */
   .askACAnn .obj-default .desc {
     clear: both;
     text-align: justify;
     max-height: 150px;
     overflow-y: auto;
     padding-right: 10px; }
-  /* line 287, ask.scss */
+  /* line 295, ask.scss */
   .askACAnn .obj-default .meta .more-info {
     display: block; }
-  /* line 288, ask.scss */
+  /* line 296, ask.scss */
   .askACAnn .obj-default .meta .types {
     display: block; }
-  /* line 292, ask.scss */
+  /* line 300, ask.scss */
   .askACAnn .obj-literal .desc {
     text-align: justify;
     max-height: 100px;
     overflow-y: auto; }
-  /* line 300, ask.scss */
+  /* line 308, ask.scss */
   .askACAnn.collapsed {
     background-color: #d8e5e8; }
-    /* line 302, ask.scss */
+    /* line 310, ask.scss */
     .askACAnn.collapsed .pre {
       background-color: #d8e5e8; }
-    /* line 304, ask.scss */
+    /* line 312, ask.scss */
     .askACAnn.collapsed img {
       max-height: 30px;
       margin: 0px; }
-    /* line 305, ask.scss */
+    /* line 313, ask.scss */
     .askACAnn.collapsed div.desc {
       display: none; }
-    /* line 306, ask.scss */
+    /* line 314, ask.scss */
     .askACAnn.collapsed .meta > div {
       display: none !important; }
-    /* line 307, ask.scss */
+    /* line 315, ask.scss */
     .askACAnn.collapsed .media.obj {
       margin-left: 0px;
       border: 0px solid blue; }
-    /* line 308, ask.scss */
+    /* line 316, ask.scss */
     .askACAnn.collapsed div.footer > div {
       display: none; }
-    /* line 310, ask.scss */
+    /* line 318, ask.scss */
     .askACAnn.collapsed .pre > h4 {
       width: 100px;
       float: left;
       border: 0px solid black; }
-    /* line 311, ask.scss */
+    /* line 319, ask.scss */
     .askACAnn.collapsed .pre-objects {
       width: 280px;
       float: right;
       margin: 0px; }
-    /* line 316, ask.scss */
+    /* line 324, ask.scss */
     .askACAnn.collapsed .subject-container {
       display: none; }
-    /* line 318, ask.scss */
+    /* line 326, ask.scss */
     .askACAnn.collapsed .subject-container:nth-child(1) .sub div.desc {
       display: block;
       max-height: 58px;
       overflow: hidden; }
-    /* line 323, ask.scss */
+    /* line 331, ask.scss */
     .askACAnn.collapsed .subject-container:nth-child(1) .pre:nth-child(2) {
       display: block; }
-    /* line 327, ask.scss */
+    /* line 335, ask.scss */
     .askACAnn.collapsed .subject-container:nth-child(1),
     .askACAnn.collapsed .subject-container:nth-child(2) {
       display: block; }
-      /* line 329, ask.scss */
+      /* line 337, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .pre,
       .askACAnn.collapsed .subject-container:nth-child(2) .pre {
         display: none; }
-      /* line 330, ask.scss */
+      /* line 338, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .pre:nth-child(1),
       .askACAnn.collapsed .subject-container:nth-child(2) .pre:nth-child(1) {
         display: block; }
-      /* line 331, ask.scss */
+      /* line 339, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .obj,
       .askACAnn.collapsed .subject-container:nth-child(2) .obj {
         display: none; }
-      /* line 332, ask.scss */
+      /* line 340, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .obj:nth-child(1),
       .askACAnn.collapsed .subject-container:nth-child(2) .obj:nth-child(1) {
         display: block; }
-      /* line 333, ask.scss */
+      /* line 341, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .pre-tags .obj,
       .askACAnn.collapsed .subject-container:nth-child(2) .pre-tags .obj {
         display: block;
         margin: 0px; }
-        /* line 336, ask.scss */
+        /* line 344, ask.scss */
         .askACAnn.collapsed .subject-container:nth-child(1) .pre-tags .obj h4,
         .askACAnn.collapsed .subject-container:nth-child(2) .pre-tags .obj h4 {
           margin: 0px 0px 4px 0px; }
-        /* line 337, ask.scss */
+        /* line 345, ask.scss */
         .askACAnn.collapsed .subject-container:nth-child(1) .pre-tags .obj img,
         .askACAnn.collapsed .subject-container:nth-child(2) .pre-tags .obj img {
           display: inline;
           float: left;
           max-height: 20px;
           margin: 0px 5px; }
-      /* line 339, ask.scss */
+      /* line 347, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .pre-comment .obj div.desc,
       .askACAnn.collapsed .subject-container:nth-child(2) .pre-comment .obj div.desc {
         display: block; }
+      /* line 348, ask.scss */
+      .askACAnn.collapsed .subject-container:nth-child(1) .obj.obj-literal div.desc,
+      .askACAnn.collapsed .subject-container:nth-child(2) .obj.obj-literal div.desc {
+        display: block; }
+
+/* line 355, ask.scss */
+.my-controls .btn-group.open .icon-cog {
+  -webkit-animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite; }
+
+/* line 360, ask.scss */
+.my-controls .notebook-options:hover .icon-cog {
+  -webkit-animation: spin 2s linear infinite;
+  -moz-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite; }
+
+@-webkit-keyframes spin {
+  /* line 367, ask.scss */
+  from {
+    -webkit-transform: rotate(0deg); }
+
+  /* line 368, ask.scss */
+  to {
+    -webkit-transform: rotate(360deg); } }
+
+@-moz-keyframes spin {
+  /* line 371, ask.scss */
+  from {
+    -moz-transform: rotate(0deg); }
+
+  /* line 372, ask.scss */
+  to {
+    -moz-transform: rotate(360deg); } }
+
+@keyframes spin {
+  /* line 375, ask.scss */
+  from {
+    transform: rotate(0deg); }
+
+  /* line 376, ask.scss */
+  to {
+    transform: rotate(360deg); } }
 
 /* line 1, _ask_timeline.scss */
 .ti-progress-container {
