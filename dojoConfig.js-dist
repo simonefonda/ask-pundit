@@ -1,36 +1,44 @@
 // Personalize this file and rename/copy it to dojoConfig.js
 
 dojoConfig = {
+    // Massive improvement in loading times, especially first visit (no cache)
+    async: true,
+    selectorEngine: 'acme',
     
     ask: {
         // address of the nodejs instance running the server (js/server/server.js)
-        nodeServerAddress: 'http://localhost'
+        nodeServerAddress: 'http://localhost',
         nodeServerPort: 53000,
         
         // Instance of the annotation server to query
         annotationServer: "http://as.thepund.it:8080/annotationserver/"
 
-        // Metasound is the legacy dev server
+        // demo. is the official dev server
+        // annotationServer: "http://demo.as.thepund.it:8080/annotationserver/"
+
+        // metasound is the legacy dev server
         // annotationServer: "http://metasound.dibet.univpm.it:8080/annotationserver/"
     },
 
+    // Do you need to debug stuff?
+    /*
     isDebug: 1,
     parseOnLoad: true,
-    
     has: {
         "dojo-debug-messages": true
     },
+    */
 
     packages: [
         // Path relative to the the web server hosting the app
         { name: 'ask', location: '/js' },
-        { name: 'bootstrap', location: '/dojo-Bootstrap/src/bootstrap' }
+        { name: 'lib', location: '/lib' },
+        { name: 'bootstrap', location: '/lib/dojo-Bootstrap/src/bootstrap' }
         { name: 'pundit', location: '/pundit18/src' },
         { name: 'cov', location: '/pundit18/cov' },
         { name: 'myTest', location: '/pundit18/test' },
         { name: 'mocha', location: '/pundit18/node_modules/mocha' },
         { name: 'chai', location: '/pundit18/node_modules/chai' }
-        
     ],
 
     // Timeout after 10 seconds
