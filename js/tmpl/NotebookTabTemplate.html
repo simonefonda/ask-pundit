@@ -1,9 +1,19 @@
-<div class="tab-pane" id="notebook-tab-${notebookId}">
+<div class="tab-pane notebook" id="notebook-tab-${notebookId}">
 
     <!-- will contain metadata -->
     <div class="page-header ask-notebook-item-metadata">
         <h1><span id="nb-header-${notebookId}">.. loading</span></h1>
-        
+    </div>
+
+    <div class="filters form-horizontal">
+        <div class="control-group">
+            <label class="control-label">Created at</label>
+            <div class="controls created-at"></div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Page context</label>
+            <div class="controls page-context"></div>
+        </div>
     </div>
 
     <!-- will contain annotations -->
@@ -22,6 +32,7 @@
             </div>
         </div>
 
+<!--- 
         <div class="row">
             <div class="span5">
                 <span class="label label-important">BETA</span>
@@ -32,6 +43,8 @@
                 <a type="button" class="btn btn-large btn-success" href="#/timeline/${notebookId}">Timeline vs STOXX 600</a>
             </div>
         </div>
+
+-->
 
         <div class="row">
             <div class="span5">

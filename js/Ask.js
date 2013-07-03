@@ -1,37 +1,31 @@
-define(["dojo/_base/declare", 
-        "dojo/_base/lang",
-        "dojo/router", 
-        "dojo/on", 
-        "dojo/request",
-        "dojo/_base/config", 
-        "dojox/encoding/easy64",
-        "dojo/text!ask/tmpl/IndexTemplate.html", 
-        "dijit/_WidgetBase", 
-        "dijit/_TemplatedMixin",
-        "ask/NotebookItem",
-        "ask/NotebookTab",
-        "ask/TimelineTab",
-        "ask/BookmarkCollectionTab",
-        "ask/BookmarkList",
-        "ask/IOHelper",
+define([
+    "dojo/_base/declare", 
+    "dojo/_base/lang",
+    "dojo/router",
+    "dojo/on",
+    "dojo/request",
+    "dojo/_base/config",
+    "dojo/query",
+    "dojo/dom-attr",
+    
+    "dojo/text!ask/tmpl/IndexTemplate.html",
+    "dijit/_WidgetBase",
+    "dijit/_TemplatedMixin",
 
-        "ask/MyAsk",
-        "pundit/AuthenticatedRequester",
-        "pundit/Namespace",
-        
-        "bootstrap/Tab",
-        "bootstrap/Typeahead",
-        
-        "dijit/layout/TabContainer", 
-        "dijit/layout/ContentPane"], 
-    function(declare, lang, router, on, request, config, encode,
-        indexTemplate, _WidgetBase, _TemplatedMixin, 
-        NotebookItem, NotebookTab, TimelineTab, BookmarkCollectionTab, BookmarkList, IOHelper, 
-        MyAsk, PAuthenticatedRequester, PNamespace,
-        BTab, BTypeahead, 
-        TabContainer, ContentPane) {
+    "pundit/Namespace",
+
+    "lib/mustache",
+    "bootstrap/Tab",
+    "bootstrap/Typeahead"
+],
+    function(
+        declare, lang, router, on, request, config, query, domAttr,
+        indexTemplate, _WidgetBase, _TemplatedMixin,
+        PNamespace, mustache, BTab, BTypeahead
+    ) {
 
     return declare("ask.Ask", [_WidgetBase, _TemplatedMixin], {
+        
         name: '',
         bio: '',
         templateString: indexTemplate,
@@ -43,56 +37,51 @@ define(["dojo/_base/declare",
         myAskLoaded: false,
         _cache: {},
         shortURLLength: 20,
-        postMixInProperties: function() {
-            this.inherited(arguments);
+        // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
+        _skipNodeCache: true,
+        _stringRepl: function(tmpl) {
+            return mustache.render(tmpl, this);
         },
+        postMixInProperties: function() {},
         constructor: function() {
             var self = this;
             self.inherited(arguments);
-            
-            /* DEBUG: removed unused socketIO bookmarking thingie
-            
-            self.socketHelper = new IOHelper({
-                serverAddress: config.ask.nodeServerAddress,
-                serverPort: config.ask.nodeServerPort
-            }); 
-            */
-
-            self.requester = new PAuthenticatedRequester({
-                debug: false
-            }).placeAt(dojo.byId('ask_container'));
-            
             self.ns = new PNamespace();
+
+            self.stats = {
+                nbks: 0,
+                auth: 0,
+                anns: 0,
+                authors: {},
+                authorList: []
+            };
+            
         },
         
         startup: function() {
             var self = this;
             
-            self.inherited(arguments);
-            self.setupHandlers();
-
-            self.setupRouter();
-            
-            self.requester.startup();
-
+            require(["pundit/AuthenticatedRequester"], function(PAuthenticatedRequester) {
+                self.requester = new PAuthenticatedRequester({
+                    debug: false
+                }).placeAt(query('#ask_container')[0]);
+                self.requester.startup();
+                self.setupHandlers();
+                self.setupRouter();
+            });
         },
 
         setupHandlers: function() {
             var self = this;
             
             // Clicking tabs will update the route.. it calls tab(show) twice?
-            on(dojo.query('#ask-pills')[0], on.selector('a[data-toggle="tab"]', 'click'), function (e) {
+            on(query('#ask-pills')[0], on.selector('a[data-toggle="tab"]', 'click'), function (e) {
 
-                var id = dojo.attr(e.target, 'href');
-                
-                if (id === "#tab-bookmarks") {
-                    router.go('/bookmarks/')
-                } else if (id === "#tab-notebooks") {
+                var id = domAttr.get(e.target, 'href');
+                if (id === "#tab-notebooks") {
                     router.go('/notebooks/');
                 } else if (id === "#tab-myAsk") {
                     router.go('/myAsk/');
-                } else if (id.match(/\/bookmarks\//) !== null) {
-                    router.go(id);
                 } else if (id.match(/\/timeline\//) !== null) {
                     router.go(id);
                 } else if (id.match(/\/myNotebooks\//) !== null) {
@@ -102,7 +91,7 @@ define(["dojo/_base/declare",
             });
             
             // Handle search input 
-            on(dojo.byId('tabNotebooksSearchInput'), 'keyup,change', function(e) {
+            on(query('#tabNotebooksSearchInput')[0], 'keyup,change', function(e) {
 
                 if (e.keyCode === 13) {
                     self.filterNotebooks()
@@ -117,7 +106,7 @@ define(["dojo/_base/declare",
                 return false;
             });
             
-            dojo.query('#tabNotebooksSearchInput').typeahead({
+            query('#tabNotebooksSearchInput').typeahead({
                 source: function() { return self.getAuthors(); },
                 highlighter: function(a) {
                     var foo = '<div class="typeahead">'+a+'';
@@ -136,18 +125,18 @@ define(["dojo/_base/declare",
             });
             
             // Reset search
-            on(dojo.byId('tabNotebooksResetButton'), 'click', function() {
-                dojo.query('#tabNotebooksSearchInput').val('');
-                dojo.query('div.nb-item').style('display', 'block');
+            on(query('#tabNotebooksResetButton')[0], 'click', function() {
+                query('#tabNotebooksSearchInput').val('');
+                query('div.nb-item').style('display', 'block');
                 return false;
             });
             
         },
         
         filterNotebooks: function() {
-            var s = dojo.query('#tabNotebooksSearchInput')[0].value.toLowerCase();
-            dojo.query('div.nb-item').style('display', 'none');
-            dojo.query('div.nb-item:contains("'+s+'")').style('display', 'block');
+            var s = query('#tabNotebooksSearchInput')[0].value.toLowerCase();
+            query('div.nb-item').style('display', 'none');
+            query('div.nb-item:contains("'+s+'")').style('display', 'block');
         },
         
         setupRouter: function() {
@@ -156,29 +145,14 @@ define(["dojo/_base/declare",
             router.register('/notebooks/', function(evt) {
                 if (!self.notebookLoaded) {
                     self.loadNotebookList();
-                    self.notebookLoaded = true;
                 }
-                dojo.query("[href='#tab-notebooks']").tab('show');
-            });
-
-            router.register('/bookmarks/', function(evt) {
-                if (!self.bookmarkLoaded) {
-                    self.bookmarkLoaded = true;
-                    self.loadBookmarkList();
-                }
-                dojo.query("[href='#tab-bookmarks']").tab('show');
+                query("[href='#tab-notebooks']").tab('show');
             });
 
             router.register('/myAsk/', function(evt) {
-                if (!self.myAskLoaded) {
-                    self.myAskLoaded = true;
+                if (!self.myAskLoaded) 
                     self.loadMyAsk();
-                }
-                dojo.query("[href='#tab-myAsk']").tab('show');
-            });
-
-            router.register('/bookmarks/:base64', function(evt) {
-                self.openBookmark(BASE64.decode(evt.params.base64), evt.params.base64);
+                query("[href='#tab-myAsk']").tab('show');
             });
 
             router.register('/notebooks/:id', function(evt) {
@@ -211,38 +185,52 @@ define(["dojo/_base/declare",
 
         loadMyAsk: function() {
             var self = this;
-            self.myAsk = new MyAsk().placeAt(dojo.byId('myAskContainer'));
+            require(["ask/MyAsk"], function(MyAsk) {
+                self.myAsk = new MyAsk().placeAt(query('#myAskContainer')[0]);
+                self.myAsk.startup();
+                self.myAskLoaded = true;
+            });
         },
         
 
         // TODO: move this to an object handling himself?
         loadNotebookList: function() {
-            var self = this;
-
-            self.stats = {
-                nbks: 0,
-                auth: 0,
-                anns: 0,
-                authors: {}
-            };
+            var self = this,
+                placeAt = query('#notebooksContainer')[0];
 
             request.get(ASK.ns.asPublicNotebooks, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
             }).then(
                 function(data) {
-                    dojo.query('#notebooksContainer').empty();
-                    for (var i in data.NotebookIDs) {
-                        var id = data.NotebookIDs[i];
-                        new NotebookItem({notebookId: id})
-                            .placeAt(dojo.byId('notebooksContainer'));
+                    query('#notebooksContainer').empty();
+                    self.notebookLoaded = true;
+
+                    require(["ask/NotebookItem"], function(NotebookItem) {
+                        var delay = 0;
+                        
+                        for (var i in data.NotebookIDs) {
+                            // TODO: make this configurable?
+                            // TODO: make this smarter? Like send out a batch of requests,
+                            // wait for them, send out another batch??? Not one by one .. :P
+                            delay += 20;
+                            var id = data.NotebookIDs[i];
                             
-                        self.stats.nbks++;
-                    }
-                    self.updateStats();
+                            setTimeout(function(_id) {
+                                return function() {
+                                    var nb = new NotebookItem({notebookId: _id});
+                                    nb.placeAt(placeAt);
+                                    nb.startup();
+                                    self.stats.nbks++;
+                                }
+                            }(id), delay);
+                        }
+                        
+                        self.updateStats();
+                    });
                 }, 
                 function(error) {
-                    console.log('error :|');
+                    self.placeErrorAt("Cant download the notebook list", "Could not connect to the server, try again later please!", placeAt);
                 }
             );
             
@@ -251,11 +239,11 @@ define(["dojo/_base/declare",
         updateStats: function() {
             var self = this;
             
-            dojo.query('#tab-notebooks .ask-stats .nbks em').innerHTML(self.stats.nbks);
-            dojo.query('#tab-notebooks .ask-stats .auth em').innerHTML(self.stats.auth);
-            dojo.query('#tab-notebooks .ask-stats .anns em').innerHTML(self.stats.anns);
+            query('#tab-notebooks .ask-stats .nbks em').innerHTML(self.stats.nbks);
+            query('#tab-notebooks .ask-stats .auth em').innerHTML(self.stats.auth);
+            query('#tab-notebooks .ask-stats .anns em').innerHTML(self.stats.anns);
             
-            dojo.query('#tab-notebooks .author-list ul').empty();
+            query('#tab-notebooks .author-list ul').empty();
             self.stats.authorList = [];
             for (var a in self.stats.authors) {
                 var curr = self.stats.authors[a], 
@@ -268,42 +256,28 @@ define(["dojo/_base/declare",
         getAuthors: function() {
             return this.stats.authorList;
         },
-        
-        loadBookmarkList: function() {
-            var self = this;
-            
-            dojo.query('#bookmarksContainer').empty();
-            var bmTab = new BookmarkList({
-                socketHelper: self.socketHelper
-            }).placeAt(dojo.byId('bookmarksContainer'));
-            
-        },
-        
-        openBookmark: function(name, base64) {
-            
-            if (dojo.query('[data-tab-pane-base64="'+base64+'"]').length === 0) {
-                var bmTab = new BookmarkCollectionTab({
-                    name: name,
-                    base64: base64
-                }).placeAt(dojo.byId('ask-tab-content'));
-            }
-            dojo.query('[data-target-collection="'+base64+'"]').tab('show');
-        },
-        
+                
         openNotebook: function(id, mine) {
             var self = this,
                 mine = mine || false;
             
             // if the tab doesnt exist, create it
-            if (dojo.query("#notebook-tab-"+ id).length === 0)
-                var nbTab = new NotebookTab({
-                    notebookId: id,
-                    id: 'notebook-tab-'+ id,
-                    isOwner: mine,
-                    canEdit: mine
-                }).placeAt(dojo.byId('ask-tab-content'));
+            if (query("#notebook-tab-"+ id).length === 0) {
+                require(["ask/NotebookTab"], function(NotebookTab) {
+                    var nbTab = new NotebookTab({
+                        notebookId: id,
+                        id: 'notebook-tab-'+ id,
+                        isOwner: mine,
+                        canEdit: mine
+                    });
+                    nbTab.placeAt(query('#ask-tab-content')[0]);
+                    nbTab.startup();
+                    query("#tab-"+id).tab('show');
+                });
+            } else {
+                query("#tab-"+id).tab('show');
+            }
             
-            dojo.query("#tab-"+id).tab('show');
         },
         
         openTimeline: function(id, endDate) {
@@ -325,16 +299,22 @@ define(["dojo/_base/declare",
             console.log('Opening timeline ', id);
             
             // if the tab doesnt exist, create it
-            if (dojo.query("#timeline-tab-"+ id).length === 0) {
-                console.log('NEW NEW timeline ', id);
-                var nbTab = new TimelineTab({
-                    notebookId: id,
-                    id: 'timeline-tab-'+ id,
-                    endDate: endDate
-                }).placeAt(dojo.byId('ask-tab-content'));
+            if (query("#timeline-tab-"+ id).length === 0) {
+
+                require(["ask/TimelineTab"], function(TimelineTab) {
+                    var nbTab = new TimelineTab({
+                        notebookId: id,
+                        id: 'timeline-tab-'+ id,
+                        endDate: endDate
+                    });
+                    nbTab.placeAt(query('ask-tab-content')[0]);
+                    nbTab.startup();
+                    query("#tab-time-"+id).tab('show');
+                });
+
+            } else {
+                query("#tab-time-"+id).tab('show');
             }
-            
-            dojo.query("#tab-time-"+id).tab('show');
             
         },
         

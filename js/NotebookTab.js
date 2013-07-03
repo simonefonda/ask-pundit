@@ -43,11 +43,11 @@ define(["dojo/_base/declare",
             var own = self.isOwner,
                 b = "<li>"+
                     "<span class='close' id='nb-tab-close-"+self.notebookId+"'><i class='icon-remove'></i></span>"+
-                    "<a href='#/"+ (own ? "myN" : "n") +"otebooks/"+self.notebookId+
-                    "' data-toggle='tab' id='tab-"+self.notebookId+
-                    "'> N: "+self.notebookId+"</a>"+
+                    "<a data-target='notebook-tab-"+self.notebookId+"' href='#/"+ (own ? "myN" : "n") +"otebooks/"+self.notebookId+
+                    "' data-toggle='tab' id='tab-"+self.notebookId+"'>"+
+                    "N: "+self.notebookId+"</a>"+
                     "</li>";
-            dojo.place(b, "ask-pills");
+            domConstruct.place(b, "ask-pills");
 
             on(dojo.query('#tab-'+self.notebookId), 'show', function(e) {
                 dojo.query('#ask-tab-content .tab-pane').removeClass('active');
@@ -55,23 +55,37 @@ define(["dojo/_base/declare",
             });
 
             ASK._cache['nb-'+self.notebookId] = {};
+            
+            self.filters = {
+                "created-at": [],
+                "page-context": []
+            };
+            self.filtersData = {
+                "created-at": {},
+                "page-context": {}
+            };
+            
             self.loadNotebookMetadata();
             self.loadNotebookAnnotations();
-     
+
             // Close tab button: removes pill + tab content, unregistering
             // the dojo's widgets
-            on(dojo.byId('nb-tab-close-'+ self.notebookId), 'click', function(e) {
+            on(dojo.query('#nb-tab-close-'+ self.notebookId)[0], 'click', function(e) {
                 router.go('/notebooks/');
 
                 var node = dojo.query('#notebook-tab-'+self.notebookId)[0];
 
+                // DEBUG: is this thing right?
+                dijit.registry.remove('notebook-tab-'+self.notebookId);
+                /*
                 dijit.registry.forEach(function(w){
                     if (w.id === 'notebook-tab-'+self.notebookId) 
                         w.destroyRecursive();
                 });
+                */
 
-                dojo.destroy(dojo.query('#tab-'+self.notebookId)[0].parentNode);
-                dojo.destroy(node);
+                domConstruct.destroy(dojo.query('#tab-'+self.notebookId)[0].parentNode);
+                domConstruct.destroy(node);
             });
             
         }, // startup
@@ -169,7 +183,9 @@ define(["dojo/_base/declare",
                         
                     for (var nb_ann in data) {
 
-                        var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value;
+                        var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value,
+                            createdAt = data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
+                            pageContext = data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value;
 
                         ASK._cache['nb-'+self.notebookId]['ann-rdf-'+annotationId] = data[nb_ann];
                         
@@ -178,11 +194,29 @@ define(["dojo/_base/declare",
                             notebookId: self.notebookId,
                             annotationId: annotationId,
                             createdBy: data[nb_ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
-                            createdAt: data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
-                            pageContext: data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
+                            createdAt: createdAt,
+                            pageContext: pageContext,
                             isOwner: self.isOwner
                         }).placeAt(placeAt);
+                        
+                        createdAtLabel = (new Date(createdAt)).toDateString();
+                        if (self.filters["created-at"].indexOf(createdAtLabel) === -1) {
+                            self.filters["created-at"].push(createdAtLabel);
+                            self.filtersData["created-at"][createdAtLabel] = {
+                                num: 1,
+                                value: createdAt,
+                                label: createdAtLabel
+                            }
+                        } else {
+                            self.filtersData["created-at"][createdAtLabel].num++;
+                        }
+
+                        if (self.filters["page-context"].indexOf(pageContext) === -1)
+                            self.filters["page-context"].push(pageContext);
+                    
                     } // for
+                    self._updateNotebookFilters();
+
                 }, 
                 function(error) {
                     if (("response" in error) && ("status" in error.response)) {
@@ -197,8 +231,22 @@ define(["dojo/_base/declare",
                 }
             ); // then
             
-        } // loadNotebookAnnotations()
+        }, // loadNotebookAnnotations()
+        
+        _updateNotebookFilters: function() {
+            var self = this;
 
-	});
+            for (var f in self.filters) {
+                var node = dojo.query('#notebook-tab-'+self.notebookId+' .filters .'+f)[0];
+                
+                for (var l=self.filters[f].length; l--;) {
+                    domConstruct.place("<span>" + self.filters[f][l]+ "</span>", node, "first");
+                }
+
+            }
+                        
+        } // _updateNotebookFilters()
+
+    });
 
 });

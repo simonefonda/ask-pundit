@@ -40,7 +40,7 @@ define([
             self.pageContext_short = self.pageContext.substr(start, start + self.pageContext_short_length) + " ..";
             
             var foo = new Date(self.createdAt);
-            self.createdAt = foo.toString();
+            self.createdAt = foo.toDateString();
             
         },
         startup: function() {

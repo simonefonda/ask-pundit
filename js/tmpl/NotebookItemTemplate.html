@@ -1,5 +1,5 @@
 <div class="nb-item {{state}}" data-nb-item="{{notebookId}}">
-    {% if canEdit %}
+    {{#canEdit}}
     <div class="my-controls">
         <div class="btn-group">
             <a class="btn dropdown-toggle notebook-options" data-toggle="dropdown" href="#">
@@ -8,36 +8,40 @@
             <ul class="dropdown-menu">
                 <li class="rename-notebook"><a><i class="icon-pencil"></i> Rename..</a></li>
                 
-                {% if isOwner %}
+                {{#isOwner}}
                     <li class="delete-notebook"><a><i class="icon-fire"></i> Delete</a></li>
-                    <li class="set-private {% if isPrivate %}hidden{% endif %}"><a><i class="icon-lock"></i> Set Private</a></li>
-                    <li class="set-public {% if isPublic %}hidden{% endif %}"><a><i class="icon-globe"></i> Set Public</a></li>
-                {% endif %}
+                    <li class="set-private {{#isPrivate}}hidden{{/isPrivate}}"><a><i class="icon-lock"></i> Set Private</a></li>
+                    <li class="set-public {{#isPublic}}hidden{{/isPublic}}"><a><i class="icon-globe"></i> Set Public</a></li>
+                {{/isOwner}}
             </ul>
         </div>
     </div>
-    {% endif %}
+    {{/canEdit}}
 
     <div class="content">
-        <div class="hidden" style="display:none">{{title.toLowerCase()}} {{createdBy.toLowerCase()}} {{createdAt.toLowerCase()}}</div>
+        <div class="hidden" style="display:none">
+            {{title_l}} {{createdBy_l}} {{createdAt_l}}
+        </div>
         <h4 class="title">{{title}}</h4>
         <h5>{{createdBy}}</h5>
         <div>
-        {% if annotationNum %}
+        {{#annotationNum}}
             {{annotationNum}} annotations
-        {% else %}
+        {{/annotationNum}}
+        {{^annotationNum}}
             Empty :(
-        {% endif %}
+        {{/annotationNum}}
         </div>
         <div>{{createdAt}}</div>
-        {% if canEdit %}
+        {{#canEdit}}
         <div>Visibility: 
-            {% if isPublic %}
+            {{#isPublic}}
             <span class="label label-success"><i class="icon-globe icon-white"></i> public</span>
-            {% else %}
+            {{/isPublic}}
+            {{^isPublic}}
             <span class="label label-important"><i class="icon-lock icon-white"></i> private</span>
-            {% endif %}
+            {{/isPublic}}
         </div>
-        {% endif %}
+        {{/canEdit}}
     </div>
 </div>

@@ -1,18 +1,41 @@
 @import 'http://fonts.googleapis.com/css?family=Roboto:400,500,700,900,300';
 @import 'http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700';
-/* @import 'http://fonts.googleapis.com/css?family=Lato:400,900'; */
-/* line 21, ask.scss */
+/* line 16, ask.scss */
+#askLoadingPanel {
+  background-color: #d8e5e8;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  text-align: center;
+  line-height: 200px; }
+  /* line 22, ask.scss */
+  #askLoadingPanel h1 {
+    font-family: 'Helvetica Neue', sans-serif, Helvetica, Arial !important;
+    padding-left: 20px;
+    background-position: 0px 13px;
+    background-repeat: no-repeat;
+    display: inline;
+    text-shadow: 2px 2px 5px white; }
+
+/* line 32, ask.scss */
+#ask_container.loaded {
+  -webkit-transition-property: opacity;
+  -webkit-transition-duration: 1.5s; }
+
+/* line 39, ask.scss */
 #ask_container h1, #ask_container h2, #ask_container h3, #ask_container h4, #ask_container h5, #ask_container h6 {
   font-family: 'Roboto Condensed';
   color: #2a697a; }
 
-/* line 27, ask.scss */
+/* line 45, ask.scss */
 #askTabContainer .tab-content {
   position: relative;
   top: 50px;
   padding: 0px 20px; }
 
-/* line 33, ask.scss */
+/* line 51, ask.scss */
 #ask-pills {
   width: 100%;
   position: fixed;
@@ -21,79 +44,88 @@
   top: 0px;
   background-color: #f8f8f8;
   z-index: 1000; }
-  /* line 41, ask.scss */
+  /* line 59, ask.scss */
   #ask-pills li > a {
     padding-right: 20px; }
-  /* line 44, ask.scss */
+  /* line 62, ask.scss */
   #ask-pills span.close i {
     margin-top: 4px;
     margin-right: 6px; }
 
-/* line 47, ask.scss */
+/* line 65, ask.scss */
 legend.interactive:hover {
   cursor: pointer;
   color: #FAA732; }
 
-/* line 52, ask.scss */
+/* line 70, ask.scss */
 .very-hidden {
   display: none; }
 
-/* line 54, ask.scss */
+/* line 72, ask.scss */
 img.small {
   max-width: 100px;
   max-height: 100px;
   margin-left: 20px; }
 
-/* line 62, ask.scss */
+/* line 80, ask.scss */
 div.accordion-group .accordion-heading {
   background-color: #eee; }
-/* line 66, ask.scss */
+/* line 84, ask.scss */
 div.accordion-group a i {
   margin-left: 5px;
   opacity: 0.6; }
-/* line 70, ask.scss */
+/* line 88, ask.scss */
 div.accordion-group a:hover i {
   opacity: 1; }
 
-/* line 74, ask.scss */
+/* line 92, ask.scss */
 #tab-notebooks .ask-stats {
   font-size: 1.5em;
   font-family: 'Roboto Condensed';
   color: #2a697a; }
-  /* line 78, ask.scss */
+  /* line 96, ask.scss */
   #tab-notebooks .ask-stats em {
     font-size: 1.15em;
     color: #51a0b5;
     text-shadow: 1px 1px 1px #999; }
 
-/* line 85, ask.scss */
+/* line 104, ask.scss */
+.notebook .filters {
+  display: none; }
+  /* line 106, ask.scss */
+  .notebook .filters span {
+    display: block;
+    border: 1px solid red;
+    background: #d8e5e8; }
+
+/* line 115, ask.scss */
 .row.ask-notebook-item-annotations {
   margin: 0px;
   margin-bottom: 30px; }
 
-/* line 90, ask.scss */
+/* line 120, ask.scss */
 div.nb-item {
   background-color: #d8e5e8;
   float: left;
   margin: 4px;
   padding: 0px;
   box-shadow: 1px 1px 1px #ddd; }
-  /* line 97, ask.scss */
+  /* line 127, ask.scss */
   div.nb-item div.content {
     -webkit-transition-property: background-color;
     -webkit-transition-duration: 0.2s;
     padding: 4px 10px;
     cursor: pointer; }
-    /* line 101, ask.scss */
+    /* line 131, ask.scss */
     div.nb-item div.content h4 {
       margin-top: 0px;
       border-bottom: 1px solid white; }
-    /* line 105, ask.scss */
+    /* line 135, ask.scss */
     div.nb-item div.content div {
       height: 20px;
       line-height: 20px;
       color: #888888; }
-  /* line 111, ask.scss */
+  /* line 141, ask.scss */
   div.nb-item.loading {
     opacity: 0.5;
     background-image: url("askACAnn-loading.gif");
@@ -101,49 +133,49 @@ div.nb-item {
     background-repeat: no-repeat;
     min-width: 150px;
     min-height: 30px; }
-    /* line 118, ask.scss */
+    /* line 148, ask.scss */
     div.nb-item.loading .content {
       display: none; }
-  /* line 120, ask.scss */
+  /* line 150, ask.scss */
   div.nb-item.loaded div.content:hover {
     box-shadow: 2px 2px 2px #ccc;
     background-color: #2a697a; }
-    /* line 123, ask.scss */
+    /* line 153, ask.scss */
     div.nb-item.loaded div.content:hover h4, div.nb-item.loaded div.content:hover h5 {
       color: white !important; }
-    /* line 124, ask.scss */
+    /* line 154, ask.scss */
     div.nb-item.loaded div.content:hover div {
       color: #dddddd; }
-  /* line 126, ask.scss */
+  /* line 156, ask.scss */
   div.nb-item .my-controls {
     padding: 5px; }
-    /* line 128, ask.scss */
+    /* line 158, ask.scss */
     div.nb-item .my-controls .dropdown-menu li.hidden {
       display: none; }
 
-/* line 134, ask.scss */
+/* line 164, ask.scss */
 .obj-literal img, .obj-literal h4, .obj-literal .more-info {
   display: none; }
-/* line 135, ask.scss */
+/* line 165, ask.scss */
 .obj-literal div {
   text-align: justify; }
 
-/* line 137, ask.scss */
+/* line 167, ask.scss */
 .media.obj {
   margin-left: 20px; }
 
-/* line 142, ask.scss */
+/* line 172, ask.scss */
 .askACAnn.loading {
   opacity: 0.5;
   background-image: url("askACAnn-loading.gif");
   background-position: 190px 10px;
   background-repeat: no-repeat;
   min-height: 30px; }
-  /* line 148, ask.scss */
+  /* line 178, ask.scss */
   .askACAnn.loading .controls {
     display: none; }
 
-/* line 150, ask.scss */
+/* line 180, ask.scss */
 .askACAnn {
   -webkit-transition-property: background-color;
   -webkit-transition-duration: 0.5s;
@@ -153,17 +185,17 @@ div.nb-item {
   padding: 4px 10px;
   border: 1px solid #51a0b5;
   background-color: whitesmoke; }
-  /* line 159, ask.scss */
+  /* line 189, ask.scss */
   .askACAnn h4 {
     margin-top: 0px; }
-  /* line 160, ask.scss */
+  /* line 190, ask.scss */
   .askACAnn .controls {
     position: relative;
     bottom: 0px;
     margin: 0px -10px -4px -10px;
     background-color: #2a697a;
     height: 20px; }
-    /* line 166, ask.scss */
+    /* line 196, ask.scss */
     .askACAnn .controls .collapse-ann {
       width: 24px;
       position: absolute;
@@ -172,115 +204,115 @@ div.nb-item {
       background-color: #2a697a;
       height: 20px;
       cursor: pointer; }
-      /* line 174, ask.scss */
+      /* line 204, ask.scss */
       .askACAnn .controls .collapse-ann:hover {
         background-color: #51a0b5; }
-    /* line 176, ask.scss */
+    /* line 206, ask.scss */
     .askACAnn .controls i {
       display: none; }
-    /* line 177, ask.scss */
+    /* line 207, ask.scss */
     .askACAnn .controls i.icon-minus {
       display: block; }
-  /* line 180, ask.scss */
+  /* line 210, ask.scss */
   .askACAnn.collapsed .controls i.icon-minus {
     display: none; }
-  /* line 181, ask.scss */
+  /* line 211, ask.scss */
   .askACAnn.collapsed .controls i.icon-plus {
     display: block; }
-  /* line 183, ask.scss */
+  /* line 213, ask.scss */
   .askACAnn img {
     -webkit-transition-property: heigth, max-height;
     -webkit-transition-duration: 0.5s; }
-  /* line 184, ask.scss */
+  /* line 214, ask.scss */
   .askACAnn .desc {
     -webkit-transition-property: heigth, max-height;
     -webkit-transition-duration: 0.5s;
     font-style: italic; }
-  /* line 188, ask.scss */
+  /* line 218, ask.scss */
   .askACAnn .summary {
     display: none;
     text-align: center; }
-  /* line 192, ask.scss */
+  /* line 222, ask.scss */
   .askACAnn .footer {
     margin-bottom: 10px; }
-    /* line 194, ask.scss */
+    /* line 224, ask.scss */
     .askACAnn .footer > div {
       display: block; }
-  /* line 199, ask.scss */
+  /* line 229, ask.scss */
   .askACAnn .subject-container {
     border-bottom: 1px dashed #2a697a;
     padding-top: 0px;
     margin-bottom: 15px; }
-    /* line 203, ask.scss */
+    /* line 233, ask.scss */
     .askACAnn .subject-container:nth-child(1) {
       border-top: 0px; }
-  /* line 205, ask.scss */
+  /* line 235, ask.scss */
   .askACAnn .pre {
     background-color: white; }
-  /* line 210, ask.scss */
+  /* line 240, ask.scss */
   .askACAnn .meta {
     margin: 4px 0px 0px 20px; }
-    /* line 212, ask.scss */
+    /* line 242, ask.scss */
     .askACAnn .meta > div {
       display: none; }
-    /* line 213, ask.scss */
+    /* line 243, ask.scss */
     .askACAnn .meta .types {
       -webkit-transition-property: heigth, max-height;
       -webkit-transition-duration: 0.5s;
       max-height: 60px;
       overflow-y: auto;
       overflow-x: none; }
-  /* line 222, ask.scss */
+  /* line 252, ask.scss */
   .askACAnn .sub-default .desc {
     text-align: justify;
     background-color: #d8e5e8;
     max-height: 100px;
     overflow-y: auto;
     padding: 2px 5px; }
-  /* line 230, ask.scss */
+  /* line 260, ask.scss */
   .askACAnn .sub-default .meta .more-info {
     display: block; }
-  /* line 231, ask.scss */
+  /* line 261, ask.scss */
   .askACAnn .sub-default .meta .part-of {
     display: block; }
-  /* line 232, ask.scss */
+  /* line 262, ask.scss */
   .askACAnn .sub-default .meta .page-context {
     display: block; }
-  /* line 233, ask.scss */
+  /* line 263, ask.scss */
   .askACAnn .sub-default .meta .types {
     display: block; }
-  /* line 237, ask.scss */
+  /* line 267, ask.scss */
   .askACAnn .sub-textfragment img {
     display: none; }
-  /* line 238, ask.scss */
+  /* line 268, ask.scss */
   .askACAnn .sub-textfragment .desc {
     text-align: justify;
     background-color: #d8e5e8;
     max-height: 100px;
     overflow-y: auto;
     padding: 2px 5px; }
-  /* line 246, ask.scss */
+  /* line 276, ask.scss */
   .askACAnn .sub-textfragment .meta .part-of {
     display: block; }
-  /* line 247, ask.scss */
+  /* line 277, ask.scss */
   .askACAnn .sub-textfragment .meta .types {
     display: block; }
-  /* line 248, ask.scss */
+  /* line 278, ask.scss */
   .askACAnn .sub-textfragment .meta .page-context {
     display: block; }
-  /* line 254, ask.scss */
+  /* line 284, ask.scss */
   .askACAnn.collapsed .sub-imagefragment img, .askACAnn.collapsed .sub-image img {
     max-height: 100px;
     max-width: 100px;
     float: right; }
-  /* line 263, ask.scss */
+  /* line 293, ask.scss */
   .askACAnn .sub-image img,
   .askACAnn .sub-imagefragment img {
     margin: 5px;
     display: block;
     max-width: 370px;
     max-height: 370px; }
-  /* line 269, ask.scss */
+  /* line 299, ask.scss */
   .askACAnn .sub-image .desc,
   .askACAnn .sub-imagefragment .desc {
     text-align: justify;
@@ -288,161 +320,161 @@ div.nb-item {
     max-height: 100px;
     overflow-y: auto;
     padding: 2px 5px; }
-  /* line 277, ask.scss */
+  /* line 307, ask.scss */
   .askACAnn .sub-image .meta .part-of,
   .askACAnn .sub-imagefragment .meta .part-of {
     display: block; }
-  /* line 278, ask.scss */
+  /* line 308, ask.scss */
   .askACAnn .sub-image .meta .types,
   .askACAnn .sub-imagefragment .meta .types {
     display: block; }
-  /* line 283, ask.scss */
+  /* line 313, ask.scss */
   .askACAnn .obj-default img {
     max-height: 130px;
     margin: 0px 10px 5px 10px; }
-  /* line 287, ask.scss */
+  /* line 317, ask.scss */
   .askACAnn .obj-default .desc {
     clear: both;
     text-align: justify;
     max-height: 150px;
     overflow-y: auto;
     padding-right: 10px; }
-  /* line 295, ask.scss */
+  /* line 325, ask.scss */
   .askACAnn .obj-default .meta .more-info {
     display: block; }
-  /* line 296, ask.scss */
+  /* line 326, ask.scss */
   .askACAnn .obj-default .meta .types {
     display: block; }
-  /* line 300, ask.scss */
+  /* line 330, ask.scss */
   .askACAnn .obj-literal .desc {
     text-align: justify;
     max-height: 100px;
     overflow-y: auto; }
-  /* line 308, ask.scss */
+  /* line 338, ask.scss */
   .askACAnn.collapsed {
     background-color: #d8e5e8; }
-    /* line 310, ask.scss */
+    /* line 340, ask.scss */
     .askACAnn.collapsed .pre {
       background-color: #d8e5e8; }
-    /* line 312, ask.scss */
+    /* line 342, ask.scss */
     .askACAnn.collapsed img {
       max-height: 30px;
       margin: 0px; }
-    /* line 313, ask.scss */
+    /* line 343, ask.scss */
     .askACAnn.collapsed div.desc {
       display: none; }
-    /* line 314, ask.scss */
+    /* line 344, ask.scss */
     .askACAnn.collapsed .meta > div {
       display: none !important; }
-    /* line 315, ask.scss */
+    /* line 345, ask.scss */
     .askACAnn.collapsed .media.obj {
       margin-left: 0px;
       border: 0px solid blue; }
-    /* line 316, ask.scss */
+    /* line 346, ask.scss */
     .askACAnn.collapsed div.footer > div {
       display: none; }
-    /* line 318, ask.scss */
+    /* line 348, ask.scss */
     .askACAnn.collapsed .pre > h4 {
       width: 100px;
       float: left;
       border: 0px solid black; }
-    /* line 319, ask.scss */
+    /* line 349, ask.scss */
     .askACAnn.collapsed .pre-objects {
       width: 280px;
       float: right;
       margin: 0px; }
-    /* line 324, ask.scss */
+    /* line 354, ask.scss */
     .askACAnn.collapsed .subject-container {
       display: none; }
-    /* line 326, ask.scss */
+    /* line 356, ask.scss */
     .askACAnn.collapsed .subject-container:nth-child(1) .sub div.desc {
       display: block;
       max-height: 58px;
       overflow: hidden; }
-    /* line 331, ask.scss */
+    /* line 361, ask.scss */
     .askACAnn.collapsed .subject-container:nth-child(1) .pre:nth-child(2) {
       display: block; }
-    /* line 335, ask.scss */
+    /* line 365, ask.scss */
     .askACAnn.collapsed .subject-container:nth-child(1),
     .askACAnn.collapsed .subject-container:nth-child(2) {
       display: block; }
-      /* line 337, ask.scss */
+      /* line 367, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .pre,
       .askACAnn.collapsed .subject-container:nth-child(2) .pre {
         display: none; }
-      /* line 338, ask.scss */
+      /* line 368, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .pre:nth-child(1),
       .askACAnn.collapsed .subject-container:nth-child(2) .pre:nth-child(1) {
         display: block; }
-      /* line 339, ask.scss */
+      /* line 369, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .obj,
       .askACAnn.collapsed .subject-container:nth-child(2) .obj {
         display: none; }
-      /* line 340, ask.scss */
+      /* line 370, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .obj:nth-child(1),
       .askACAnn.collapsed .subject-container:nth-child(2) .obj:nth-child(1) {
         display: block; }
-      /* line 341, ask.scss */
+      /* line 371, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .pre-tags .obj,
       .askACAnn.collapsed .subject-container:nth-child(2) .pre-tags .obj {
         display: block;
         margin: 0px; }
-        /* line 344, ask.scss */
+        /* line 374, ask.scss */
         .askACAnn.collapsed .subject-container:nth-child(1) .pre-tags .obj h4,
         .askACAnn.collapsed .subject-container:nth-child(2) .pre-tags .obj h4 {
           margin: 0px 0px 4px 0px; }
-        /* line 345, ask.scss */
+        /* line 375, ask.scss */
         .askACAnn.collapsed .subject-container:nth-child(1) .pre-tags .obj img,
         .askACAnn.collapsed .subject-container:nth-child(2) .pre-tags .obj img {
           display: inline;
           float: left;
           max-height: 20px;
           margin: 0px 5px; }
-      /* line 347, ask.scss */
+      /* line 377, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .pre-comment .obj div.desc,
       .askACAnn.collapsed .subject-container:nth-child(2) .pre-comment .obj div.desc {
         display: block; }
-      /* line 348, ask.scss */
+      /* line 378, ask.scss */
       .askACAnn.collapsed .subject-container:nth-child(1) .obj.obj-literal div.desc,
       .askACAnn.collapsed .subject-container:nth-child(2) .obj.obj-literal div.desc {
         display: block; }
 
-/* line 355, ask.scss */
+/* line 385, ask.scss */
 .my-controls .btn-group.open .icon-cog {
   -webkit-animation: spin 2s linear infinite;
   -moz-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite; }
 
-/* line 360, ask.scss */
+/* line 390, ask.scss */
 .my-controls .notebook-options:hover .icon-cog {
   -webkit-animation: spin 2s linear infinite;
   -moz-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite; }
 
 @-webkit-keyframes spin {
-  /* line 367, ask.scss */
+  /* line 397, ask.scss */
   from {
     -webkit-transform: rotate(0deg); }
 
-  /* line 368, ask.scss */
+  /* line 398, ask.scss */
   to {
     -webkit-transform: rotate(360deg); } }
 
 @-moz-keyframes spin {
-  /* line 371, ask.scss */
+  /* line 401, ask.scss */
   from {
     -moz-transform: rotate(0deg); }
 
-  /* line 372, ask.scss */
+  /* line 402, ask.scss */
   to {
     -moz-transform: rotate(360deg); } }
 
 @keyframes spin {
-  /* line 375, ask.scss */
+  /* line 405, ask.scss */
   from {
     transform: rotate(0deg); }
 
-  /* line 376, ask.scss */
+  /* line 406, ask.scss */
   to {
     transform: rotate(360deg); } }
 

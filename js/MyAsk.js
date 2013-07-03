@@ -14,23 +14,21 @@ define(["dojo/_base/declare",
     return declare("ask.MyAsk", [_WidgetBase, _TemplatedMixin], {
         templateString: myAskTemplate,
         postMixInProperties: function() {
-            this.inherited(arguments);
         },
         startup: function() {
             var self = this;
-            this.inherited(arguments);
             
             self._isLoggedIn = false;
             self._userData = {};
-            self._myNotebooks = [];
+            self._myNotebooks = {};
             
             self._initBehaviors();
         },
         
         _initBehaviors: function() {
             var self = this,
-                placeAt = dojo.byId('my-ask-messages');
-            
+                placeAt = dojo.query('#my-ask-messages');
+                
             ASK.requester.onLogin(function(d) {
                 self._afterLogin(d);
             });
@@ -50,7 +48,6 @@ define(["dojo/_base/declare",
                         if (data.response.status === ASK.requester.HTTP_CONNECTION_ERROR) 
                             ASK.placeErrorAt("CONNECTION ERROR", "Could not connect to the login server, check your internet connection.", placeAt);
                     }
-                    
                 }
                 
             });
@@ -79,16 +76,9 @@ define(["dojo/_base/declare",
                 return false;
             });
 
-            // Delete notebook
-            // on(dojo.byId('tab-myAsk'), on.selector('.delete-notebook', 'click'), function(e) {
-            //    var nbId = domAttr.get(e.target, 'data-target-nb');
-            //    self._deleteNotebook(nbId);
-            //    return false;
-            // });
-            
-
         },
 
+        // TODO: move this to the notebook item thingie?
         _setNotebookVisibility: function(id, vis) {
             var self = this;
                 url = lang.replace(ASK.ns.asNBSetVisibility, {id: id, visibility: vis});
@@ -101,9 +91,7 @@ define(["dojo/_base/declare",
                     dojo.query('#my-ask-messages')
                         .append('<p><span class="label label-success">Done</span> Notebook '+id+' is now '+vis+'</p>');
                 
-                    self.getOwnedNotebooks(function(data) {
-                        self.showOwnedNotebooks(data);
-                    });
+                    self._myNotebooks[id].loadMeta();
                 },
                 error: function(error) {
                     console.log('TODO: ERROR setting notebook visibility: '+ id +' to '+ vis);
@@ -128,10 +116,8 @@ define(["dojo/_base/declare",
                         console.log("Nb rename response: ", data);
                         dojo.query('#my-ask-messages')
                             .append('<p><span class="label label-success">Done</span> Renamed notebook '+id+' to '+name+'</p>');
-                    
-                        self.getOwnedNotebooks(function(data) {
-                            self.showOwnedNotebooks(data);
-                        });
+            
+                        self._myNotebooks[id].loadMeta();
 
                     }, 
                     error: function(e) {
@@ -299,7 +285,8 @@ define(["dojo/_base/declare",
             
             self._isLoggedIn = false;
             self._userData = {};
-            self._myNotebooks = [];
+            self._myNotebooks = {};
+            // TODO: delete, unload, destroy the notebooks?
             
             dojo.query('.my-ask')
                 .removeClass('login-state-logged')
@@ -338,68 +325,18 @@ define(["dojo/_base/declare",
             var self = this;
             for (var j = ids.length; j--;) {
 
-                self._myNotebooks.push(ids[j]);
                 dojo.query('#my-ask-import-select').append('<option value="'+ids[j]+'">'+ids[j]+'</option>');
 
+                // self._myNotebooks.push(ids[j]);
                 var foo = new NotebookItem({
                         notebookId: ids[j],
                         isOwner: true,
                         canEdit: true
-                    }).placeAt(dojo.byId('my-ask-notebooks'));
-
-                // self.loadNotebooksMeta(ids[j]);
+                    }).placeAt(dojo.query('#my-ask-notebooks')[0]);
+                foo.startup();
+                self._myNotebooks[ids[j]] = foo;
             }
-            
-        },
-        
-        /*
-        // TODO: to show notebook's meta.. this is duplicating a call:
-        // same as notebook item metadata ... AND in Ask.js ..... 
-        loadNotebooksMeta: function(id) {
-            var self = this;
-        
-            ASK.requester.get(lang.replace(ASK.ns.asNotebooksMeta, { id: id }), {
-                handleAs: "json",
-                headers: { "Accept": "application/json" }
-            }).then(
-                function(data){
-                    
-                    for (var i in data) {
-                        
-                        var name = data[i]['http://www.w3.org/2000/01/rdf-schema#label'][0].value,
-                            annotationNum = 0,
-                            createdAt = data[i]['http://purl.org/dc/terms/created'][0].value,
-                            createdBy = data[i]['http://purl.org/dc/terms/creator'][0].value,
-                            visibility = data[i]['http://open.vocab.org/terms/visibility'][0].value,
-                            visibLabel = (visibility === "public") ? "success" : "important";
-                        
-                        if (typeof(data[i]['http://purl.org/pundit/ont/ao#includes']) !== "undefined") {
-                            annotationNum = data[i]['http://purl.org/pundit/ont/ao#includes'].length;
-                            dojo.query('#tab-myAsk #nb-item-'+id+' small.annotationNum')
-                                .innerHTML(annotationNum + " annotations");
-                        }
-                        
-                        dojo.query('#tab-myAsk #nb-item-'+id+' p').innerHTML('<span class="label label-'+visibLabel+'">'+visibility+'</span> ' +name);
-                        dojo.query('#tab-myAsk #nb-item-'+id+' div.hidden').innerHTML(name.toLowerCase());
-                        dojo.query('#tab-myAsk #nb-item-'+id+' small.id-createdAt-createdBy')
-                            .innerHTML(createdAt);
-                            
-                        dojo.query('#my-ask-import-select option[value='+id+']').innerHTML(name);
-                        
-                        dojo.query('#tab-myAsk #nb-item-'+id+' .buttons-container').append('<button class="delete-notebook btn btn-mini btn-danger" data-target-nb="'+id+'">Delete</button>');
-                        
-                    }
-
-                }, 
-                function(error) {
-                    console.log('error :|');
-                }
-            ); // then
-            
-        },
-        */
-        
-
+        }
 
     });
 

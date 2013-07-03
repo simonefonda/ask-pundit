@@ -3,12 +3,24 @@ define(["dojo/_base/declare",
         "dojo/_base/lang",
         "dojo/on", 
         "dojo/mouse",
-        "dojo/text!ask/tmpl/NotebookItemTemplate.html",
-        "dojox/dtl/_DomTemplated",
-        "dijit/_WidgetBase"],
-    function(declare, request, lang, on, mouse, notebookItemTemplate, _DTLDOMTemplated, _WidgetBase) {
+        "dojo/dom-construct",
+        "dojo/query",
+        
+        "bootstrap/Collapse",
+        "bootstrap/Dropdown",
 
-    return declare("ask.NotebookItem", [_WidgetBase, _DTLDOMTemplated], {
+        "dojo/text!ask/tmpl/NotebookItemTemplate.html",
+        "lib/mustache",
+        "dijit/_WidgetBase",
+        "dijit/_TemplatedMixin",
+    ],
+    function(
+        declare, request, lang, on, mouse, domConstruct, query,
+        BCollapse, BDropdown,
+        notebookItemTemplate, mustache, 
+        _WidgetBase, _TemplatedMixin) {
+
+    return declare("ask.NotebookItem", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
         templateString: notebookItemTemplate,
         isOwner: false,
@@ -17,6 +29,22 @@ define(["dojo/_base/declare",
         createdBy: 'unknown',
         createdAt: '',
         state: 'loading',
+        // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
+        _skipNodeCache: true,
+        render: function() {
+            
+            if (this.domNode) {
+                node = domConstruct.place(this._stringRepl(this.templateString), this.domNode, 'before');
+                this.destroyDescendants();
+                domConstruct.destroy(this.domNode);
+            } else {
+                node = dojo._toDom(template);
+            }
+            this.domNode = node; 
+        },
+        _stringRepl: function(tmpl) {
+            return mustache.render(tmpl, this);
+        },
         postMixInProperties: function() {
             var self = this;
             
@@ -29,45 +57,44 @@ define(["dojo/_base/declare",
                 self.href = "#/notebooks/" + self.notebookId;
             }
             
-            self.loadNotebooksMeta();
+            self.loadMeta();
         },
         startup: function() {
             var self = this,
-                sel = '[data-nb-item="'+self.notebookId+'"]';
+                sel = '[data-nb-item="'+self.notebookId+'"]',
+                q;
                                         
             if (self.canEdit) {
-                on(dojo.query(sel+' .delete-notebook')[0], 'click', function() {
+                q = query('#tab-myAsk');
+                                
+                q.on(sel+' .delete-notebook:click', function() {
                     if (!confirm("Deleting this notebook will delete all its annotation.\nAre you sure?")) return;
                     ASK.myAsk._deleteNotebook(self.notebookId);
                 });
-
-                on(dojo.query(sel+' .rename-notebook')[0], 'click', function() {
+                q.on(sel+' .rename-notebook:click', function() {
                     var name;
                     if (name = prompt('New name?'))
                         ASK.myAsk._renameNotebook(self.notebookId, name);
                 });
-
-                on(dojo.query(sel+' .set-private')[0], 'click', function() {
+                q.on(sel+' .set-private:click', function() {
                     ASK.myAsk._setNotebookVisibility(self.notebookId, 'private');
                 });
-                on(dojo.query(sel+' .set-public')[0], 'click', function() {
+                q.on(sel+' .set-public:click', function() {
                     ASK.myAsk._setNotebookVisibility(self.notebookId, 'public');
                 });
-                
-                on(dojo.query('#tab-myAsk '+sel+' .content')[0], 'click', function() {
+                q.on(sel+' .content:click', function() {
                     if (self.state === 'loaded') ASK.routeTo(self.href);
                 });
                 
             } else {
-                on(dojo.query('#tab-notebooks '+sel+' .content')[0], 'click', function() {
+                q = query('#tab-notebooks');
+                q.on(sel+' .content:click', function() {
                     if (self.state === 'loaded') ASK.routeTo(self.href);
                 });
             }
         }, // startup()
 
-        // TODO: to show notebook's meta.. this is duplicating a call:
-        // same as notebook item metadata ...
-        loadNotebooksMeta: function(id) {
+        loadMeta: function(id) {
             var self = this,
                 id = self.notebookId,
                 url, requester;
@@ -121,6 +148,11 @@ define(["dojo/_base/declare",
                     if (!self.isOwner) 
                         ASK.updateStats();
                     self.state = 'loaded';
+                    
+                    self.title_l = self.title.toLowerCase();
+                    self.createdAt_l = self.createdAt.toLowerCase();
+                    self.createdBy_l = self.createdBy.toLowerCase();
+                    
                     self.render();
                 }, 
                 function(error) {

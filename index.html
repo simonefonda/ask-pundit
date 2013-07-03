@@ -1,28 +1,38 @@
 <!DOCTYPE html>
-
 <html>
-<head><title>Ask the pundit (beta)</title></head>
+<head><title>Ask (beta)</title></head>
     <link rel="stylesheet" href="css/ask.css" type="text/css" media="screen" title="no title" charset="utf-8">
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <script src="raphael/raphael.js"></script>
-    <script src="raphael/popup.js"></script>
-    <script src="dojoConfig.js"></script>
-    <script src="js/base64.js" type="text/javascript" charset="utf-8"></script>
-    <script src="js/socket.io.min.js"></script>
-    <script src="dojo/dojo/dojo.js"></script>
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <body>
 
-    <div id="ask_container"></div>
+    <div id="ask_container">
+        <div id="askLoadingPanel">
+            <h1> <img src="css/askACAnn-loading.gif" /> Ask is loading...</h1>
+        </div>
+    </div>
  
+<script src="lib/raphael/raphael.js"></script>
+<script src="lib/raphael/popup.js"></script>
+<script src="js/base64.js" type="text/javascript" charset="utf-8"></script>
+<script src="dojoConfig.js"></script>
+<script src="dojo/dojo/dojo.js"></script>
+
 <script>
-    require(["ask/Ask", "dojo/parser"], function(Index, parser) {
-        parser.parse();
-        ASK = new ask.Ask().placeAt(dojo.byId('ask_container'));
-        ASK.startup();
+    require(["ask/Ask"], function(Ask) {
+        var c = dojo.query('#ask_container');
+
+        ASK = new Ask();
+        c.style('opacity', 0);
+        c.empty();
+        ASK.placeAt(c[0]);
+        setTimeout(function() {
+            c.addClass('loaded');
+            c.style('opacity', 1.0);
+            ASK.startup();
+        }, 1);
+        
     });
 </script>
-
 <script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-5877807-6']);
