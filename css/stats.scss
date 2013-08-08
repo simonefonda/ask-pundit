@@ -1,0 +1,35 @@
+.stats-facets-container,
+.stats-dataTable-container {
+    clear: both;
+}
+
+.superHiddenTab {
+    opacity: 0.0;
+}
+
+.stats-facet {
+    display: inline; float: left;
+    margin: 10px;
+    padding: 4px;
+    background: #ddd;
+    box-shadow: 3px 3px 3px #666;
+    
+    .stats-values-container {
+        display: inline;
+        padding: 0px;
+        overflow: auto;
+        ul {
+            min-width: 200px;
+            max-width: 600px;
+            overflow: auto;
+            height: 200px;
+            li {
+                margin-bottom: 1px; 
+                a { 
+                    padding: 3px; 
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

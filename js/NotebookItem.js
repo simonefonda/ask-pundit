@@ -17,12 +17,12 @@ define(["dojo/_base/declare",
     function(
         declare, request, lang, on, mouse, domConstruct, query,
         BCollapse, BDropdown,
-        notebookItemTemplate, mustache, 
+        template, mustache, 
         _WidgetBase, _TemplatedMixin) {
 
     return declare("ask.NotebookItem", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
-        templateString: notebookItemTemplate,
+        templateString: template,
         isOwner: false,
         canEdit: false,
         annotationNum: 0,
@@ -32,13 +32,13 @@ define(["dojo/_base/declare",
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
         _skipNodeCache: true,
         render: function() {
-            
+            var node;
             if (this.domNode) {
                 node = domConstruct.place(this._stringRepl(this.templateString), this.domNode, 'before');
                 this.destroyDescendants();
                 domConstruct.destroy(this.domNode);
             } else {
-                node = dojo._toDom(template);
+                node = dojo._toDom(this.templateString);
             }
             this.domNode = node; 
         },

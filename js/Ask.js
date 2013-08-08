@@ -7,6 +7,7 @@ define([
     "dojo/_base/config",
     "dojo/query",
     "dojo/dom-attr",
+    "dojo/dom-class",
     
     "dojo/text!ask/tmpl/IndexTemplate.html",
     "dijit/_WidgetBase",
@@ -19,7 +20,7 @@ define([
     "bootstrap/Typeahead"
 ],
     function(
-        declare, lang, router, on, request, config, query, domAttr,
+        declare, lang, router, on, request, config, query, domAttr, domClass,
         indexTemplate, _WidgetBase, _TemplatedMixin,
         PNamespace, mustache, BTab, BTypeahead
     ) {
@@ -35,7 +36,12 @@ define([
         notebookLoaded: false,
         bookmarkLoaded: false,
         myAskLoaded: false,
-        _cache: {},
+        statsTabLoaded: false,
+        _cache: {
+            notebooks: [],
+            authors: [],
+            pageContexts: []
+        },
         shortURLLength: 20,
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
         _skipNodeCache: true,
@@ -69,6 +75,7 @@ define([
                 self.setupHandlers();
                 self.setupRouter();
             });
+            self.loadStatsTab();
         },
 
         setupHandlers: function() {
@@ -82,6 +89,8 @@ define([
                     router.go('/notebooks/');
                 } else if (id === "#tab-myAsk") {
                     router.go('/myAsk/');
+                } else if (id === "#tab-stats") {
+                    router.go('/stats/');
                 } else if (id.match(/\/timeline\//) !== null) {
                     router.go(id);
                 } else if (id.match(/\/myNotebooks\//) !== null) {
@@ -155,6 +164,13 @@ define([
                 query("[href='#tab-myAsk']").tab('show');
             });
 
+            router.register('/stats/', function(evt) {
+                if (!self.statsTabLoaded) 
+                    self.loadStatsTab();
+                query('.superHiddenTab').removeClass('superHiddenTab');
+                query("[href='#tab-stats']").tab('show');
+            });
+
             router.register('/notebooks/:id', function(evt) {
                 self.openNotebook(evt.params.id);
             });
@@ -191,7 +207,15 @@ define([
                 self.myAskLoaded = true;
             });
         },
-        
+
+        loadStatsTab: function() {
+            var self = this;
+            require(["ask/stats/StatsTab"], function(StatsTab) {
+                self.statsTab = new StatsTab().placeAt(query('#statsTabContainer')[0]);
+                self.statsTab.startup();
+                self.statsTabLoaded = true;
+            });
+        },
 
         // TODO: move this to an object handling himself?
         loadNotebookList: function() {

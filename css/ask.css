@@ -42,7 +42,7 @@
   height: 37px;
   padding-top: 5px;
   top: 0px;
-  background-color: #f8f8f8;
+  background-color: whitesmoke;
   z-index: 1000; }
   /* line 59, ask.scss */
   #ask-pills li > a {
@@ -1090,3 +1090,39 @@ a.ti-reset-button {
 /* line 10, _pundit_login_modal.scss */
 #pundit-login-modal.pundit-login-state-logged .pundit-login-off, #pundit-login-modal.pundit-login-state-logged .pundit-login-waiting {
   display: none; }
+
+/* line 2, stats.scss */
+.stats-facets-container,
+.stats-dataTable-container {
+  clear: both; }
+
+/* line 6, stats.scss */
+.superHiddenTab {
+  opacity: 0.0; }
+
+/* line 10, stats.scss */
+.stats-facet {
+  display: inline;
+  float: left;
+  margin: 10px;
+  padding: 4px;
+  background: #ddd;
+  box-shadow: 3px 3px 3px #666; }
+  /* line 17, stats.scss */
+  .stats-facet .stats-values-container {
+    display: inline;
+    padding: 0px;
+    overflow: auto; }
+    /* line 21, stats.scss */
+    .stats-facet .stats-values-container ul {
+      min-width: 200px;
+      max-width: 600px;
+      overflow: auto;
+      height: 200px; }
+      /* line 26, stats.scss */
+      .stats-facet .stats-values-container ul li {
+        margin-bottom: 1px; }
+        /* line 28, stats.scss */
+        .stats-facet .stats-values-container ul li a {
+          padding: 3px;
+          cursor: pointer; }

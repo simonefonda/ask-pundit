@@ -7,9 +7,9 @@ define(["dojo/_base/declare",
     return declare("ask.AnnotationObject", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
         annotationId: '',
-        label: 'Uknkown',
-        label_short: 'Uknkown',
-        desc: 'Uknkown',
+        label: 'Unknown',
+        label_short: 'Unknown',
+        desc: 'Unknown',
         depic: '',
         uri: '',
         uri_short: '',
@@ -29,7 +29,7 @@ define(["dojo/_base/declare",
                 u = this.uri,
                 c,
                 nbid = 'nb-'+self.notebookId,
-                anrd = 'ite-rdf-'+self.annotationId;
+                anrd = 'ann-ite-'+self.annotationId;
                 
             if ((nbid in ASK._cache) && (anrd in ASK._cache[nbid]))
                 c = ASK._cache[nbid][anrd];

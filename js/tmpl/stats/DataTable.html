@@ -1,0 +1,48 @@
+<div class="stats-data-table">
+    
+    <h3>Triples</h3>
+
+    <div class="stats-filters-container">
+        {{#filters}}
+            <div>
+                <span class="label label-success">{{key}}</span> 
+                is not 
+                <span class="label label-info">{{value}}</span>
+            </div>
+        {{/filters}}
+        
+        {{^filters}}
+            No filters applied. Click on the facets to filter out some value.
+        {{/filters}}
+    </div>
+    
+    <h5>{{activeTriplesNum}} resulting triples:</h5>
+    
+    <table class="table table-bordered table-hover table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>Notebook ID</th>
+                <th>Annotation ID</th>
+                <th>Subject</th>
+                <th>Predicate</th>
+                <th>Object</th>
+            </tr>
+        </thead>
+        <tbody>
+    
+        {{#triples}}
+            {{#active}}
+            <tr>
+              <td>{{nbId}}</td>
+              <td>{{annId}}</td>
+              <td>{{sub}}</td>
+              <td>{{pred}}</td>
+              <td>{{obj}}</td>
+            </tr>
+            {{/active}}
+        {{/triples}}
+
+        </tbody>
+    </table>
+
+</div>

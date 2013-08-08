@@ -51,10 +51,10 @@ $gray_light: #ddd;
 #ask-pills {
     width: 100%;
     position: fixed;
-    height: 37px;
+    height: 37px; // will be 47 with bs3
     padding-top:  5px;
     top: 0px;
-    background-color: #f8f8f8;
+    background-color: $gray;
     z-index: 1000;
     li>a {
         padding-right: 20px;
@@ -411,3 +411,4 @@ div.nb-item {
 @import "my_ask";
 /* TODO: move this in pundit.scss? */
 @import "pundit_login_modal";
+@import "stats";

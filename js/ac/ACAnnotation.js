@@ -72,7 +72,7 @@ define([
             }).then(
                 function(data){
                     
-                    ASK._cache['nb-'+self.notebookId]['ite-rdf-'+annotationId] = data;
+                    ASK._cache['nb-'+self.notebookId]['ann-ite-'+annotationId] = data;
                     self.loadAnnotationContent({
                         annotationId: self.annotationId,
                         createdBy: self.createdBy,
@@ -103,8 +103,7 @@ define([
                 def = request;
                 url = lang.replace(ASK.ns.asOpenAnnGraph, { id: annotationId });
             }
-            
-            self.subs = [];
+        
             
             def.get(url, {
                 handleAs: "json",
@@ -112,7 +111,10 @@ define([
             }).then(
                 function(data){
                     
-                    ASK._cache['nb-'+self.notebookId]['anc-'+annotationId] = data;
+                    ASK._cache['nb-'+self.notebookId]['ann-con-'+annotationId] = data;
+                    var _su = ASK._cache['nb-'+self.notebookId]['subs-'+annotationId] = [],
+                        _pr = ASK._cache['nb-'+self.notebookId]['preds-'+annotationId] = [],
+                        _ob = ASK._cache['nb-'+self.notebookId]['objs-'+annotationId] = [];
 
                     for (var subject in data) {
                                             
@@ -124,7 +126,7 @@ define([
                             annotationId: annotationId,
                             notebookId: self.notebookId
                         }).placeAt(dojo.query('.askACAnn .annotation-'+annotationId)[0]);
-                        self.subs.push(sub);
+                        _su.push(sub);
                                         
                         for (var predicate in data[subject]) {
                         
@@ -136,6 +138,7 @@ define([
                                 objects_num: data[subject][predicate].length
                             }).placeAt(dojo.query('.askACAnn .annotation-'+annotationId+' [data-askreplace="predicates-'+annotationId+'-'+BASE64.encode(subject)+'"]')[0]);
                             pre.startup();
+                            _pr.push(pre);
 
                             for (var object in data[subject][predicate]) {
 
@@ -151,10 +154,13 @@ define([
                                     uri_enc: BASE64.encode(object_value),
                                     original: data[subject][predicate][object]
                                 }).placeAt(dojo.query(sel)[0]);
+                                _ob.push(obj);
                             
                             } // for object in data[subject][predicate]
                         } // for predicate in data[subject]
-                    } // for subject and data                
+                    } // for subject and data   
+                    
+                    ASK.statsTab.add(self.notebookId, annotationId);
                     
                     // TODO: shall we write there's n statements somewhere?
                     // if (self.subs.length === 1) 
@@ -171,7 +177,6 @@ define([
             ); // then
             
         }, // loadAnnotationContent()
-        
-        
+
 	});
 });

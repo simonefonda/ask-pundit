@@ -20,7 +20,7 @@ define(["dojo/_base/declare",
         type: 'default',
         label: "Uknown",
         depic: '',
-        desc: 'Uknkown', 
+        desc: 'Unknown', 
         rdfTypes: '',
         templateString: ACSubjectTemplate,
         postMixInProperties: function() {
@@ -31,7 +31,7 @@ define(["dojo/_base/declare",
             var u = this.uri,
                 c,
                 nbid = 'nb-'+self.notebookId,
-                anrd = 'ite-rdf-'+self.annotationId;
+                anrd = 'ann-ite-'+self.annotationId;
             
             if ((nbid in ASK._cache) && (anrd in ASK._cache[nbid]))
                 c = ASK._cache[nbid][anrd];
@@ -67,7 +67,7 @@ define(["dojo/_base/declare",
 
         
             self.label = c[u][ASK.ns.items.label][0].value,
-            label_short = this.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : this.label,
+            // label_short = this.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : this.label,
             self.depic = (ASK.ns.items.image in c[u]) ? c[u][ASK.ns.items.image][0].value : 'http://placehold.it/62x80/ffcc00';
             if (self.depic === "http://api.freebase.com/api/trans/image_thumb/guid/")
                 self.depic = 'http://placehold.it/320x400/cc00cc';
@@ -81,7 +81,6 @@ define(["dojo/_base/declare",
             
             if (typeof(c[u][ASK.ns.items.description]) !== "undefined")
                 self.desc = c[u][ASK.ns.items.description][0].value;
-
         },
         _inTypesArray: function(a, t) {
             for (var l=a.length; l--;)

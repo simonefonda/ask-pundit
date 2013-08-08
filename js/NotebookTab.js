@@ -55,6 +55,8 @@ define(["dojo/_base/declare",
             });
 
             ASK._cache['nb-'+self.notebookId] = {};
+            ASK._cache.notebooks.push(self.notebookId);
+            
             
             self.filters = {
                 "created-at": [],
@@ -111,6 +113,10 @@ define(["dojo/_base/declare",
             }).then(
                 function(data){
                     for (var ann in data) {
+                        
+                        var cache = ASK._cache['nb-'+self.notebookId];
+                        cache.meta = data[ann];
+                        
                         var createdBy, createdAt, label, foo;
                         
                         if (ASK.ns.notebooks.creatorName in data[ann])
@@ -128,14 +134,13 @@ define(["dojo/_base/declare",
                         else
                             label = "Unknown title";
                             
-                        foo = new NotebookItemMetadata({
+                        cache['NBItemMeta'] = new NotebookItemMetadata({
                             visibility: data[ann]['http://open.vocab.org/terms/visibility'][0].value,
                             createdBy: createdBy,
                             createdAt: createdAt,
                             label: label,
                             includes: data[ann]['http://purl.org/pundit/ont/ao#includes'] || 0
-                        });
-                        foo.placeAt(placeAt);
+                        }).placeAt(placeAt);
 
                         self.label = label;
                         dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
@@ -180,17 +185,21 @@ define(["dojo/_base/declare",
                 headers: { "Accept": "application/json" }
             }).then(
                 function(data){
+
+                    var cache = ASK._cache['nb-'+self.notebookId];
+                    cache.annotations = [];
                         
                     for (var nb_ann in data) {
+                        
+                        cache.annotations.push(nb_ann);
+                        cache['ann-met-'+annotationId] = data[nb_ann];
 
                         var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value,
                             createdAt = data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
                             pageContext = data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value;
 
-                        ASK._cache['nb-'+self.notebookId]['ann-rdf-'+annotationId] = data[nb_ann];
-                        
-                        // Annotation item
-                        ASK._cache['nb-'+self.notebookId]['ann-'+annotationId] = new ACAnnotation({
+                            // Annotation item
+                        cache['ACAnn-'+annotationId] = new ACAnnotation({
                             notebookId: self.notebookId,
                             annotationId: annotationId,
                             createdBy: data[nb_ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
@@ -213,8 +222,15 @@ define(["dojo/_base/declare",
 
                         if (self.filters["page-context"].indexOf(pageContext) === -1)
                             self.filters["page-context"].push(pageContext);
+
+
+                        if (ASK._cache.pageContexts.indexOf(pageContext) === -1) {
+                            ASK._cache.pageContexts.push(pageContext);
+                        }
                     
                     } // for
+                    
+                    ASK.statsTab.autoUpdate();
                     self._updateNotebookFilters();
 
                 }, 

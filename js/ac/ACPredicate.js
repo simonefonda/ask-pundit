@@ -1,17 +1,16 @@
 define(["dojo/_base/declare", 
-        "dojo/json",
         "dojo/text!ask/tmpl/ac/ACPredicate.html",
         "bootstrap/Popover",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
-    function(declare, json, annotationPredicateTemplate, Popover, _WidgetBase, _TemplatedMixin) {
+    function(declare, annotationPredicateTemplate, Popover, _WidgetBase, _TemplatedMixin) {
 
     return declare("ask.AnnotationPredicate", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
         annotationId: '',
         uri: '',
-        label: 'Uknkown',
-        desc: 'Uknkown',
+        label: 'Unknown',
+        desc: 'Unknown',
         depic: '',
         uri_enc: '',
         subject_enc: '',
@@ -25,7 +24,7 @@ define(["dojo/_base/declare",
                 u = self.uri,
                 c = {},
                 nbid = 'nb-'+self.notebookId,
-                anrd = 'ite-rdf-'+self.annotationId;
+                anrd = 'ann-ite-'+self.annotationId;
                 
             if ((nbid in ASK._cache) && (anrd in ASK._cache[nbid]))
                 c = ASK._cache[nbid][anrd];
