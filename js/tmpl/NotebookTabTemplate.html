@@ -4,18 +4,14 @@
     <div class="page-header ask-notebook-item-metadata">
         <h1><span id="nb-header-${notebookId}">.. loading</span></h1>
     </div>
-
-    <div class="filters form-horizontal">
-        <div class="control-group">
-            <label class="control-label">Created at</label>
-            <div class="controls created-at"></div>
+    
+    <div class="progress-container progress-${notebookId}">
+        <div class="progress progress-warning progress-striped active">
+            <div class="bar" style="width: 0%"></div>
         </div>
-        <div class="control-group">
-            <label class="control-label">Page context</label>
-            <div class="controls page-context"></div>
-        </div>
+        <h4 class="progress-percentage">Loading ...</h4>
     </div>
-
+    
     <!-- will contain annotations -->
     <div class="row ask-notebook-item-annotations"></div>
 

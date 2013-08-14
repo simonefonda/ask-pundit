@@ -1,6 +1,7 @@
 define(["dojo/_base/declare", 
         "dojo/on", 
         "dojo/query",
+        "dojo/dom-style",
         
         "dojo/text!ask/tmpl/stats/StatsTab.html",
         "lib/mustache",
@@ -8,7 +9,7 @@ define(["dojo/_base/declare",
         "dijit/_TemplatedMixin",
     ],
     function(
-        declare, on, query,
+        declare, on, query, domStyle,
         template, mustache, 
         _WidgetBase, _TemplatedMixin) {
 
@@ -57,6 +58,8 @@ define(["dojo/_base/declare",
                 {key: 'pageContext', label: 'Annotated Page', state: 'success'}
             ];
             self.facetList = ['annId', 'predLabel', 'authorLabel', 'pageContext'];
+            // self.facetList = ['predLabel', 'authorLabel', 'pageContext'];
+            // self.facetList = ['annId'];
             self.facets = {};
 
         },
@@ -70,10 +73,26 @@ define(["dojo/_base/declare",
             
             self.st = [];
             self.initFacets();
-            
+
+            if (typeof(Worker) !== 'undefined') {
+                self.worker = new Worker('js/stats/stats-worker.js');
+
+                self.worker.addEventListener('message', function(e) {
+                    var d = e.data;
+                    switch (d.cmd) {
+                        case 'update':
+                            self.st = d.st;
+                            self.facetsTotals = d.facetsTotals;
+                            self.facetsNums = d.facetsNums;
+                            self.activeTriplesNum = d.activeTriplesNum;
+                            self._updateFacets();
+                            break;
+                    }
+                }, false);
+            }
+
             // self.st = FIXTURES;
             // self.autoUpdate();
-
         }, // startup()
 
         initFacets: function() {
@@ -98,8 +117,6 @@ define(["dojo/_base/declare",
                 ca = ASK._cache['nb-'+nbId],
                 annCon = ca['ann-con-'+annId];
                 
-            console.log('Adding ', annId);
-
             for (var subject in annCon)
                 for (var predicate in annCon[subject])
                     for (var object in annCon[subject][predicate]) {
@@ -109,6 +126,9 @@ define(["dojo/_base/declare",
                             nbId: nbId,
                             annId: annId,
                             sub: subject,
+                            subLabel: self.searchFor(ca['subs-'+annId], function(it) {
+                                return it.uri === subject;
+                            }).label,
 
                             pred: predicate,
                             predLabel: self.searchFor(ca['preds-'+annId], function(it) {
@@ -116,9 +136,12 @@ define(["dojo/_base/declare",
                             }).label,
 
                             obj: annCon[subject][predicate][object].value,
+                            objLabel: self.searchFor(ca['objs-'+annId], function(it) {
+                                return it.uri === annCon[subject][predicate][object].value;
+                            }).label,
                             
-                            authorLabel: ca['ACAnn-'+annId].createdBy,
                             author: self.get(ca['ann-met-'+annId], 'http://purl.org/dc/elements/1.1/creator') || 'uknown author',
+                            authorLabel: ca['ACAnn-'+annId].createdBy,
 
                             pageContextShort: ca['ACAnn-'+annId].pageContext_short,
                             pageContext: ca['ACAnn-'+annId].pageContext
@@ -127,7 +150,7 @@ define(["dojo/_base/declare",
                         });
                     }
                     
-            self.autoUpdate();
+            self.autoUpdate(2000);
         },
         
         toggleFilter: function(key, value) {
@@ -137,11 +160,10 @@ define(["dojo/_base/declare",
             
             if (idx === -1) {
                 self.filters.push(ob);
-                console.log('Filter added', self.filters, ob);
             } else {
                 self.filters.splice(idx, 1);
             }
-            self.autoUpdate();
+            self.autoUpdate(10);
         },
 
         // Returns -1 if there's no filter, its index if it exist
@@ -163,8 +185,8 @@ define(["dojo/_base/declare",
         },
         
         searchFor: function(ar, fun) {
-            for (var l=ar.length; l--;) 
-                if (fun(ar[l])) return ar[l];
+            for (var l=ar.length; l--;)
+                if (fun(ar[l])) { return ar[l]; }
             return {};
         },
         
@@ -178,13 +200,15 @@ define(["dojo/_base/declare",
             return '';
         },
         
-        autoUpdate: function() {
+        autoUpdate: function(timerLength) {
             var self = this;
+            
+            timerLength = timerLength || self.opts.autoUpdateTimerLength;
             
             clearTimeout(self.autoUpdateTimer);
             self.autoUpdateTimer = setTimeout(function() {
                 self._update();
-            }, self.opts.autoUpdateTimerLength);
+            }, timerLength);
         },
         
         // Foreach item, if there's a filter that matches it, deactivate it
@@ -209,7 +233,7 @@ define(["dojo/_base/declare",
                     
                 }
             }
-            
+            self._count();
         },
         
         _count: function() {
@@ -242,8 +266,9 @@ define(["dojo/_base/declare",
                     }
                 }
             }
+            console.log('Counted: ', self.activeTriplesNum);
         },
-
+        
         _addCountTotal: function(key, val) {
             var self = this;
             if (val in self.facetsTotals[key]) {
@@ -262,19 +287,39 @@ define(["dojo/_base/declare",
             }
         },
         
-        _update: function() {
+        _updateFacets: function() {
             var self = this;
-            console.log('Update.. now!');
-
-            self._filter();
-            self._count();
             
             for (var f=self.facetList.length; f--;) {
                 var key = self.facetList[f];
                 self.facets[key].update();
             }
-            
+
             self.dataTable.autoUpdate();
+            domStyle.set(query('.stats-dataTable-container')[0], 'display', 'block');
+        },
+        
+        _update: function() {
+            var self = this;
+            console.log('Update.. now!');
+
+            domStyle.set(query('.stats-dataTable-container')[0], 'display', 'none');
+
+            if (self.worker) {
+                console.log('Filtering using the worker.');
+                self.worker.postMessage({
+                    cmd: 'update', 
+                    st: self.st,
+                    facetList: self.facetList,
+                    filters: self.filters
+                });
+                return;
+            }
+            
+            console.log('Updating using the browser... ');
+            self._filter();
+            self._count();
+            self._updateFacets();
         }        
     });
 

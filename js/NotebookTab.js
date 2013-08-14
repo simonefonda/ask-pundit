@@ -1,8 +1,10 @@
 define(["dojo/_base/declare",
         "dojo/_base/lang",
         "dojo/request", 
+        "dojo/query",
         "dojo/dom-construct",
         "dojo/dom-attr",
+        "dojo/dom-style",
         "dojo/on", 
         "dojo/router", 
         "bootstrap/Collapse",
@@ -15,7 +17,7 @@ define(["dojo/_base/declare",
         "dijit/_WidgetBase", 
         "dijit/_TemplatedMixin"], 
     function(
-        declare, lang, request, domConstruct, domAttr, on, router, 
+        declare, lang, request, query, domConstruct, domAttr, domStyle, on, router, 
         BCollapse, BDropdown,
         notebookTabTemplate, NotebookItemMetadata, ACAnnotation,
         TabContainer, ContentPane, _WidgetBase, _TemplatedMixin
@@ -32,6 +34,13 @@ define(["dojo/_base/declare",
         templateString: notebookTabTemplate,
         // number of chars to display in the title of the annotation
         titleChars: 50,
+        
+        opts: {
+            minRequests: 15,
+            maxRequests: 20,
+            startingDelay: 25,
+            delayInc: 50
+        },
         constructor: function() {
             this.inherited(arguments);
         },
@@ -54,19 +63,12 @@ define(["dojo/_base/declare",
                 dojo.query('#notebook-tab-'+self.notebookId).addClass('active');
             });
 
-            ASK._cache['nb-'+self.notebookId] = {};
             ASK._cache.notebooks.push(self.notebookId);
-            
-            
-            self.filters = {
-                "created-at": [],
-                "page-context": []
-            };
-            self.filtersData = {
-                "created-at": {},
-                "page-context": {}
-            };
-            
+
+            self.progressCounter = 0;
+            self.progressTotal = 0;
+            self.progressLoading = 0;
+
             self.loadNotebookMetadata();
             self.loadNotebookAnnotations();
 
@@ -79,12 +81,6 @@ define(["dojo/_base/declare",
 
                 // DEBUG: is this thing right?
                 dijit.registry.remove('notebook-tab-'+self.notebookId);
-                /*
-                dijit.registry.forEach(function(w){
-                    if (w.id === 'notebook-tab-'+self.notebookId) 
-                        w.destroyRecursive();
-                });
-                */
 
                 domConstruct.destroy(dojo.query('#tab-'+self.notebookId)[0].parentNode);
                 domConstruct.destroy(node);
@@ -106,6 +102,9 @@ define(["dojo/_base/declare",
                 url = lang.replace(ASK.ns.asOpenNotebooksMeta, { id: self.notebookId });
             }
             
+            // TODO: loading meta, loading annotations
+            self.updateProgress('Downloading notebook metadata..');
+            
             def.get(url, {
                 url: url,
                 handleAs: "json",
@@ -117,7 +116,7 @@ define(["dojo/_base/declare",
                         var cache = ASK._cache['nb-'+self.notebookId];
                         cache.meta = data[ann];
                         
-                        var createdBy, createdAt, label, foo;
+                        var createdBy, createdAt, label, includes = data[ann]['http://purl.org/pundit/ont/ao#includes'] || 0;
                         
                         if (ASK.ns.notebooks.creatorName in data[ann])
                             createdBy = data[ann][ASK.ns.notebooks.creatorName][0].value;
@@ -134,12 +133,14 @@ define(["dojo/_base/declare",
                         else
                             label = "Unknown title";
                             
+                        self.progressTotal = includes.length;
+                            
                         cache['NBItemMeta'] = new NotebookItemMetadata({
                             visibility: data[ann]['http://open.vocab.org/terms/visibility'][0].value,
                             createdBy: createdBy,
                             createdAt: createdAt,
                             label: label,
-                            includes: data[ann]['http://purl.org/pundit/ont/ao#includes'] || 0
+                            includes: includes
                         }).placeAt(placeAt);
 
                         self.label = label;
@@ -188,51 +189,24 @@ define(["dojo/_base/declare",
 
                     var cache = ASK._cache['nb-'+self.notebookId];
                     cache.annotations = [];
+                    cache.annToLoad = [];
                         
                     for (var nb_ann in data) {
                         
-                        cache.annotations.push(nb_ann);
-                        cache['ann-met-'+annotationId] = data[nb_ann];
-
-                        var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value,
-                            createdAt = data[nb_ann]['http://purl.org/dc/terms/created'][0].value,
-                            pageContext = data[nb_ann]['http://purl.org/pundit/ont/ao#hasPageContext'][0].value;
-
-                            // Annotation item
-                        cache['ACAnn-'+annotationId] = new ACAnnotation({
-                            notebookId: self.notebookId,
-                            annotationId: annotationId,
-                            createdBy: data[nb_ann]['http://purl.org/dc/elements/1.1/creator'][0].value,
-                            createdAt: createdAt,
-                            pageContext: pageContext,
-                            isOwner: self.isOwner
-                        }).placeAt(placeAt);
+                        // TODO: cycle over this (possibly) HUGE response with a worker
+                        var annotationId = data[nb_ann]['http://purl.org/pundit/ont/ao#id'][0].value;
                         
-                        createdAtLabel = (new Date(createdAt)).toDateString();
-                        if (self.filters["created-at"].indexOf(createdAtLabel) === -1) {
-                            self.filters["created-at"].push(createdAtLabel);
-                            self.filtersData["created-at"][createdAtLabel] = {
-                                num: 1,
-                                value: createdAt,
-                                label: createdAtLabel
-                            }
-                        } else {
-                            self.filtersData["created-at"][createdAtLabel].num++;
-                        }
-
-                        if (self.filters["page-context"].indexOf(pageContext) === -1)
-                            self.filters["page-context"].push(pageContext);
-
-
-                        if (ASK._cache.pageContexts.indexOf(pageContext) === -1) {
-                            ASK._cache.pageContexts.push(pageContext);
-                        }
+                        cache.annotations.push(nb_ann);
+                        cache.annToLoad.push(annotationId);
+                        
+                        cache['ann-met-'+annotationId] = data[nb_ann];
+                        self.currentDelay = self.opts.startingDelay;
                     
                     } // for
                     
-                    ASK.statsTab.autoUpdate();
-                    self._updateNotebookFilters();
-
+                    if (cache.annToLoad.length > 100)
+                        domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'none');
+                    self.loadNext();
                 }, 
                 function(error) {
                     if (("response" in error) && ("status" in error.response)) {
@@ -248,21 +222,75 @@ define(["dojo/_base/declare",
             ); // then
             
         }, // loadNotebookAnnotations()
-        
-        _updateNotebookFilters: function() {
-            var self = this;
-
-            for (var f in self.filters) {
-                var node = dojo.query('#notebook-tab-'+self.notebookId+' .filters .'+f)[0];
                 
-                for (var l=self.filters[f].length; l--;) {
-                    domConstruct.place("<span>" + self.filters[f][l]+ "</span>", node, "first");
-                }
-
+        loadNext: function() {
+            var self = this,
+                toLoad = ASK._cache['nb-'+self.notebookId].annToLoad;
+            
+            if (toLoad.length === 0) {
+                console.log('All of them started, yay');
+                return;
             }
-                        
-        } // _updateNotebookFilters()
+            
+            var id = toLoad.pop(),
+                data = ASK._cache['nb-'+self.notebookId]['ann-met-'+id],
+                current = self.progressLoading - self.progressCounter;
+            
+            if (current > self.opts.maxRequests) {
+                self.currentDelay += self.opts.delayInc;
+                console.log('SLOWED DOWN ', id, self.currentDelay, current);
+            } else if (current < self.opts.minRequests && self.currentDelay >= self.opts.startingDelay + self.opts.delayInc) {
+                self.currentDelay = Math.max(self.opts.startingDelay, self.currentDelay - 2*self.opts.delayInc);
+                console.log('SPEEDED UP ', id, self.currentDelay, current);
+            } else {
+                console.log('Loading next at current pace', id, self.currentDelay, current);
+            }
+            
+            setTimeout(function() {
+                self.loadAnnotation(data);
+                self.loadNext();
+            }, self.currentDelay);
 
+        },
+        
+        updateProgress: function(m) {
+            var self = this,
+                perc = parseInt(self.progressCounter*100/self.progressTotal, 10) || 0;
+
+            domStyle.set(query('.progress-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
+            query('.progress-'+self.notebookId+' .progress-percentage').innerHTML(perc+'% '+m);
+
+            if (self.progressTotal > 0 && self.progressCounter === self.progressTotal) {
+                domStyle.set(query('.progress-'+self.notebookId)[0], 'display', 'none');
+                domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'block');
+            }
+
+        }, // updateProgress()
+        
+        
+        loadAnnotation: function(data) {
+            var self = this,
+                annotationId = data['http://purl.org/pundit/ont/ao#id'][0].value,
+                createdAt = data['http://purl.org/dc/terms/created'][0].value,
+                pageContext = data['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
+                createdBy = data['http://purl.org/dc/elements/1.1/creator'][0].value,
+                cache = ASK._cache['nb-'+self.notebookId],
+                placeAt = dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0];
+                     
+            self.progressLoading++;
+            
+            // Annotation item
+            cache['ACAnn-'+annotationId] = new ACAnnotation({
+                notebookId: self.notebookId,
+                annotationId: annotationId,
+                createdBy: createdBy,
+                createdAt: createdAt,
+                pageContext: pageContext,
+                isOwner: self.isOwner
+            }).placeAt(placeAt);
+            
+        }
+        
     });
 
 });

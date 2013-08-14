@@ -26,15 +26,20 @@ define(["dojo/_base/declare",
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
         _skipNodeCache: true,
         render: function() {
-            var node;
-            if (this.domNode) {
-                node = domConstruct.place(this._stringRepl(this.templateString), this.domNode, 'before');
-                this.destroyDescendants();
-                domConstruct.destroy(this.domNode);
+            var self = this,
+                node;
+            if (self.domNode) {
+                // node = domConstruct.place(this._stringRepl(this.templateString), this.domNode, 'before');
+                // this.destroyDescendants();
+                // domConstruct.destroy(this.domNode);
+                
+                node = self.domNode.cloneNode(false);
+                node.innerHTML = self._stringRepl(this.templateString);
+                self.domNode.parentNode.replaceChild(node, self.domNode);
             } else {
                 node = dojo._toDom(this.templateString);
             }
-            this.domNode = node; 
+            self.domNode = node; 
         },
         _stringRepl: function(tmpl) {
             return mustache.render(tmpl, this);
@@ -55,7 +60,6 @@ define(["dojo/_base/declare",
             
             query(parent).on('.stats-facet.'+self.key+' .facet-filter:click', function(e) {
                 var v = domAttr.get(this, 'data-value');
-                console.log('Cliccato su facet ', self.key, v);
                 ASK.statsTab.toggleFilter(self.key, v);
                 query(this).parent().toggleClass('active');
             });
@@ -68,9 +72,8 @@ define(["dojo/_base/declare",
             
             self.values = [];
             for (var val in totals) {
-                active = (val in nums) ? 'active' : '';
                 self.values.push({
-                    active: active,
+                    active: (val in nums) ? 'active' : '',
                     value: val,
                     count: nums[val] || 0,
                     total: totals[val]

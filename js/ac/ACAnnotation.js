@@ -51,6 +51,8 @@ define([
                 domClass.toggle(dojo.query('[data-ACAnn="'+self.annotationId+'"]')[0], 'collapsed');
             });
             self.loadAnnotationItems(self.annotationId);
+            self.progressTotal = 0;
+            self.progressCounter = 0;
         },
 
         loadAnnotationItems: function(annotationId) {
@@ -103,8 +105,7 @@ define([
                 def = request;
                 url = lang.replace(ASK.ns.asOpenAnnGraph, { id: annotationId });
             }
-        
-            
+
             def.get(url, {
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
@@ -160,23 +161,24 @@ define([
                         } // for predicate in data[subject]
                     } // for subject and data   
                     
+                    // Add this annotation to the stats tab
                     ASK.statsTab.add(self.notebookId, annotationId);
                     
-                    // TODO: shall we write there's n statements somewhere?
-                    // if (self.subs.length === 1) 
-                    //    self.summary = "Expand to see the details of this statement.";
-                    // else 
-                    //    self.summary = "Expand to see the details of "+self.subs.length+" statements.";
-                    
-                    // dojo.query('[data-acann="'+annotationId+'"] .summary').html('...');
+                    // Remove the loading state from the annotation
                     dojo.query('[data-acann="'+annotationId+'"]').removeClass('loading');
+                    
+                    // Update the notebook tab progress bar
+                    var nbTab = ASK._cache['nb-'+self.notebookId]['NBTab'];
+                    nbTab.progressCounter++;
+                    nbTab.updateProgress('Downloading annotations..');
+                    
                 }, 
                 function(error) {
                     console.log('error :|');
                 }
             ); // then
             
-        }, // loadAnnotationContent()
+        } // loadAnnotationContent()
 
 	});
 });

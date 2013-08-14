@@ -18,11 +18,12 @@
     
     <h5>{{activeTriplesNum}} resulting triples:</h5>
     
-    <table class="table table-bordered table-hover table-condensed table-striped">
+    <table class="table table-bordered table-condensed table-striped">
         <thead>
             <tr>
                 <th>Notebook ID</th>
                 <th>Annotation ID</th>
+                <th>Author</th>
                 <th>Subject</th>
                 <th>Predicate</th>
                 <th>Object</th>
@@ -35,9 +36,10 @@
             <tr>
               <td>{{nbId}}</td>
               <td>{{annId}}</td>
-              <td>{{sub}}</td>
-              <td>{{pred}}</td>
-              <td>{{obj}}</td>
+              <td>{{authorLabel}}</td>
+              <td>{{subLabel}}</td>
+              <td>{{predLabel}}</td>
+              <td>{{objLabel}}</td>
             </tr>
             {{/active}}
         {{/triples}}

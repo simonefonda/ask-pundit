@@ -19,7 +19,9 @@
 <script src="js/base64.js" type="text/javascript" charset="utf-8"></script>
 <script src="dojoConfig.js"></script>
 <script src="dojo/dojo/dojo.js"></script>
-
+<!--
+<script src="stats-fixtures.json" type="text/javascript" charset="utf-8"></script>
+-->
 <script>
     require(["ask/Ask"], function(Ask) {
         var c = dojo.query('#ask_container');
@@ -32,7 +34,7 @@
             c.addClass('loaded');
             c.style('opacity', 1.0);
             ASK.startup();
-        }, 1);
+        }, 10);
         
     });
 </script>

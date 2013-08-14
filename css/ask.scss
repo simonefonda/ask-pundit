@@ -100,14 +100,13 @@ div.accordion-group {
     }
 }
 
-.notebook {
-    .filters {
-        display: none; // DEBUG: remove this and develop more
-        span { 
-            display: block; 
-            border: 1px solid red;
-            background: $blue_gray;
-        }
+.progress-percentage {
+    display: block;
+    margin: 10px;
+    color: $blue_dark;
+    text-align: center;
+    .progress {
+        margin-top: 20px;
     }
 }
 
@@ -183,14 +182,17 @@ div.nb-item {
     float: left;
     width: 380px;
     margin: 4px;
-    padding: 4px 10px;
     border: 1px solid $blue_light;
     background-color: $gray;
+    
+    .annotation-container {
+        padding: 4px 10px;
+    }
+    
     h4 { margin-top: 0px; }
     .controls {
         position: relative;
         bottom: 0px;
-        margin: 0px -10px -4px -10px;
         background-color: $blue_dark;
         height: 20px;
         .collapse-ann {
@@ -206,10 +208,19 @@ div.nb-item {
         i { display: none; }
         i.icon-minus { display: block; }
     }
-    &.collapsed .controls {
-        i.icon-minus { display: none; };
-        i.icon-plus { display: block; };
-    }
+    &.collapsed {
+        height: 255px;
+        .annotation-container {
+            overflow-y: auto;
+            height: 217px;
+        }
+        .subject-container {
+            border: 0px;
+        }
+        .controls {
+            i.icon-minus { display: none; };
+            i.icon-plus { display: block; };
+    }}
     img { @include anim(0.5s, heigth, max-height); }
     .desc {
         @include anim(0.5s, heigth, max-height);

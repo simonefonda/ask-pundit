@@ -8,7 +8,7 @@ define([
     "dojo/query",
     "dojo/dom-attr",
     "dojo/dom-class",
-    
+
     "dojo/text!ask/tmpl/IndexTemplate.html",
     "dijit/_WidgetBase",
     "dijit/_TemplatedMixin",
@@ -287,6 +287,8 @@ define([
             
             // if the tab doesnt exist, create it
             if (query("#notebook-tab-"+ id).length === 0) {
+                ASK._cache['nb-'+id] = {};
+
                 require(["ask/NotebookTab"], function(NotebookTab) {
                     var nbTab = new NotebookTab({
                         notebookId: id,
@@ -294,6 +296,7 @@ define([
                         isOwner: mine,
                         canEdit: mine
                     });
+                    ASK._cache['nb-'+id]['NBTab'] = nbTab;
                     nbTab.placeAt(query('#ask-tab-content')[0]);
                     nbTab.startup();
                     query("#tab-"+id).tab('show');

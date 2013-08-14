@@ -19,14 +19,22 @@ define(["dojo/_base/declare",
         state: 'loading',
         filters: [],
 
+        opts: {
+            limit: 1000
+        },
+
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
         _skipNodeCache: true,
         render: function() {
-            var node;
+            var self = this;
             if (this.domNode) {
-                node = domConstruct.place(this._stringRepl(this.templateString), this.domNode, 'before');
-                this.destroyDescendants();
-                domConstruct.destroy(this.domNode);
+                // node = domConstruct.place(this._stringRepl(this.templateString), this.domNode, 'before');
+                // this.destroyDescendants();
+                // domConstruct.destroy(this.domNode);
+                
+                node = self.domNode.cloneNode(false);
+                node.innerHTML = self._stringRepl(this.templateString);
+                self.domNode.parentNode.replaceChild(node, self.domNode);
             } else {
                 node = dojo._toDom(this.templateString);
             }
@@ -45,16 +53,20 @@ define(["dojo/_base/declare",
         }, // startup()
 
         autoUpdate: function() {
-            var self = this;
+            var self = this,
+                start = 0,
+                end = Math.min(self.opts.limit, ASK.statsTab.st.length);
+            
+            self.triples = [];
 
             // DEBUG: Duplicate data to make it renderable over and over.. 
             // is there a better way?
-            self.triples = ASK.statsTab.st;
+            for (var i=start; i<end; i++)
+                self.triples[i] = ASK.statsTab.st[i];
             self.filters = ASK.statsTab.filters;
             self.activeTriplesNum = ASK.statsTab.activeTriplesNum;
             self.render();
         }
-
         
     });
 
