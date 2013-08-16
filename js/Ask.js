@@ -211,9 +211,11 @@ define([
         loadStatsTab: function() {
             var self = this;
             require(["ask/stats/StatsTab"], function(StatsTab) {
-                self.statsTab = new StatsTab().placeAt(query('#statsTabContainer')[0]);
-                self.statsTab.startup();
-                self.statsTabLoaded = true;
+                if (!self.statsTabLoaded) {
+                    self.statsTab = new StatsTab().placeAt(query('#statsTabContainer')[0]);
+                    self.statsTab.startup();
+                    self.statsTabLoaded = true;
+                }
             });
         },
 

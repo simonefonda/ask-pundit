@@ -54,17 +54,20 @@ define(["dojo/_base/declare",
                 }
             }
             
-            var fooTypesArray = [];
+            var fooTypesArray = [], fooTypesArrayLabels = [];
             for (var ty in c[u][ASK.ns.items.type]) {
-                var footype = c[u][ASK.ns.items.type][ty].value;
+                var footype = c[u][ASK.ns.items.type][ty].value,
+                    label = footype;
                 if ((footype in c) && ASK.ns.items.label in c[footype])
-                    fooTypesArray.push(c[footype][ASK.ns.items.label][0].value);
-                else
-                    fooTypesArray.push(footype);
+                    label = c[footype][ASK.ns.items.label][0].value
 
+                fooTypesArray.push(footype);
+                fooTypesArrayLabels.push(label);
             }
-            self.rdfTypes = fooTypesArray.join(', ');
-            
+            self.rdfTypes = fooTypesArrayLabels.join(', ');
+
+            self.notableType = self.getNotableType(fooTypesArray, fooTypesArrayLabels);
+
             self.label = (ASK.ns.items.label in c[u]) ? c[u][ASK.ns.items.label][0].value : self.label || 'no label :(',
             self.label_short = self.label.length > self.titlecChars ? self.label.substr(0, self.titleChars)+' ..' : self.label,
             self.uri_short = self.uri.length > self.uriChars ? self.uri.substr(7, self.uriChars+7)+' ..' : self.uri,
@@ -79,11 +82,32 @@ define(["dojo/_base/declare",
         
             self.partOf = (ASK.ns.items.isPartOf in c[u]) ? c[u][ASK.ns.items.isPartOf][0].value : '#';
             self.partOf_short = ASK.shortenURL(self.partOf);
-
             
             if (typeof(c[u][ASK.ns.items.description]) !== "undefined")
                 self.desc = c[u][ASK.ns.items.description][0].value;
         },
+        
+        getNotableType: function(types, labels) {
+            var self = this,
+                l = types.length,
+                notable = labels[0];
+            
+            if (self.type === "literal") return "Literal";
+                
+            for (var i=0; i<l; i++) {
+                switch (types[i]) {
+                    case "http://dbpedia.org/ontology/Place":
+                        return "Place (DBPedia)";
+                    case "http://dbpedia.org/ontology/Person":
+                        return "Person (DBPedia)";
+                    case "http://www.freebase.com/schema/people/person":
+                    case "http://www.freebase.com/people/person":
+                        return "Person (Freebase)";
+                }
+            } 
+            return notable;
+        },
+        
         startup: function() {
         }
     });

@@ -36,10 +36,10 @@ define(["dojo/_base/declare",
         titleChars: 50,
         
         opts: {
-            minRequests: 15,
-            maxRequests: 20,
+            minRequests: 45,
+            maxRequests: 50,
             startingDelay: 25,
-            delayInc: 50
+            delayInc: 200
         },
         constructor: function() {
             this.inherited(arguments);
@@ -54,7 +54,7 @@ define(["dojo/_base/declare",
                     "<span class='close' id='nb-tab-close-"+self.notebookId+"'><i class='icon-remove'></i></span>"+
                     "<a data-target='notebook-tab-"+self.notebookId+"' href='#/"+ (own ? "myN" : "n") +"otebooks/"+self.notebookId+
                     "' data-toggle='tab' id='tab-"+self.notebookId+"'>"+
-                    "N: "+self.notebookId+"</a>"+
+                    "<div class='progress progress-striped active'><div class='bar' style='width: 1%;'></div></div>"+
                     "</li>";
             domConstruct.place(b, "ask-pills");
 
@@ -145,7 +145,8 @@ define(["dojo/_base/declare",
 
                         self.label = label;
                         dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
-                        dojo.query('#tab-'+self.notebookId).innerHTML((self.isOwner ? "My N" : "N") +": "+ self.label);
+                        //dojo.query('#tab-'+self.notebookId).innerHTML((self.isOwner ? "My N" : "N") +": "+ self.label);
+                        //dojo.query('#tab-'+self.notebookId).innerHTML('<div class="progress progress-striped active"><div class="bar" style="width: 40%;"></div></div>');
                     }
 
                 }, 
@@ -258,11 +259,17 @@ define(["dojo/_base/declare",
                 perc = parseInt(self.progressCounter*100/self.progressTotal, 10) || 0;
 
             domStyle.set(query('.progress-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
+            domStyle.set(query('#tab-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
             query('.progress-'+self.notebookId+' .progress-percentage').innerHTML(perc+'% '+m);
 
             if (self.progressTotal > 0 && self.progressCounter === self.progressTotal) {
                 domStyle.set(query('.progress-'+self.notebookId)[0], 'display', 'none');
                 domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'block');
+                domStyle.set(query('.ask-notebook-more-buttons', self.domNode)[0], 'display', 'block');
+
+                setTimeout(function() {
+                    dojo.query('#tab-'+self.notebookId).innerHTML("<i class='icon-book'></i> " + self.label);
+                }, 1000);
             }
 
         }, // updateProgress()

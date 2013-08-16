@@ -16,8 +16,14 @@
         {{/filters}}
     </div>
     
-    <h5>{{activeTriplesNum}} resulting triples:</h5>
+    <h5>
+        {{activeTriplesNum}} resulting statements 
+        {{#end}}
+        ({{start}}-{{end}}):
+        {{/end}}
+    </h5>
     
+    {{#triples.length}}
     <table class="table table-bordered table-condensed table-striped">
         <thead>
             <tr>
@@ -34,17 +40,18 @@
         {{#triples}}
             {{#active}}
             <tr>
-              <td>{{nbId}}</td>
-              <td>{{annId}}</td>
-              <td>{{authorLabel}}</td>
-              <td>{{subLabel}}</td>
-              <td>{{predLabel}}</td>
-              <td>{{objLabel}}</td>
+                <td>{{nbId}}</td>
+                <td>{{annId}}</td>
+                <td>{{authorLabel}}</td>
+                <td>{{subLabel}}</td>
+                <td>{{predLabel}}</td>
+                <td>{{objLabel}}</td>
             </tr>
             {{/active}}
         {{/triples}}
 
         </tbody>
     </table>
+    {{/triples.length}}
 
 </div>

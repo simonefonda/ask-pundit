@@ -20,7 +20,7 @@ define(["dojo/_base/declare",
         filters: [],
 
         opts: {
-            limit: 1000
+            limit: 100
         },
 
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
@@ -53,19 +53,32 @@ define(["dojo/_base/declare",
         }, // startup()
 
         autoUpdate: function() {
-            var self = this,
-                start = 0,
-                end = Math.min(self.opts.limit, ASK.statsTab.st.length);
+            var self = this;
+            
+            self.start = 0,
+            self.end = Math.min(self.opts.limit, ASK.statsTab.st.length);
             
             self.triples = [];
 
             // DEBUG: Duplicate data to make it renderable over and over.. 
             // is there a better way?
-            for (var i=start; i<end; i++)
-                self.triples[i] = ASK.statsTab.st[i];
+            i = j = self.start;
+            while (i<self.end && ASK.statsTab.st[j]) {
+                if (ASK.statsTab.st[j].active) 
+                    self.triples[i++] = ASK.statsTab.st[j];
+                j++;
+            }
+            
+            // For the render()
+            self.end = i;
+            self.start = self.start+1;
+        
             self.filters = ASK.statsTab.filters;
             self.activeTriplesNum = ASK.statsTab.activeTriplesNum;
-            self.render();
+            self.renderDataTable();
+        },
+        renderDataTable: function() {
+            this.render();
         }
         
     });

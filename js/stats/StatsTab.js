@@ -13,6 +13,18 @@ define(["dojo/_base/declare",
         template, mustache, 
         _WidgetBase, _TemplatedMixin) {
 
+
+    function download(data, name) {
+        var uri = 'data:text/json;charset=utf-8,' + JSON.stringify(data);
+        var l = document.createElement("a");
+        l.href = uri;
+        l.download = name;
+        document.body.appendChild(l);
+        l.click();
+        document.body.removeChild(l);
+    };
+
+
     return declare("ask.StatsTab", [_WidgetBase, _TemplatedMixin], {
         notebookId: '',
         templateString: template,
@@ -42,22 +54,27 @@ define(["dojo/_base/declare",
             
             self.inherited(arguments);
             
-            // TODO: render facets elsewhere, not here, so we can render it over
-            // and over
             self.availableFacets = [
                 {key: 'nbId', label: 'Notebook ID', state: ''},
                 {key: 'annId', label: 'Annotation ID', state: 'success'},
                 {key: 'sub', label: 'Subject', state: ''},
-                {key: 'pred', label: 'Predicate', state: ''},
-                {key: 'object', label: 'Object', state: ''},
                 {key: 'subLabel', label: 'Subject label', state: ''},
+                {key: 'subType', label: 'Subject type', state: ''},
+                {key: 'pred', label: 'Predicate', state: ''},
                 {key: 'predLabel', label: 'Predicate label', state: 'success'},
+                {key: 'obj', label: 'Object', state: ''},
                 {key: 'objLabel', label: 'Object label', state: 'success'},
+                {key: 'objType', label: 'Object type', state: 'success'},
                 {key: 'author', label: 'Author ID', state: 'success'},
                 {key: 'authorLabel', label: 'Author label', state: 'success'},
                 {key: 'pageContext', label: 'Annotated Page', state: 'success'}
             ];
-            self.facetList = ['annId', 'predLabel', 'authorLabel', 'pageContext'];
+            self.facetList = [
+                'annId', 'predLabel', 
+                'authorLabel', 'pageContext', 
+                'subLabel', 'objLabel', 
+                'sub', 'objType', 'subType', 'obj'
+            ];
             // self.facetList = ['predLabel', 'authorLabel', 'pageContext'];
             // self.facetList = ['annId'];
             self.facets = {};
@@ -91,9 +108,23 @@ define(["dojo/_base/declare",
                 }, false);
             }
 
-            // self.st = FIXTURES;
-            // self.autoUpdate();
+            if (typeof(FIXTURES) !== 'undefined') {
+                self.st = FIXTURES;
+                self.autoUpdate();
+            }
+            self.initBehaviors();
+
         }, // startup()
+
+        initBehaviors: function() {
+            var self = this;
+
+            query(self.domNode).on('.stats-exports a.all:click', function(e) {
+                console.log('Exporting all data new stylaszz');
+                download(self.st, 'export-all-'+self.st.length+'.json');
+            });
+
+        },
 
         initFacets: function() {
             var self = this;
@@ -103,8 +134,8 @@ define(["dojo/_base/declare",
                     var f = self.facetList[l]; 
                     self.facets[f] = new Facet({
                         key: f
-                    }).placeAt(query('.stats-facets-container', self.domNode)[0]);
-                    self.facets[f].startup();
+                    }); 
+                    self.facets[f].placeAt(query('.stats-facets-container', self.domNode)[0]).startup();
                 }
             });
             
@@ -129,6 +160,9 @@ define(["dojo/_base/declare",
                             subLabel: self.searchFor(ca['subs-'+annId], function(it) {
                                 return it.uri === subject;
                             }).label,
+                            subType: self.searchFor(ca['subs-'+annId], function(it) {
+                                return it.uri === subject;
+                            }).rdfTypes,
 
                             pred: predicate,
                             predLabel: self.searchFor(ca['preds-'+annId], function(it) {
@@ -139,11 +173,13 @@ define(["dojo/_base/declare",
                             objLabel: self.searchFor(ca['objs-'+annId], function(it) {
                                 return it.uri === annCon[subject][predicate][object].value;
                             }).label,
+                            objType: self.searchFor(ca['objs-'+annId], function(it) {
+                                return it.uri === annCon[subject][predicate][object].value;
+                            }).notableType,
                             
                             author: self.get(ca['ann-met-'+annId], 'http://purl.org/dc/elements/1.1/creator') || 'uknown author',
                             authorLabel: ca['ACAnn-'+annId].createdBy,
 
-                            pageContextShort: ca['ACAnn-'+annId].pageContext_short,
                             pageContext: ca['ACAnn-'+annId].pageContext
                             
                             // TODO: add more stuff
@@ -178,12 +214,7 @@ define(["dojo/_base/declare",
             
             return -1;
         },
-        
-        removeFilter: function(key, value) {
-            var self = this;
-            
-        },
-        
+                
         searchFor: function(ar, fun) {
             for (var l=ar.length; l--;)
                 if (fun(ar[l])) { return ar[l]; }
@@ -266,7 +297,6 @@ define(["dojo/_base/declare",
                     }
                 }
             }
-            console.log('Counted: ', self.activeTriplesNum);
         },
         
         _addCountTotal: function(key, val) {
@@ -296,17 +326,13 @@ define(["dojo/_base/declare",
             }
 
             self.dataTable.autoUpdate();
-            domStyle.set(query('.stats-dataTable-container')[0], 'display', 'block');
         },
         
         _update: function() {
             var self = this;
             console.log('Update.. now!');
 
-            domStyle.set(query('.stats-dataTable-container')[0], 'display', 'none');
-
             if (self.worker) {
-                console.log('Filtering using the worker.');
                 self.worker.postMessage({
                     cmd: 'update', 
                     st: self.st,

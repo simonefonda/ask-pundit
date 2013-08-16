@@ -14,10 +14,36 @@
     background: #ddd;
     box-shadow: 3px 3px 3px #666;
     
+    // Overwriting bootstrap a little for the facet top toolbar
+    .navbar {
+        margin-bottom: 5px;
+    }
+    .navbar-inner {
+        padding-left: 0px;
+        padding-right: 0px;
+        min-height: 20px;
+        .nav>li>a {
+            padding: 4px 10px;
+        }
+    }
+    .facet-controls {
+        .sort i { display: none; }
+        .dropdown-menu.sort-count-desc li.sort-count-desc i { display: inline-block; }
+        .dropdown-menu.sort-total-desc li.sort-total-desc i { display: inline-block; }
+        .dropdown-menu.sort-value-asc li.sort-value-asc i { display: inline-block; }
+    }
+    
     .stats-values-container {
         display: inline;
         padding: 0px;
         overflow: auto;
+        .filtered>a, 
+        .filtered>a:hover, 
+        .filtered>a:focus {
+            background-color: #faa732;
+            color: #000;
+        }
+
         ul {
             min-width: 200px;
             max-width: 600px;
@@ -25,9 +51,12 @@
             height: 200px;
             li {
                 margin-bottom: 1px; 
-                a { 
+                a {
                     padding: 3px; 
                     cursor: pointer;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
                 }
             }
         }

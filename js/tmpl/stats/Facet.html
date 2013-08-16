@@ -1,41 +1,72 @@
 <div class="stats-facet {{key}}">
-    <h4>{{key}} 
-        {{#values.length}}
-        ({{values.length}})
-        {{/values.length}}
-    </h4>
-    
-    {{pippo.aa}}
+    <h4>{{key}}</h4>
+
+    <div class="navbar facet-controls">
+        <div class="navbar-inner">
+            <ul class="nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle facet-options" data-toggle="dropdown" href="#">
+                        <i class="icon-resize-vertical"></i>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu sort-{{opts.sortBy}}-{{opts.sortDir}}">
+                        <li class="sort sort-total-desc" data-sortBy="total" data-sortDir="desc">
+                            <a> <i class="icon-ok"></i> Sort by total</a>
+                        </li>
+                        <li class="sort sort-count-desc" data-sortBy="count" data-sortDir="desc">
+                            <a><i class="icon-ok"></i> Sort by count</a>
+                        </li>
+                        <li class="sort sort-value-asc" data-sortBy="value" data-sortDir="asc">
+                            <a><i class="icon-ok"></i> Sort by value</a>
+                        </li>
+
+                        <li class="divider"></li>
+
+                        <li data-sortBy="total" data-sortDir="asc">
+                            <a>  Sort by total reverse</a>
+                        </li>
+                        <li data-sortBy="count" data-sortDir="asc">
+                            <a>Sort by count reverse</a>
+                        </li>
+                        <li data-sortBy="value" data-sortDir="desc">
+                            <a>Sort by value reverse</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle facet-options" data-toggle="dropdown" href="#">
+                        <i class="icon-align-justify"></i>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="select-all"><a>Select all {{total}} (removes {{filtersNum}} filters)</a></li>
+                        <li class="select-reverse"><a>Reverse selection</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav pull-right">
+                <li>
+                    <a class="brand">{{activeNum}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     
     <div class="stats-values-container">
         <ul class="nav nav-list">
-
-            <li class="nav-header actions">
-                <span>
-                    <i class="icon-resize-vertical"></i>
-                    <span class="label sortBy-value">a-z</span>
-                    <span class="label label-success sortBy-count">#</span>
-                </span>
-                <span class="pull-right">
-                    <i class="icon-list-alt"></i>
-                    <span class="label">all</span>
-                    <span class="label">none</span>
-                </span>
-            </li>
-
             {{#values}}
-            <li class="{{active}}">
-                <a class="facet-filter" data-value="{{value}}"><span class="badge">{{count}} / {{total}}</span>&nbsp;{{value}}</a>
+            <li class="{{active}} {{filtered}}">
+                <a class="facet-filter" rel="tooltip" title="{{value}}" data-value="{{value}}">
+                    <span class="badge">{{count}} / {{total}}</span>&nbsp;{{value}}
+                </a>
             </li>
             {{/values}}
 
-            <li class="divider"></li>
             {{#loadMore}}
-            <li class="nav-header facet-load-more">
-                <a>.. load more</a>
-            </li>
+            <li class="divider"></li>
+            <li class="facet-load-more"><a>.. load {{opts.perPage}} more</a></li>
+            <li class="facet-load-all"><a>.. load all {{total}}</a></li>
             {{/loadMore}}
-
         </ul>
     </div>
 
