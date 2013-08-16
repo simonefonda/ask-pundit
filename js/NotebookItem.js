@@ -135,18 +135,19 @@ define(["dojo/_base/declare",
                             self.annotationNum = data[i][ASK.ns.notebooks.includes].length;
 
                         if (!self.isOwner) {
-                            ASK.stats.anns += self.annotationNum;
-                            if (self.createdBy in ASK.stats.authors) {
-                                ASK.stats.authors[self.createdBy].nbks++;
-                                ASK.stats.authors[self.createdBy].anns += self.annotationNum;
+                            ASK.nbStats.anns += self.annotationNum;
+                            if (self.createdBy in ASK.nbStats.authors) {
+                                ASK.nbStats.authors[self.createdBy].nbks++;
+                                ASK.nbStats.authors[self.createdBy].anns += self.annotationNum;
                             } else {
-                                ASK.stats.authors[self.createdBy] = {nbks: 1, anns: self.annotationNum};
-                                ASK.stats.auth++;
+                                ASK.nbStats.authors[self.createdBy] = {nbks: 1, anns: self.annotationNum};
+                                ASK.nbStats.auth++;
                             }
                         }
                     }
-                    if (!self.isOwner) 
-                        ASK.updateStats();
+                    
+                    ASK.nbProgressCounter++;
+                    ASK.updateNBProgress();
                     self.state = 'loaded';
                     
                     self.title_l = self.title.toLowerCase();

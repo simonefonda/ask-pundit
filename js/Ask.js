@@ -8,6 +8,7 @@ define([
     "dojo/query",
     "dojo/dom-attr",
     "dojo/dom-class",
+    "dojo/dom-style",
 
     "dojo/text!ask/tmpl/IndexTemplate.html",
     "dijit/_WidgetBase",
@@ -20,7 +21,7 @@ define([
     "bootstrap/Typeahead"
 ],
     function(
-        declare, lang, router, on, request, config, query, domAttr, domClass,
+        declare, lang, router, on, request, config, query, domAttr, domClass, domStyle,
         indexTemplate, _WidgetBase, _TemplatedMixin,
         PNamespace, mustache, BTab, BTypeahead
     ) {
@@ -53,8 +54,8 @@ define([
             var self = this;
             self.inherited(arguments);
             self.ns = new PNamespace();
-
-            self.stats = {
+            
+            self.nbStats = {
                 nbks: 0,
                 auth: 0,
                 anns: 0,
@@ -119,15 +120,15 @@ define([
                 source: function() { return self.getAuthors(); },
                 highlighter: function(a) {
                     var foo = '<div class="typeahead">'+a+'';
-                    foo += '<span style="margin-left:10px" class="badge pull-right badge-info">'+self.stats.authors[a].nbks+' nb</span>';
+                    foo += '<span style="margin-left:10px" class="badge pull-right badge-info">'+self.nbStats.authors[a].nbks+' nb</span>';
                     foo += '</div>'
                     return foo;
                     
                     var html = '';
                     html = '<div class="typeahead">';
                     html += '<a class="pull-left" href="#">'+a+'</a>'
-                    html += '<span class="badge badge-success">'+self.stats.authors[a].nbks+' nb</span>';
-                    html += '<span class="badge badge-info">'+self.stats.authors[a].anns+' ann</span>';
+                    html += '<span class="badge badge-success">'+self.nbStats.authors[a].nbks+' nb</span>';
+                    html += '<span class="badge badge-info">'+self.nbStats.authors[a].anns+' ann</span>';
                     html += '</div>';
                     return html;
                 }
@@ -231,15 +232,21 @@ define([
                 function(data) {
                     query('#notebooksContainer').empty();
                     self.notebookLoaded = true;
-
+                    
                     require(["ask/NotebookItem"], function(NotebookItem) {
                         var delay = 0;
+                        
+                        self.nbProgressCounter = 0;
+                        self.nbProgressLoading = 0;
+                        self.nbProgressTotal = data.NotebookIDs.length || 0;
+                        
+                        query('#pill-notebooks').innerHTML("<div class='progress progress-striped active'><div class='bar' style='width: 1%;'> Notebooks </div></div>");
                         
                         for (var i in data.NotebookIDs) {
                             // TODO: make this configurable?
                             // TODO: make this smarter? Like send out a batch of requests,
                             // wait for them, send out another batch??? Not one by one .. :P
-                            delay += 20;
+                            delay += 30;
                             var id = data.NotebookIDs[i];
                             
                             setTimeout(function(_id) {
@@ -247,12 +254,12 @@ define([
                                     var nb = new NotebookItem({notebookId: _id});
                                     nb.placeAt(placeAt);
                                     nb.startup();
-                                    self.stats.nbks++;
+                                    self.nbStats.nbks++;
                                 }
                             }(id), delay);
                         }
                         
-                        self.updateStats();
+                        self.updateNBProgress();
                     });
                 }, 
                 function(error) {
@@ -262,25 +269,56 @@ define([
             
         },
         
-        updateStats: function() {
-            var self = this;
+        /*
+        updateProgress: function(m) {
+            var self = this,
+                perc = parseInt(self.progressCounter*100/self.progressTotal, 10) || 0;
+
+            domStyle.set(query('.progress-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
+            domStyle.set(query('#tab-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
+            query('.progress-'+self.notebookId+' .progress-percentage').innerHTML(perc+'% '+m);
+
+            if (self.progressTotal > 0 && self.progressCounter === self.progressTotal) {
+                domStyle.set(query('.progress-'+self.notebookId)[0], 'display', 'none');
+                domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'block');
+                domStyle.set(query('.ask-notebook-more-buttons', self.domNode)[0], 'display', 'block');
+
+                setTimeout(function() {
+                    dojo.query('#tab-'+self.notebookId).innerHTML("<i class='icon-book'></i> " + self.label);
+                }, 1000);
+            }
+
+        }, // updateProgress()
+        */
+        
+        updateNBProgress: function() {
+            var self = this,
+                perc = parseInt(self.nbProgressCounter*100/self.nbProgressTotal, 10) || 0;
             
-            query('#tab-notebooks .ask-stats .nbks em').innerHTML(self.stats.nbks);
-            query('#tab-notebooks .ask-stats .auth em').innerHTML(self.stats.auth);
-            query('#tab-notebooks .ask-stats .anns em').innerHTML(self.stats.anns);
+            query('#tab-notebooks .ask-stats .nbks em').innerHTML(self.nbStats.nbks);
+            query('#tab-notebooks .ask-stats .auth em').innerHTML(self.nbStats.auth);
+            query('#tab-notebooks .ask-stats .anns em').innerHTML(self.nbStats.anns);
             
             query('#tab-notebooks .author-list ul').empty();
-            self.stats.authorList = [];
-            for (var a in self.stats.authors) {
-                var curr = self.stats.authors[a], 
+            self.nbStats.authorList = [];
+            for (var a in self.nbStats.authors) {
+                var curr = self.nbStats.authors[a], 
                     cont = '';
-                self.stats.authorList.push(a);
+                self.nbStats.authorList.push(a);
+            }
+            
+            domStyle.set(query('.progress .bar', 'pill-notebooks')[0], 'width', perc+"%");
+
+            if (self.nbProgressTotal > 0 && self.nbProgressCounter === self.nbProgressTotal) {
+                setTimeout(function() {
+                    dojo.query('#pill-notebooks').innerHTML("<i class='icon-th'></i> Notebooks");
+                }, 1000);
             }
             
         },
-        
+
         getAuthors: function() {
-            return this.stats.authorList;
+            return this.nbStats.authorList;
         },
                 
         openNotebook: function(id, mine) {
