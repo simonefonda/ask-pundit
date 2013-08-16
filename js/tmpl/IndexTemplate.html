@@ -9,22 +9,34 @@
  
         <div class="tab-content" id="ask-tab-content">
             <div class="tab-pane active" id="tab-notebooks">
-                <div class="well clearfix">
-                    <div class='ask-stats pull-right'>
-                        <div class='nbks'><em></em> public notebooks</div>
-                        <div class='auth'><em></em> authors</div>
-                        <div class='anns'><em></em> annotations</div>
-                    </div>
+
+                <div class="navbar">
+                    <div class="navbar-inner">
+
+                        <div class="nav navbar">
+                            <div class="btn-group notebooks-sort">
+                                <button class="notebooks-sort-title btn">Title</button>
+                                <button class="notebooks-sort-author btn">Author</button>
+                                <button class="notebooks-sort-date btn">Creation date</button>
+                            </div>
+                        </div>
                     
-                    <div class="form-search">
-                      <input id="tabNotebooksSearchInput" autocomplete="off" type="text" class="input-medium search-query" placeholder="Search ..">
-                      <ul class="author-list typeahead dropdown-menu"></ul>
-                      <button id="tabNotebooksResetButton" class="btn btn-info">Reset</button>
-                    </div>
+                        <div class="nav navbar-form">
+                          <input id="tabNotebooksSearchInput" autocomplete="off" type="text" class="input-medium" placeholder="Search ..">
+                          <ul class="author-list typeahead dropdown-menu"></ul>
+                          <button id="tabNotebooksResetButton" class="btn btn-info">Reset</button>
+                        </div>
                     
-                    <div class='author-list'><ul></ul></div>
+                    
+                    </div>
                 </div>
-                
+
+                <div class='ask-stats'>
+                    <span class='nbks'><em></em> public notebooks</span>
+                    <span class='auth'><em></em> authors</span>
+                    <span class='anns'><em></em> annotations</span>
+                </div>
+
                 <div id="notebooksContainer"></div>
             </div>
             <div class="tab-pane" id="tab-stats">

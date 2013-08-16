@@ -70,11 +70,15 @@ div.accordion-group a:hover i {
 #tab-notebooks .ask-stats {
   font-size: 1.5em;
   font-family: 'Roboto Condensed';
-  color: #2a697a; }
+  color: #2a697a;
+  height: 30px;
+  margin-bottom: 10px; }
   #tab-notebooks .ask-stats em {
     font-size: 1.15em;
     color: #51a0b5;
     text-shadow: 1px 1px 1px #999; }
+  #tab-notebooks .ask-stats span {
+    float: right; }
 
 .progress-percentage {
   display: block;

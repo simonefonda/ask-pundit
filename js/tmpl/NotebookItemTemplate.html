@@ -1,4 +1,9 @@
-<div class="nb-item {{state}}" data-nb-item="{{notebookId}}">
+<div class="nb-item {{state}}" 
+    data-nb-item="{{notebookId}}" 
+    data-nb-author="{{createdBy_l}}"
+    data-nb-date="{{createdAt_ux}}"
+    data-nb-title="{{title}}"
+    >
     {{#canEdit}}
     <div class="my-controls">
         <div class="btn-group">
@@ -32,7 +37,7 @@
             Empty :(
         {{/annotationNum}}
         </div>
-        <div>{{createdAt}}</div>
+        <div>{{createdAt_l}}</div>
         {{#canEdit}}
         <div>Visibility: 
             {{#isPublic}}

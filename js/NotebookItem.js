@@ -128,8 +128,9 @@ define(["dojo/_base/declare",
                             self.isPrivate = !self.isPublic;
                         }
 
-                        if (ASK.ns.notebooks.created in data[i]) 
-                            self.createdAt = (new Date(data[i][ASK.ns.notebooks.created][0].value)).toDateString();
+                        if (ASK.ns.notebooks.created in data[i])  {
+                            self.createdAt = new Date(data[i][ASK.ns.notebooks.created][0].value);
+                        }
                         
                         if (ASK.ns.notebooks.includes in data[i]) 
                             self.annotationNum = data[i][ASK.ns.notebooks.includes].length;
@@ -151,7 +152,8 @@ define(["dojo/_base/declare",
                     self.state = 'loaded';
                     
                     self.title_l = self.title.toLowerCase();
-                    self.createdAt_l = self.createdAt.toLowerCase();
+                    self.createdAt_l = self.createdAt.toDateString().toLowerCase();
+                    self.createdAt_ux = self.createdAt.getTime();
                     self.createdBy_l = self.createdBy.toLowerCase();
                     
                     self.render();

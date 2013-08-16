@@ -94,11 +94,14 @@ div.accordion-group {
     font-size: 1.5em;
     font-family: 'Roboto Condensed';
     color: $blue_dark;
+    height: 30px;
+    margin-bottom: 10px;
     em { 
         font-size:1.15em; 
         color: $blue_light;
         text-shadow: 1px 1px 1px #999;
     }
+    span { float: right; }
 }
 
 .progress-percentage {

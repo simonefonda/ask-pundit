@@ -44,6 +44,11 @@ define([
             pageContexts: []
         },
         shortURLLength: 20,
+        opts: {
+            sortBy: 'data-nb-author', 
+            sortDir: 'asc'
+        },
+        
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
         _skipNodeCache: true,
         _stringRepl: function(tmpl) {
@@ -140,6 +145,41 @@ define([
                 query('div.nb-item').style('display', 'block');
                 return false;
             });
+            
+            query('.notebooks-sort-author', self.domNode).on('click', function() {
+                self.opts.sortBy = 'author';
+                self.opts.sortDir = 'asc';
+                self.sortNotebooks();
+            });
+            query('.notebooks-sort-date', self.domNode).on('click', function() {
+                self.opts.sortBy = 'date';
+                self.opts.sortDir = 'asc';
+                self.sortNotebooks();
+            });
+            query('.notebooks-sort-title', self.domNode).on('click', function() {
+                self.opts.sortBy = 'title';
+                self.opts.sortDir = 'asc';
+                self.sortNotebooks();
+            });
+            
+        },
+        
+        sortNotebooks: function() {
+            var self = this;
+
+            query('#notebooksContainer .nb-item').sort(function(a, b){
+                var v1 = domAttr.get(a, 'data-nb-'+ self.opts.sortBy), 
+                    v2 = domAttr.get(b, 'data-nb-'+ self.opts.sortBy),
+                    asc = self.opts.sortDir;
+                if (v1 == v2) return 0;
+                if (v1 > v2) return (asc ? 1 : -1);
+                if (v1 < v2) return (asc ? -1 : 1);
+            }).forEach(function(e, i) {
+                e.parentNode.appendChild(e);
+            });
+
+            query('.notebooks-sort button').removeClass('btn-warning');
+            query('.notebooks-sort button.notebooks-sort-'+self.opts.sortBy).addClass('btn-warning');
             
         },
         
@@ -268,28 +308,6 @@ define([
             );
             
         },
-        
-        /*
-        updateProgress: function(m) {
-            var self = this,
-                perc = parseInt(self.progressCounter*100/self.progressTotal, 10) || 0;
-
-            domStyle.set(query('.progress-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
-            domStyle.set(query('#tab-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
-            query('.progress-'+self.notebookId+' .progress-percentage').innerHTML(perc+'% '+m);
-
-            if (self.progressTotal > 0 && self.progressCounter === self.progressTotal) {
-                domStyle.set(query('.progress-'+self.notebookId)[0], 'display', 'none');
-                domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'block');
-                domStyle.set(query('.ask-notebook-more-buttons', self.domNode)[0], 'display', 'block');
-
-                setTimeout(function() {
-                    dojo.query('#tab-'+self.notebookId).innerHTML("<i class='icon-book'></i> " + self.label);
-                }, 1000);
-            }
-
-        }, // updateProgress()
-        */
         
         updateNBProgress: function() {
             var self = this,
