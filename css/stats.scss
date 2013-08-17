@@ -18,20 +18,58 @@
     opacity: 0.0;
 }
 
-.stats-facets-mask {
-    height: 320px;
-    overflow-y: hidden;
-    padding: 10px;
-    .stats-facets-container {
+.stats-available-facets-container .stats-available-facets {
+    a {
+        border: 0px;
+        &.drag-enter {
+            border-left: 80px solid #666;
+        }
+        &.drag-dragged {
+            opacity: 0.75;
+        }
     }
 }
+
+
+.stats-lay-line {
+
+    .stats-facets-mask {
+        height: 310px;
+        overflow-y: hidden;
+        margin-top: 10px;
+        .stats-values-container ul { height: 200px; }
+        
+    }
+
+}
+
+.stats-lay-side {
+    
+    .stats-dataTable-container {
+        margin-left: 320px;
+    }
+    .stats-facets-mask {
+        position: absolute;
+        display: block;
+        width: 310px;
+        .stats-facets-container {
+            display: block;
+            width: 310px;
+        }
+        .stats-facet {
+            margin-top: 5px;
+            width: 300px;
+        }
+    }
+}
+
 
 .stats-facet {
     float: left;
     display: inline-block;
     max-width: 400px;
-    margin: 10px;
-    padding: 4px;
+    margin-right: 2px;
+    padding: 2px;
     background: #ddd;
     box-shadow: 3px 3px 3px #666;
     
@@ -67,9 +105,8 @@
 
         ul {
             min-width: 200px;
-            // max-width: 600px;
             overflow: auto;
-            height: 200px;
+            max-height: 200px;
             li {
                 margin-bottom: 1px; 
                 a {

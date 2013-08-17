@@ -2,6 +2,8 @@ define(["dojo/_base/declare",
         "dojo/on", 
         "dojo/query",
         "dojo/dom-style",
+        "dojo/dom-class",
+        "dojo/dom-construct",
         
         "dojo/text!ask/tmpl/stats/StatsTab.html",
         "lib/mustache",
@@ -9,7 +11,7 @@ define(["dojo/_base/declare",
         "dijit/_TemplatedMixin",
     ],
     function(
-        declare, on, query, domStyle,
+        declare, on, query, domStyle, domClass, domConstruct,
         template, mustache, 
         _WidgetBase, _TemplatedMixin) {
 
@@ -31,7 +33,8 @@ define(["dojo/_base/declare",
         state: 'loading',
         store: {},
         opts: {
-            autoUpdateTimerLength: 500
+            autoUpdateTimerLength: 500,
+            layout: 'line' // one of 'line', 'side'
         },
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
         _skipNodeCache: true,
@@ -56,18 +59,18 @@ define(["dojo/_base/declare",
             
             self.availableFacets = [
                 {key: 'nbId', label: 'Notebook ID', state: ''},
-                {key: 'annId', label: 'Annotation ID', state: 'success'},
+                {key: 'annId', label: 'Annotation ID', state: 'warning'},
                 {key: 'sub', label: 'Subject', state: ''},
                 {key: 'subLabel', label: 'Subject label', state: ''},
                 {key: 'subType', label: 'Subject type', state: ''},
                 {key: 'pred', label: 'Predicate', state: ''},
-                {key: 'predLabel', label: 'Predicate label', state: 'success'},
+                {key: 'predLabel', label: 'Predicate label', state: 'warning'},
                 {key: 'obj', label: 'Object', state: ''},
-                {key: 'objLabel', label: 'Object label', state: 'success'},
-                {key: 'objType', label: 'Object type', state: 'success'},
-                {key: 'author', label: 'Author ID', state: 'success'},
-                {key: 'authorLabel', label: 'Author label', state: 'success'},
-                {key: 'pageContext', label: 'Annotated Page', state: 'success'}
+                {key: 'objLabel', label: 'Object label', state: 'warning'},
+                {key: 'objType', label: 'Object type', state: ''},
+                {key: 'author', label: 'Author ID', state: ''},
+                {key: 'authorLabel', label: 'Author label', state: ''},
+                {key: 'pageContext', label: 'Annotated Page', state: ''}
             ];
             self.facetList = [
                 'annId', 'predLabel', 
@@ -124,6 +127,44 @@ define(["dojo/_base/declare",
                 download(self.st, 'export-all-'+self.st.length+'.json');
             });
 
+            query(self.domNode).on('.stats-controls a.line:click', function(e) {
+                self.setLayout('line');
+            });
+            query(self.domNode).on('.stats-controls a.side:click', function(e) {
+                self.setLayout('side');
+            });
+            
+
+            // Drag n drop
+            query('.stats-available-facets a', self.domNode).on('drop', function(e) {
+                domConstruct.place(self.draggedFacet, this, 'before');
+            });
+
+            query('.stats-available-facets a', self.domNode).on('dragstart', function(e) {
+                self.draggedFacet = this;
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+                domClass.add(this, 'drag-dragged');
+            });
+
+            query('.stats-available-facets a', self.domNode).on('dragover', function(e) {
+                if (e.preventDefault) {
+                    e.preventDefault(); 
+                }
+                e.dataTransfer.dropEffect = 'move'; 
+                return false;
+            });
+            
+            query('.stats-available-facets a', self.domNode).on('dragenter', function(e) {
+                domClass.add(this, 'drag-enter');
+            });
+            query('.stats-available-facets a', self.domNode).on('dragleave', function(e) {
+                domClass.remove(this, 'drag-enter');
+            });
+            query('.stats-available-facets a', self.domNode).on('dragend', function(e) {
+                query('.stats-available-facets a').removeClass('drag-enter drag-dragged');
+            });
+
         },
 
         initFacets: function() {
@@ -141,6 +182,15 @@ define(["dojo/_base/declare",
             
             self.filters = [];
             
+        },
+        
+        setLayout: function(ly) {
+            var self = this;
+            
+            domClass.remove(self.domNode, 'stats-lay-'+self.opts.layout);
+            self.opts.layout = ly;
+            domClass.add(self.domNode, 'stats-lay-'+self.opts.layout);
+            self._positionFacets();
         },
         
         add: function(nbId, annId) {
@@ -318,21 +368,33 @@ define(["dojo/_base/declare",
         },
         
         _updateFacets: function() {
-            var self = this,
+            var self = this;
+                        
+            for (var f=self.facetList.length; f--;) {
+                var key = self.facetList[f];
+                self.facets[key].update();
+            }
+
+            self._positionFacets();
+            self.dataTable.autoUpdate();
+        },
+        
+        _positionFacets: function() {
+            var self = this, 
                 w = 0,
                 padding = 4,
                 margin = 10;
             
             for (var f=self.facetList.length; f--;) {
                 var key = self.facetList[f];
-                self.facets[key].update();
                 w += domStyle.get(self.facets[key].domNode, 'width') + 2*padding+2*margin;
             }
-            console.log(w)
-            w += 4*margin;
-            console.log('ee ', w);
-            domStyle.set(query('.stats-facets-container', self.domNode)[0], 'width', w+'px');
-            self.dataTable.autoUpdate();
+
+            domStyle.set(query('.stats-facets-container', self.domNode)[0], 'width', '');
+            if (self.opts.layout === "line") {
+                w += 4*margin;
+                domStyle.set(query('.stats-facets-container', self.domNode)[0], 'width', w+'px');
+            }
         },
         
         _update: function() {

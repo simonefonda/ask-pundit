@@ -1,4 +1,4 @@
-<div class="stats-tab">
+<div class="stats-tab stats-lay-{{opts.layout}}">
 
     <div class="stats-exports">
         Export json: 
@@ -8,12 +8,22 @@
 
     <div class="stats-available-facets-container">
         <h3>Facets</h3>
-        {{#availableFacets}}
-            <span class="label label-{{state}}">{{label}}</span>
-        {{/availableFacets}}
+
+        <div class="stats-controls btn-group">
+            <a class="btn btn-small line">Top</a>
+            <a class="btn btn-small side">Side</a>
+        </div>
+
+        <div class="stats-available-facets btn-group">
+            {{#availableFacets}}
+                <a draggable="true" class="btn btn-small btn-{{state}}">{{label}}</a>
+            {{/availableFacets}}
+        </div>
     </div>
+
     <div class="stats-facets-mask">
         <div class="stats-facets-container"></div>
     </div>
+
     <div class="stats-dataTable-container"></div>
 </div>
