@@ -210,6 +210,7 @@ define([
                     self.loadStatsTab();
                 query('.superHiddenTab').removeClass('superHiddenTab');
                 query("[href='#tab-stats']").tab('show');
+                self.statsTab.positionFacets(); 
             });
 
             router.register('/notebooks/:id', function(evt) {

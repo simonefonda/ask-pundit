@@ -193,7 +193,7 @@ define(["dojo/_base/declare",
             self.opts.layout = ly;
             query('.stats-controls a.'+ly, self.domNode).addClass('btn-warning');
             domClass.add(self.domNode, 'stats-lay-'+self.opts.layout);
-            self._positionFacets();
+            self.positionFacets();
         },
         
         add: function(nbId, annId) {
@@ -378,11 +378,11 @@ define(["dojo/_base/declare",
                 self.facets[key].update();
             }
 
-            self._positionFacets();
+            self.positionFacets();
             self.dataTable.autoUpdate();
         },
         
-        _positionFacets: function() {
+        positionFacets: function() {
             var self = this, 
                 w = 0,
                 padding = 4,
