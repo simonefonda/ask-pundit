@@ -318,13 +318,20 @@ define(["dojo/_base/declare",
         },
         
         _updateFacets: function() {
-            var self = this;
+            var self = this,
+                w = 0,
+                padding = 4,
+                margin = 10;
             
             for (var f=self.facetList.length; f--;) {
                 var key = self.facetList[f];
                 self.facets[key].update();
+                w += domStyle.get(self.facets[key].domNode, 'width') + 2*padding+2*margin;
             }
-
+            console.log(w)
+            w += 4*margin;
+            console.log('ee ', w);
+            domStyle.set(query('.stats-facets-container', self.domNode)[0], 'width', w+'px');
             self.dataTable.autoUpdate();
         },
         
