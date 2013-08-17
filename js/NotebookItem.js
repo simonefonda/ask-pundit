@@ -130,6 +130,8 @@ define(["dojo/_base/declare",
 
                         if (ASK.ns.notebooks.created in data[i])  {
                             self.createdAt = new Date(data[i][ASK.ns.notebooks.created][0].value);
+                        } else {
+                            console.log('Senza created ??! ', data[i]);
                         }
                         
                         if (ASK.ns.notebooks.includes in data[i]) 
@@ -152,8 +154,12 @@ define(["dojo/_base/declare",
                     self.state = 'loaded';
                     
                     self.title_l = self.title.toLowerCase();
-                    self.createdAt_l = self.createdAt.toDateString().toLowerCase();
-                    self.createdAt_ux = self.createdAt.getTime();
+                    if (self.createdAt) {
+                        self.createdAt_l = self.createdAt.toDateString().toLowerCase();
+                        self.createdAt_ux = self.createdAt.getTime();
+                    } else 
+                        self.createdAt_l = 'Uknown date';
+                        
                     self.createdBy_l = self.createdBy.toLowerCase();
                     
                     self.render();

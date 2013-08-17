@@ -59,14 +59,14 @@ define(["dojo/_base/declare",
             
             self.availableFacets = [
                 {key: 'nbId', label: 'Notebook ID', state: ''},
-                {key: 'annId', label: 'Annotation ID', state: 'warning'},
+                {key: 'annId', label: 'Annotation ID', state: 'info'},
                 {key: 'sub', label: 'Subject', state: ''},
                 {key: 'subLabel', label: 'Subject label', state: ''},
                 {key: 'subType', label: 'Subject type', state: ''},
                 {key: 'pred', label: 'Predicate', state: ''},
-                {key: 'predLabel', label: 'Predicate label', state: 'warning'},
+                {key: 'predLabel', label: 'Predicate label', state: 'info'},
                 {key: 'obj', label: 'Object', state: ''},
-                {key: 'objLabel', label: 'Object label', state: 'warning'},
+                {key: 'objLabel', label: 'Object label', state: 'info'},
                 {key: 'objType', label: 'Object type', state: ''},
                 {key: 'author', label: 'Author ID', state: ''},
                 {key: 'authorLabel', label: 'Author label', state: ''},
@@ -188,7 +188,10 @@ define(["dojo/_base/declare",
             var self = this;
             
             domClass.remove(self.domNode, 'stats-lay-'+self.opts.layout);
+            query('.stats-controls a').removeClass('btn-warning');
+
             self.opts.layout = ly;
+            query('.stats-controls a.'+ly, self.domNode).addClass('btn-warning');
             domClass.add(self.domNode, 'stats-lay-'+self.opts.layout);
             self._positionFacets();
         },
