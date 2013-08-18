@@ -210,7 +210,8 @@ define([
                     self.loadStatsTab();
                 query('.superHiddenTab').removeClass('superHiddenTab');
                 query("[href='#tab-stats']").tab('show');
-                self.statsTab.positionFacets(); 
+                if (self.statsTab)
+                    self.statsTab.positionFacets(); 
             });
 
             router.register('/notebooks/:id', function(evt) {
@@ -256,6 +257,7 @@ define([
                 if (!self.statsTabLoaded) {
                     self.statsTab = new StatsTab().placeAt(query('#statsTabContainer')[0]);
                     self.statsTab.startup();
+                    self.statsTab.positionFacets(); 
                     self.statsTabLoaded = true;
                 }
             });

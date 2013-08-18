@@ -4,6 +4,7 @@ define(["dojo/_base/declare",
         "dojo/dom-style",
         "dojo/dom-class",
         "dojo/dom-construct",
+        "dojo/dom-attr",
         
         "dojo/text!ask/tmpl/stats/StatsTab.html",
         "lib/mustache",
@@ -11,7 +12,7 @@ define(["dojo/_base/declare",
         "dijit/_TemplatedMixin",
     ],
     function(
-        declare, on, query, domStyle, domClass, domConstruct,
+        declare, on, query, domStyle, domClass, domConstruct, domAttr,
         template, mustache, 
         _WidgetBase, _TemplatedMixin) {
 
@@ -57,32 +58,28 @@ define(["dojo/_base/declare",
             
             self.inherited(arguments);
             
+            // Keeping this into an array for rendering
             self.availableFacets = [
-                {key: 'nbId', label: 'Notebook ID', state: ''},
-                {key: 'annId', label: 'Annotation ID', state: 'info'},
-                {key: 'sub', label: 'Subject', state: ''},
-                {key: 'subLabel', label: 'Subject label', state: ''},
-                {key: 'subType', label: 'Subject type', state: ''},
-                {key: 'pred', label: 'Predicate', state: ''},
-                {key: 'predLabel', label: 'Predicate label', state: 'info'},
-                {key: 'obj', label: 'Object', state: ''},
-                {key: 'objLabel', label: 'Object label', state: 'info'},
-                {key: 'objType', label: 'Object type', state: ''},
-                {key: 'author', label: 'Author ID', state: ''},
-                {key: 'authorLabel', label: 'Author label', state: ''},
-                {key: 'pageContext', label: 'Annotated Page', state: ''}
+                {key: 'nbId', label: 'Notebook ID', active: false },
+                {key: 'annId', label: 'Annotation ID', active: false },
+                {key: 'sub', label: 'Subject', active: false },
+                {key: 'subLabel', label: 'Subject label', active: true },
+                {key: 'subType', label: 'Subject type', active: false },
+                {key: 'pred', label: 'Predicate', active: false },
+                {key: 'predLabel', label: 'Predicate label', active: true },
+                {key: 'obj', label: 'Object', active: false },
+                {key: 'objLabel', label: 'Object label', active: true },
+                {key: 'objType', label: 'Object type', active: true },
+                {key: 'author', label: 'Author ID', active: false },
+                {key: 'authorLabel', label: 'Author label', active: true },
+                {key: 'pageContext', label: 'Annotated Page', active: false }
             ];
-            self.facetList = [
-                'annId', 'predLabel', 
-                'authorLabel', 'pageContext', 
-                'subLabel', 'objLabel', 
-                'sub', 'objType', 'subType', 'obj'
-            ];
-            // self.facetList = ['predLabel', 'authorLabel', 'pageContext'];
-            // self.facetList = ['annId'];
+            
+            self._updateFacetList();
             self.facets = {};
 
         },
+        
         startup: function() {
             var self = this;
             
@@ -133,65 +130,141 @@ define(["dojo/_base/declare",
             query(self.domNode).on('.stats-controls a.side:click', function(e) {
                 self.setLayout('side');
             });
-            
 
             // Drag n drop
-            query('.stats-available-facets a', self.domNode).on('drop', function(e) {
-                domConstruct.place(self.draggedFacet, this, 'before');
-            });
-
-            query('.stats-available-facets a', self.domNode).on('dragstart', function(e) {
+            query('.stats-available-facets span', self.domNode).on('dragstart', function(e) {
                 self.draggedFacet = this;
                 e.dataTransfer.effectAllowed = 'move';
                 e.dataTransfer.setData('text/html', this.innerHTML);
                 domClass.add(this, 'drag-dragged');
             });
-
-            query('.stats-available-facets a', self.domNode).on('dragover', function(e) {
-                if (e.preventDefault) {
-                    e.preventDefault(); 
-                }
-                e.dataTransfer.dropEffect = 'move'; 
+            
+            // Enter > Over > Drop over the containers
+            var cont = query('.stats-available-facets span, .stats-active-facets, .stats-inactive-facets', self.domNode);
+            // Enter > Over > Drop over another node
+            cont.on('dragenter', function(e) { domClass.add(this, 'drag-enter'); });
+            cont.on('dragleave', function(e) { domClass.remove(this, 'drag-enter'); });
+            cont.on('dragover', function(e) {
+                if (e.preventDefault) e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
                 return false;
             });
+            cont.on('dragend', function(e) {
+                cont.removeClass('drag-enter');
+                query('.stats-available-facets span').removeClass('drag-enter drag-dragged');
+            });
             
-            query('.stats-available-facets a', self.domNode).on('dragenter', function(e) {
-                domClass.add(this, 'drag-enter');
+            // Drop on the active container
+            query('.stats-active-facets, .stats-active-facets', self.domNode).on('drop', function(e) {
+                var key = domAttr.get(self.draggedFacet, 'data-key');
+                if (!self.isFacetActive(key)) 
+                    self.toggleFacet(key)
+                domConstruct.place(self.draggedFacet, this, 'last');
             });
-            query('.stats-available-facets a', self.domNode).on('dragleave', function(e) {
-                domClass.remove(this, 'drag-enter');
+
+            // Drop on the inactive container
+            query('.stats-available-facets .stats-inactive-facets', self.domNode).on('drop', function(e) {
+                var key = domAttr.get(self.draggedFacet, 'data-key');
+                if (self.isFacetActive(key)) 
+                    self.toggleFacet(key)
+                domConstruct.place(self.draggedFacet, this, 'last');
             });
-            query('.stats-available-facets a', self.domNode).on('dragend', function(e) {
-                query('.stats-available-facets a').removeClass('drag-enter drag-dragged');
+
+            // Drop on another node
+            query('.stats-available-facets span', self.domNode).on('drop', function(e) {
+                var key = domAttr.get(self.draggedFacet, 'data-key'),
+                    targetKey = domAttr.get(this, 'data-key');
+
+                domConstruct.place(self.draggedFacet, this, 'before');
+                if (self.isFacetActive(key) !== self.isFacetActive(targetKey))
+                    self.toggleFacet(key);
+
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
             });
 
         },
+        
+        _updateFacetList: function() {
+            var self = this;
+            self.facetList = [];
+            for (var i in self.availableFacets) {
+                var f = self.availableFacets[i];
+                if (f.active)
+                    self.facetList.push(f.key);
+            }
+            
+        },
 
-        initFacets: function() {
+        isFacetActive: function(key) {
+            var self = this;
+            for (var i=self.availableFacets.length; i--;)
+                if (self.availableFacets[i].key === key) 
+                    return self.availableFacets[i].active;
+        },
+        
+        toggleFacet: function(key) {
             var self = this;
             
-            require(["ask/stats/Facet"], function(Facet) {
-                for (var l=self.facetList.length; l--;) {
-                    var f = self.facetList[l]; 
-                    self.facets[f] = new Facet({
-                        key: f
-                    }); 
-                    self.facets[f].placeAt(query('.stats-facets-container', self.domNode)[0]).startup();
+            if (self.isFacetActive(key)) {
+                console.log('Deactivating facet '+key)
+                self.facets[key].destroy();
+                delete self.facets[key];
+            } else {
+                console.log('Activating facet '+key)
+                self.addFacet(key);
+            }
+
+            // TODO: remove all filters
+            
+            for (var i=self.availableFacets.length; i--;)
+                if (self.availableFacets[i].key === key) {
+                    self.availableFacets[i].active = !self.availableFacets[i].active;
+                    break;
                 }
-            });
             
+            query("[data-key='"+key+"']", self.domNode).toggleClass('btn-info');
+            
+            self._updateFacetList();
+            self.autoUpdate();
+        },
+
+        initFacets: function() {
+            var self = this,
+                l = self.facetList.length;
+                
+            for (var i=0; i<l; i++) {
+                var f = self.facetList[i]; 
+                self.addFacet(f);
+            }
             self.filters = [];
+        },
+        
+        addFacet: function(key) {
+            var self = this,
+                opts = {};
+
+            for (var l=self.availableFacets.length; l--;)
+                if (self.availableFacets[l].key === key)
+                    opts = self.availableFacets[l];
             
+            require(["ask/stats/Facet"], function(Facet) {
+                self.facets[key] = new Facet({ key: key, label: opts.label });
+                self.facets[key]
+                    .placeAt(query('.stats-facets-container', self.domNode)[0])
+                    .startup();
+            });
         },
         
         setLayout: function(ly) {
             var self = this;
             
             domClass.remove(self.domNode, 'stats-lay-'+self.opts.layout);
-            query('.stats-controls a').removeClass('btn-warning');
+            query('.stats-controls a').removeClass('btn-info');
 
             self.opts.layout = ly;
-            query('.stats-controls a.'+ly, self.domNode).addClass('btn-warning');
+            query('.stats-controls a.'+ly, self.domNode).addClass('btn-info');
             domClass.add(self.domNode, 'stats-lay-'+self.opts.layout);
             self.positionFacets();
         },

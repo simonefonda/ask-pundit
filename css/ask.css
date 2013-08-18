@@ -877,12 +877,27 @@ a.ti-reset-button {
 .superHiddenTab {
   opacity: 0.0; }
 
-.stats-available-facets-container .stats-available-facets a {
-  border: 0px; }
-  .stats-available-facets-container .stats-available-facets a.drag-enter {
+.stats-available-facets-container .stats-available-facets span {
+  border: 0px;
+  margin-right: 2px; }
+  .stats-available-facets-container .stats-available-facets span.drag-enter {
     border-left: 80px solid #666; }
-  .stats-available-facets-container .stats-available-facets a.drag-dragged {
+  .stats-available-facets-container .stats-available-facets span.drag-dragged {
     opacity: 0.75; }
+.stats-available-facets-container .stats-available-facets .stats-active-facets,
+.stats-available-facets-container .stats-available-facets .stats-inactive-facets {
+  background: #d8e5e8;
+  padding: 2px; }
+  .stats-available-facets-container .stats-available-facets .stats-active-facets.drag-enter,
+  .stats-available-facets-container .stats-available-facets .stats-inactive-facets.drag-enter {
+    background: #2a697a; }
+  .stats-available-facets-container .stats-available-facets .stats-active-facets ul,
+  .stats-available-facets-container .stats-available-facets .stats-inactive-facets ul {
+    margin: 0px; }
+    .stats-available-facets-container .stats-available-facets .stats-active-facets ul li,
+    .stats-available-facets-container .stats-available-facets .stats-inactive-facets ul li {
+      display: inline-block;
+      padding: 2px; }
 
 .stats-lay-line .stats-facets-mask {
   height: 310px;
@@ -910,8 +925,8 @@ a.ti-reset-button {
   max-width: 400px;
   margin-right: 2px;
   padding: 2px;
-  background: #ddd;
-  box-shadow: 3px 3px 3px #666; }
+  background: #d8e5e8;
+  box-shadow: 3px 3px 3px #999; }
   .stats-facet .navbar {
     margin-bottom: 5px; }
   .stats-facet .navbar-inner {

@@ -19,8 +19,9 @@
 }
 
 .stats-available-facets-container .stats-available-facets {
-    a {
+    span {
         border: 0px;
+        margin-right: 2px;
         &.drag-enter {
             border-left: 80px solid #666;
         }
@@ -28,6 +29,24 @@
             opacity: 0.75;
         }
     }
+    .stats-active-facets,
+    .stats-inactive-facets {
+        background: $blue_gray;
+        padding: 2px;
+
+        &.drag-enter {
+            background: $blue_dark;
+        }
+
+        ul {
+            margin: 0px;
+            li {
+            display: inline-block;
+            padding: 2px;
+            }
+        }
+    }
+
 }
 
 
@@ -70,8 +89,8 @@
     max-width: 400px;
     margin-right: 2px;
     padding: 2px;
-    background: #ddd;
-    box-shadow: 3px 3px 3px #666;
+    background: $blue_gray;
+    box-shadow: 3px 3px 3px #999;
     
     // Overwriting bootstrap a little for the facet top toolbar
     .navbar {

@@ -11,13 +11,13 @@
 
         <div class="stats-controls btn-group">
             <a class="btn btn-small side">Side</a>
-            <a class="btn btn-small line btn-warning">Top</a>
+            <a class="btn btn-small line btn-info">Top</a>
         </div>
 
-        <div class="stats-available-facets btn-group">
-            {{#availableFacets}}
-                <a draggable="true" class="btn btn-small btn-{{state}}">{{label}}</a>
-            {{/availableFacets}}
+        <div class="stats-available-facets">
+
+            <div class="stats-active-facets">{{#availableFacets}}{{#active}}<span data-key="{{key}}" draggable="true" class="btn btn-small btn-info">{{label}}</span>{{/active}}{{/availableFacets}}</div>
+            <div class="stats-inactive-facets">{{#availableFacets}}{{^active}}<span data-key="{{key}}" draggable="true" class="btn btn-small">{{label}}</span>{{/active}}{{/availableFacets}}</div>
         </div>
     </div>
 

@@ -25,10 +25,9 @@ define(["dojo/_base/declare",
     };
 
     return declare("ask.Facet", [_WidgetBase, _TemplatedMixin], {
-        notebookId: '',
         templateString: template,
-        state: 'loading',
         key: '',
+        label: '',
 
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
         _skipNodeCache: true,
@@ -45,7 +44,8 @@ define(["dojo/_base/declare",
                 self.domNode.parentNode.replaceChild(node, self.domNode);
                 delete self.domNode;
             } else {
-                node = dojo._toDom(this.templateString);
+                // node = dojo._toDom(self.templateString);
+                node = domConstruct.toDom(self._stringRepl(self.templateString));
             }
 
             self.domNode = node;
@@ -69,50 +69,63 @@ define(["dojo/_base/declare",
             self.initBehaviors();
         }, // startup()
         
+        destroy: function() {
+            var self = this;
+            for (var l=self._behaviorList.length; l--;)
+                self._behaviorList[l].remove();
+                
+            self.inherited(arguments);
+        },
+        
         initBehaviors: function() {
             var self = this,
-                parent = query(self.domNode).parent()[0];
+                parent = query(self.domNode).parent()[0],
+                i=0;
+
+            self._behaviorList = [];
             
             // Toggle a filter by clicking on the value
-            query(parent).on('.stats-facet.'+self.key+' .facet-filter:click', function(e) {
+            self._behaviorList[i++] = query(parent).on('.stats-facet.'+self.key+' .facet-filter:click', function(e) {
                 var v = domAttr.get(this, 'data-value');
                 query(this).parent().toggleClass('active');
                 ASK.statsTab.toggleFilter(self.key, v);
             });
 
             // Load more / all values
-            query(parent).on('.stats-facet.'+self.key+' .facet-load-more:click', function(e) {
+            self._behaviorList[i++] = query(parent).on('.stats-facet.'+self.key+' .facet-load-more:click', function(e) {
                 self.opts.limit += self.opts.perPage;
                 self.update();
+                ASK.statsTab.positionFacets();
             });
 
-            query(parent).on('.stats-facet.'+self.key+' .facet-load-all:click', function(e) {
+            self._behaviorList[i++] = query(parent).on('.stats-facet.'+self.key+' .facet-load-all:click', function(e) {
                 self.opts.limit = self.total;
                 self.update();
+                ASK.statsTab.positionFacets();
             });
 
             // Sort 
-            query(parent).on('.stats-facet.'+self.key+' .facet-controls .sort:click', function(e) {
+            self._behaviorList[i++] = query(parent).on('.stats-facet.'+self.key+' .facet-controls .sort:click', function(e) {
                 self.opts.sortBy = domAttr.get(this, 'data-sortBy');
                 self.opts.sortDir = domAttr.get(this, 'data-sortDir');
                 self.update();
             });
 
-            query(parent).on('.stats-facet.'+self.key+' .facet-controls .sort:click', function(e) {
+            self._behaviorList[i++] = query(parent).on('.stats-facet.'+self.key+' .facet-controls .sort:click', function(e) {
                 self.opts.sortBy = domAttr.get(this, 'data-sortBy');
                 self.opts.sortDir = domAttr.get(this, 'data-sortDir');
                 self.update();
             });
 
             // Selection
-            query(parent).on('.stats-facet.'+self.key+' .facet-controls .select-reverse:click', function(e) {
+            self._behaviorList[i++] = query(parent).on('.stats-facet.'+self.key+' .facet-controls .select-reverse:click', function(e) {
                 var all = ASK.statsTab.facetsTotals[self.key];
                 for (var val in all) 
                     ASK.statsTab.toggleFilter(self.key, val)
                 self.update();
             });
 
-            query(parent).on('.stats-facet.'+self.key+' .facet-controls .select-all:click', function(e) {
+            self._behaviorList[i++] = query(parent).on('.stats-facet.'+self.key+' .facet-controls .select-all:click', function(e) {
                 for (var i=self.filteredValues.length; i--;)
                     ASK.statsTab.toggleFilter(self.key, self.filteredValues[i])
                 self.update();
