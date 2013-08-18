@@ -62,6 +62,7 @@ define(["dojo/_base/declare",
 
             // DEBUG: Duplicate data to make it renderable over and over.. 
             // is there a better way?
+            var i, j;
             i = j = self.start;
             while (i<self.end && ASK.statsTab.st[j]) {
                 if (ASK.statsTab.st[j].active) 
@@ -73,7 +74,21 @@ define(["dojo/_base/declare",
             self.end = i;
             self.start = self.start+1;
         
-            self.filters = ASK.statsTab.filters;
+            var foo = ASK.statsTab.filters,
+                hash = {};
+            for (var f=foo.length; f--;) {
+                if (foo[f].key in hash) {
+                    hash[foo[f].key].push({value: foo[f].value});
+                } else {
+                    hash[foo[f].key] = [{value: foo[f].value}];
+                }
+            }
+            
+            self.filters = [];
+            for (var k in hash) {
+                self.filters.push({key: k, values: hash[k] });
+            }
+            
             self.activeTriplesNum = ASK.statsTab.activeTriplesNum;
             self.renderDataTable();
         },

@@ -6,8 +6,10 @@
         {{#filters}}
             <div>
                 <span class="label label-success">{{key}}</span> 
-                is not 
-                <span class="label label-info">{{value}}</span>
+                is not
+                    {{#values}}
+                        <span class="label label-info">{{value}}</span>
+                    {{/values}}
             </div>
         {{/filters}}
         
