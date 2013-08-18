@@ -60,18 +60,18 @@ define(["dojo/_base/declare",
             
             // Keeping this into an array for rendering
             self.availableFacets = [
-                {key: 'nbId', label: 'Notebook ID', active: false },
-                {key: 'annId', label: 'Annotation ID', active: false },
-                {key: 'sub', label: 'Subject', active: false },
-                {key: 'subLabel', label: 'Subject label', active: true },
+                {key: 'authorURI', label: 'Author URI', active: false },
+                {key: 'authorLabel', label: 'Author', active: true },
+                {key: 'nbId', label: 'Notebook', active: false },
+                {key: 'annId', label: 'Annotation', active: false },
+                {key: 'subURI', label: 'Subject URI', active: false },
+                {key: 'subLabel', label: 'Subject', active: true },
                 {key: 'subType', label: 'Subject type', active: false },
-                {key: 'pred', label: 'Predicate', active: false },
-                {key: 'predLabel', label: 'Predicate label', active: true },
-                {key: 'obj', label: 'Object', active: false },
-                {key: 'objLabel', label: 'Object label', active: true },
+                {key: 'predURI', label: 'Predicate URI', active: false },
+                {key: 'predLabel', label: 'Predicate', active: true },
+                {key: 'objURI', label: 'Object URI', active: false },
+                {key: 'objLabel', label: 'Object', active: true },
                 {key: 'objType', label: 'Object type', active: true },
-                {key: 'author', label: 'Author ID', active: false },
-                {key: 'authorLabel', label: 'Author label', active: true },
                 {key: 'pageContext', label: 'Annotated Page', active: false }
             ];
             
@@ -194,7 +194,6 @@ define(["dojo/_base/declare",
                 if (f.active)
                     self.facetList.push(f.key);
             }
-            
         },
 
         isFacetActive: function(key) {
@@ -282,7 +281,7 @@ define(["dojo/_base/declare",
                             
                             nbId: nbId,
                             annId: annId,
-                            sub: subject,
+                            subURI: subject,
                             subLabel: self.searchFor(ca['subs-'+annId], function(it) {
                                 return it.uri === subject;
                             }).label,
@@ -290,12 +289,12 @@ define(["dojo/_base/declare",
                                 return it.uri === subject;
                             }).rdfTypes,
 
-                            pred: predicate,
+                            predURI: predicate,
                             predLabel: self.searchFor(ca['preds-'+annId], function(it) {
                                 return it.uri === predicate;
                             }).label,
 
-                            obj: annCon[subject][predicate][object].value,
+                            objURI: annCon[subject][predicate][object].value,
                             objLabel: self.searchFor(ca['objs-'+annId], function(it) {
                                 return it.uri === annCon[subject][predicate][object].value;
                             }).label,
@@ -303,7 +302,7 @@ define(["dojo/_base/declare",
                                 return it.uri === annCon[subject][predicate][object].value;
                             }).notableType,
                             
-                            author: self.get(ca['ann-met-'+annId], 'http://purl.org/dc/elements/1.1/creator') || 'uknown author',
+                            authorURI: self.get(ca['ann-met-'+annId], 'http://purl.org/dc/elements/1.1/creator') || 'uknown author',
                             authorLabel: ca['ACAnn-'+annId].createdBy,
 
                             pageContext: ca['ACAnn-'+annId].pageContext

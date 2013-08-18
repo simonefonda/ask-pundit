@@ -86,7 +86,7 @@ define(["dojo/_base/declare",
             
             self.filters = [];
             for (var k in hash) {
-                self.filters.push({key: k, values: hash[k] });
+                self.filters.push({key: k, label: ASK.statsTab.facets[k].label, values: hash[k] });
             }
             
             self.activeTriplesNum = ASK.statsTab.activeTriplesNum;

@@ -5,10 +5,12 @@
     <div class="stats-filters-container">
         {{#filters}}
             <div>
-                <span class="label label-success">{{key}}</span> 
+                <span class="label label-info">{{label}}</span> 
                 is not
                     {{#values}}
-                        <span class="label label-info">{{value}}</span>
+                        <span class="label label-warning">
+                            {{value}} <i class="icon-remove icon-white"></i>
+                        </span>
                     {{/values}}
             </div>
         {{/filters}}
