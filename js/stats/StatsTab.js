@@ -5,7 +5,8 @@ define(["dojo/_base/declare",
         "dojo/dom-class",
         "dojo/dom-construct",
         "dojo/dom-attr",
-        
+
+        "ask/stats/Facet",
         "dojo/text!ask/tmpl/stats/StatsTab.html",
         "lib/mustache",
         "dijit/_WidgetBase",
@@ -13,7 +14,7 @@ define(["dojo/_base/declare",
     ],
     function(
         declare, on, query, domStyle, domClass, domConstruct, domAttr,
-        template, mustache, 
+        Facet, template, mustache, 
         _WidgetBase, _TemplatedMixin) {
 
 
@@ -248,12 +249,10 @@ define(["dojo/_base/declare",
                 if (self.availableFacets[l].key === key)
                     opts = self.availableFacets[l];
             
-            require(["ask/stats/Facet"], function(Facet) {
-                self.facets[key] = new Facet({ key: key, label: opts.label });
-                self.facets[key]
-                    .placeAt(query('.stats-facets-container', self.domNode)[0])
-                    .startup();
-            });
+            self.facets[key] = new Facet({ key: key, label: opts.label });
+            self.facets[key]
+                .placeAt(query('.stats-facets-container', self.domNode)[0])
+                .startup();
         },
         
         setLayout: function(ly) {
