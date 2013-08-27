@@ -68,7 +68,11 @@ define(["dojo/_base/declare",
 
             self.notableType = self.getNotableType(fooTypesArray, fooTypesArrayLabels);
 
-            self.label = (ASK.ns.items.label in c[u]) ? c[u][ASK.ns.items.label][0].value : self.label || 'no label :(',
+            if (ASK.ns.items.label in c[u])
+                self.label =  c[u][ASK.ns.items.label][0].value;
+            else 
+                self.label = self.uri;
+
             self.label_short = self.label.length > self.titlecChars ? self.label.substr(0, self.titleChars)+' ..' : self.label,
             self.uri_short = self.uri.length > self.uriChars ? self.uri.substr(7, self.uriChars+7)+' ..' : self.uri,
 

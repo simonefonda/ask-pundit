@@ -53,7 +53,11 @@ define(["dojo/_base/declare",
                 self.type = "comment";
             }
 
-            self.label = (ASK.ns.items.label in c[u]) ? c[u][ASK.ns.items.label][0].value : self.label || 'no label :(',
+            if (ASK.ns.items.label in c[u])
+                self.label = c[u][ASK.ns.items.label][0].value;
+            else 
+                self.label = self.uri;
+                
             label_short = self.label.length > 50 ? this.label.substr(0, self.titleChars)+' ..' : self.label,
             self.depic = (ASK.ns.items.image in c[u]) ? c[u][ASK.ns.items.image][0].value : 'http://placehold.it/120x100/ffcc00';
             if (self.depic === "http://api.freebase.com/api/trans/image_thumb/guid/")
