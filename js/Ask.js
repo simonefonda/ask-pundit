@@ -87,10 +87,16 @@ define([
         setupHandlers: function() {
             var self = this;
             
-            // Clicking tabs will update the route.. it calls tab(show) twice?
-            on(query('#ask-pills')[0], on.selector('a[data-toggle="tab"]', 'click'), function (e) {
-
-                var id = domAttr.get(e.target, 'href');
+            // Clicking tabs will update the route.. 
+            query('#ask-pills').on('a[data-toggle="tab"]:click', function (e) {
+                var id,
+                    target = e.target;
+                    
+                if (e.target.nodeName === "DIV")
+                    target = query(e.target).parents('a[data-toggle="tab"]')[0];
+                
+                id = domAttr.get(target, 'href');
+                
                 if (id === "#tab-notebooks") {
                     router.go('/notebooks/');
                 } else if (id === "#tab-myAsk") {
@@ -103,6 +109,8 @@ define([
                     router.go(id);
                 } else 
                     router.go('/notebooks/'+ id.substr(-8, 8));
+                    
+                return false;
             });
             
             // Handle search input 
@@ -210,7 +218,7 @@ define([
                     self.loadStatsTab();
                 query('.superHiddenTab').removeClass('superHiddenTab');
                 query("[href='#tab-stats']").tab('show');
-                if (self.statsTab)
+                if (self.statsTabLoaded)
                     self.statsTab.positionFacets(); 
             });
 
@@ -257,7 +265,6 @@ define([
                 if (!self.statsTabLoaded) {
                     self.statsTab = new StatsTab().placeAt(query('#statsTabContainer')[0]);
                     self.statsTab.startup();
-                    self.statsTab.positionFacets(); 
                     self.statsTabLoaded = true;
                 }
             });
