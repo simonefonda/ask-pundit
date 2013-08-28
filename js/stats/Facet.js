@@ -152,11 +152,15 @@ define(["dojo/_base/declare",
             self.activeValues = [];
             for (var val in totals) {
 
-                var filtered = '', active = '';
+                var filtered = '', 
+                    active = '';
+                
                 if (self.filteredValues.indexOf(val) !== -1) {
                     filtered = "filtered";
                     self.filtersNum++;
-                } else if (val in nums) {
+                }
+                 
+                if (val in nums) {
                     active = "active";
                     self.activeNum++;
                     self.activeValues.push(val);

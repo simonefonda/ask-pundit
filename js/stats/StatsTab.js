@@ -120,11 +120,13 @@ define(["dojo/_base/declare",
         initBehaviors: function() {
             var self = this;
 
+            // Export as json
             query(self.domNode).on('.stats-exports a.all:click', function(e) {
-                console.log('Exporting all data new stylaszz');
+                console.log('Exporting all data');
                 download(self.st, 'export-all-'+self.st.length+'.json');
             });
 
+            // Layout as line and side
             query(self.domNode).on('.stats-controls a.line:click', function(e) {
                 self.setLayout('line');
             });
@@ -366,27 +368,47 @@ define(["dojo/_base/declare",
             }, timerLength);
         },
         
-        // Foreach item, if there's a filter that matches it, deactivate it
+        // Each item must satisfy at least a filter for each facet
         _filter: function() {
             var self = this;
+        
+            // No filters: everything is active
+            if (self.filters.length === 0) {
+                for (var j in self.st) {
+                    self.st[j].active = true;
+                }
+                return;
+            }
             
             // TODO: optimize this
             for (var j in self.st) {
-                var item = self.st[j];
-                item.active = true;
+                var item = self.st[j],
+                    checkedFacets = {};
 
                 for (var f in self.filters) {
                     var key = self.filters[f].key,
                         val = self.filters[f].value;
-                
-                    // When an item is deactivated, we can safely skip all other 
-                    // filters for this item
-                    if (item.active && item[key] === val) {
-                        item.active = false;
-                        break;
-                    }
+                      
+                    // First time we see a new key, init the object
+                    if (typeof(checkedFacets[key]) === 'undefined')
+                        checkedFacets[key] = false;
+
+                    // This item satisfies this filter for this facet
+                    if (item[key] === val)
+                        checkedFacets[key] = true;
                     
                 }
+                
+                // Finally, check that the checkedFacets object has
+                // true in each facet
+                activate = true;
+                for (var k in checkedFacets) {
+                    if (checkedFacets[k] === false) {
+                        activate = false;
+                    }
+                }
+                
+                item.active = activate;
             }
             self._count();
         },

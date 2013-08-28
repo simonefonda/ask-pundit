@@ -25,25 +25,48 @@ self.addEventListener('message', function(e) {
 }, false);
 
 
+// Each item must satisfy at least a filter for each facet
 function filter() {
+
+    // No filters: everything is active
+    if (filters.length === 0) {
+        for (var j in st) {
+            st[j].active = true;
+        }
+        return;
+    }
+    
+    // TODO: optimize this
     for (var j in st) {
-        var item = st[j];
-        item.active = true;
+        var item = st[j],
+            checkedFacets = {};
 
         for (var f in filters) {
             var key = filters[f].key,
                 val = filters[f].value;
-    
-            // When an item is deactivated, we can safely skip all other 
-            // filters for this item
-            if (item.active && item[key] === val) {
-                item.active = false;
-                break;
+              
+            // First time we see a new key, init the object
+            if (typeof(checkedFacets[key]) === 'undefined')
+                checkedFacets[key] = false;
+
+            // This item satisfies this filter for this facet
+            if (item[key] === val)
+                checkedFacets[key] = true;
+            
+        }
+        
+        // Finally, check that the checkedFacets object has
+        // true in each facet
+        activate = true;
+        for (var k in checkedFacets) {
+            if (checkedFacets[k] === false) {
+                activate = false;
             }
         }
+        
+        item.active = activate;
     }
-    
-} // filter()
+}
 
 function count() {
     facetsNums = {};
