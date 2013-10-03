@@ -76,9 +76,13 @@ define(["dojo/_base/declare",
             self.label_short = self.label.length > self.titlecChars ? self.label.substr(0, self.titleChars)+' ..' : self.label,
             self.uri_short = self.uri.length > self.uriChars ? self.uri.substr(7, self.uriChars+7)+' ..' : self.uri,
 
-            self.depic = (ASK.ns.items.image in c[u]) ? c[u][ASK.ns.items.image][0].value: 'http://placehold.it/120x100/ffcc00';
+            self.depic = (ASK.ns.items.image in c[u]) ? c[u][ASK.ns.items.image][0].value: '';
+
             if (self.depic === "http://api.freebase.com/api/trans/image_thumb/guid/")
                 self.depic = 'http://placehold.it/120x100/cc00cc';
+                
+            if (self.depic !== '')
+                self.depic = "<img src='"+self.depic+"'>";
 
             // Page context and Part of: show the first part of the URL
             self.pageContext = (ASK.ns.items.pageContext in c[u]) ? c[u][ASK.ns.items.pageContext][0].value : '#';
