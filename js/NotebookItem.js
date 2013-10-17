@@ -149,8 +149,10 @@ define(["dojo/_base/declare",
                         }
                     }
                     
-                    ASK.nbProgressCounter++;
-                    ASK.updateNBProgress();
+                    if (!self.isOwner) {
+                        ASK.nbProgressCounter++;
+                        ASK.updateNBProgress();
+                    }
                     self.state = 'loaded';
                     
                     self.title_l = self.title.toLowerCase();

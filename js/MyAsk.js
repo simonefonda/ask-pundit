@@ -111,7 +111,7 @@ define(["dojo/_base/declare",
                 var args = {
                     url: url,
                     headers: {"Content-Type":"application/json;charset=UTF-8;"},
-                    putData: JSON.stringify({NotebookName: name}),
+                    data: JSON.stringify({NotebookName: name}),
                     load: function(data) {
                         console.log("Nb rename response: ", data);
                         dojo.query('#my-ask-messages')
@@ -170,7 +170,7 @@ define(["dojo/_base/declare",
             
             var post = {
                 url: ASK.ns.asNotebooks,
-                postData: dojo.toJson({NotebookName: name}),
+                data: dojo.toJson({NotebookName: name}),
                 headers: {"Content-Type":"application/json;charset=UTF-8;"},
                 handleAs: "json",
                 load: function(data) {

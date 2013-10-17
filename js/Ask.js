@@ -309,7 +309,7 @@ define([
                             }(id), delay);
                         }
                         
-                        self.updateNBProgress();
+                        // self.updateNBProgress();
                     });
                 }, 
                 function(error) {

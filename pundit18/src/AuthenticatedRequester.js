@@ -162,9 +162,11 @@ define([
     * normal dojo xhrPost().
     */
     xPost: function(callParams) {
-        dojo.xhrPost(this._setWrappingCallParams(callParams));
+        // dojo.xhrPost(this._setWrappingCallParams(callParams));
+        var args = this._setWrappingCallParams(callParams);
+        xhr.post(args.url, args).then(args.load, args.error);
     },
-	
+
     /**
     * @method xPut
     * @description Performs an HTTP put through an authenticated Ajax call.
@@ -172,9 +174,11 @@ define([
     * normal dojo xhrPut().
     */
     xPut: function(callParams) {
-        dojo.xhrPut(this._setWrappingCallParams(callParams));
+        // dojo.xhrPut(this._setWrappingCallParams(callParams));
+        var args = this._setWrappingCallParams(callParams);
+        xhr.put(args.url, args).then(args.load, args.error);
     },
-	
+
     /**
     * @method xDelete
     * @description Performs an HTTP delete through an authenticated Ajax call.
@@ -182,7 +186,9 @@ define([
     * normal dojo xhrDelete().
     */
     xDelete: function(callParams) {
-        dojo.xhrDelete(this._setWrappingCallParams(callParams));
+        // dojo.xhrDelete(this._setWrappingCallParams(callParams));
+        var args = this._setWrappingCallParams(callParams);
+        xhr.del(args.url, args).then(args.load, args.error);
     },
 
     _initLoginDialog: function() {
