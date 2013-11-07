@@ -24,8 +24,9 @@ define([
         pageContext: '',
         isOwner: false,
         body: '',
-        pageContext_short_length: 30,
+        pageContext_short_length: 25,
         pageContext_short: '',
+        seeAnnotationPage_short_length: 23,
         summary: '',
         templateString: ACAnnotationTemplate,
         postMixInProperties: function() {
@@ -42,6 +43,8 @@ define([
             var foo = new Date(self.createdAt);
             self.createdAt = foo.toDateString();
             
+            self.buildSeeAnnotationPage();
+            
         },
         startup: function() {
             var self = this;
@@ -53,6 +56,42 @@ define([
             self.loadAnnotationItems(self.annotationId);
             self.progressTotal = 0;
             self.progressCounter = 0;
+        },
+        
+        buildSeeAnnotationPage: function() {
+            var self = this,
+                uri = self.pageContext,
+                fragment, query;
+
+            // If there's a fragment, save it and remove it from the uri
+            if (uri.indexOf("#") !== -1) {
+                fragment = uri.substring(uri.indexOf("#") + 1, uri.length);
+                uri = uri.substring(0, uri.indexOf("#"));
+            }
+
+            // If there's a query, decode it and remove it from the uri
+            if (uri.indexOf("?") !== -1) {
+                query = uri.substring(uri.indexOf("?") + 1, uri.length);
+                uri = uri.substring(0, uri.indexOf("?"));
+
+                queryObject = dojo.queryToObject(query);
+                queryObject['pundit-show'] = self.annotationId;
+                query = dojo.objectToQuery(queryObject);
+            }
+
+            // Build back the URI
+            if (query) uri += '?' + query;
+            if (fragment) uri += '#' + fragment;
+
+            self.seeAnnotationPage = uri;
+
+            var start = 0;
+            if (uri.match(/^http:\/\/www\./))
+                start = 11; 
+            else if (uri.match(/^http:\/\//))
+                start = 7;
+            self.seeAnnotationPage_short = uri.substr(start, start + self.seeAnnotationPage_short_length) + " ..";
+            
         },
 
         loadAnnotationItems: function(annotationId) {
