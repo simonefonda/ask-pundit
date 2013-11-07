@@ -61,7 +61,7 @@ define([
         buildSeeAnnotationPage: function() {
             var self = this,
                 uri = self.pageContext,
-                fragment, query;
+                fragment, query, queryObject;
 
             // If there's a fragment, save it and remove it from the uri
             if (uri.indexOf("#") !== -1) {
@@ -70,14 +70,15 @@ define([
             }
 
             // If there's a query, decode it and remove it from the uri
+            queryObject = [];
             if (uri.indexOf("?") !== -1) {
                 query = uri.substring(uri.indexOf("?") + 1, uri.length);
                 uri = uri.substring(0, uri.indexOf("?"));
-
                 queryObject = dojo.queryToObject(query);
-                queryObject['pundit-show'] = self.annotationId;
-                query = dojo.objectToQuery(queryObject);
             }
+
+            queryObject['pundit-show'] = self.annotationId;
+            query = dojo.objectToQuery(queryObject);
 
             // Build back the URI
             if (query) uri += '?' + query;
