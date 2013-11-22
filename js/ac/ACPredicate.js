@@ -68,7 +68,9 @@ define(["dojo/_base/declare",
             
         },
         startup: function() {
-            dojo.query('[data-toggle="popover"]').popover();
+            dojo.query('[data-toggle="popover"]').popover({
+                trigger: 'hover'
+            });
         }
     });
 
