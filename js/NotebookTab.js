@@ -262,14 +262,14 @@ define(["dojo/_base/declare",
         
         updateProgress: function(m) {
             var self = this,
-                perc = parseInt(self.progressCounter*100/self.progressTotal, 10) || 0;
+                perc = parseInt(self.progressCounter*100/self.progressTotal, 10) || 0,
+                tabBar = query('#tab-'+self.notebookId+' .progress .bar')[0];
 
             domStyle.set(query('.progress-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
-            domStyle.set(query('#tab-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
+            if (tabBar)
+                domStyle.set(tabBar, 'width', perc+"%");
             query('.progress-'+self.notebookId+' .progress-percentage').innerHTML(perc+'% '+m);
 
-            console.log('Stica', self.progressCounter, self.progressTotal);
-            
             if ((self.progressTotal > 0 && self.progressCounter === self.progressTotal) || (self.progressTotal === 0 && self.progressCounter === 0)) {
                 domStyle.set(query('.progress-'+self.notebookId)[0], 'display', 'none');
                 domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'block');
@@ -277,7 +277,7 @@ define(["dojo/_base/declare",
 
                 setTimeout(function() {
                     dojo.query('#tab-'+self.notebookId).innerHTML("<i class='icon-book'></i> " + self.label);
-                }, 1000);
+                }, 2000);
             }
 
         }, // updateProgress()

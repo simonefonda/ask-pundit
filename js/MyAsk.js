@@ -150,7 +150,10 @@ define(["dojo/_base/declare",
                 }, 
                 error: function(e) {
                     console.log('We had an error deleting the notebook', e);
-                    dojo.query('#my-ask-messages').append('<p><span class="label label-important">ERROR</span>There was an error deleting the notebook .... :(</p>');
+                    if (e.response && e.response.status === 403)
+                        dojo.query('#my-ask-messages').append('<p><span class="label label-important">ERROR</span> You can not delete your current notebook.</p>');
+                    else
+                        dojo.query('#my-ask-messages').append('<p><span class="label label-important">ERROR</span> There was an error deleting the notebook .... :(</p>');
                 }
             };
             ASK.requester.xDelete(args);
