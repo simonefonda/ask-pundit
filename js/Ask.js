@@ -101,8 +101,8 @@ define([
                     router.go('/notebooks/');
                 } else if (id === "#tab-myAsk") {
                     router.go('/myAsk/');
-                } else if (id === "#tab-stats") {
-                    router.go('/stats/');
+                } else if (id === "#tab-facets") {
+                    router.go('/facets/');
                 } else if (id.match(/\/timeline\//) !== null) {
                     router.go(id);
                 } else if (id.match(/\/myNotebooks\//) !== null) {
@@ -213,11 +213,11 @@ define([
                 query("[href='#tab-myAsk']").tab('show');
             });
 
-            router.register('/stats/', function(evt) {
+            router.register('/facets/', function(evt) {
                 if (!self.statsTabLoaded) 
                     self.loadStatsTab();
                 query('.superHiddenTab').removeClass('superHiddenTab');
-                query("[href='#tab-stats']").tab('show');
+                query("[href='#tab-facets']").tab('show');
                 if (self.statsTabLoaded)
                     self.statsTab.positionFacets(); 
             });

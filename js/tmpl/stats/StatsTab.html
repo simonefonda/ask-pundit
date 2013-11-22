@@ -1,23 +1,28 @@
-<div class="stats-tab stats-lay-{{opts.layout}}">
+<div class="stats-tab stats-lay-{{opts.layout}} {{opts.isEmpty}}">
 
+    <!-- 
     <div class="stats-exports">
         Export json: 
         <a class="btn btn-small all">all</a>
         <a class="btn btn-small selected">selected</a>
     </div>
+    -->
+
+    <h4>Open some notebook to populate this faceted browser.</h4>
 
     <div class="stats-available-facets-container">
-        <h3>Facets</h3>
 
+        <div class="stats-available-facets">
+            Drag these buttons from the active line (above) to the unactive one (below), and vice-versa
+            <div class="stats-active-facets">{{#availableFacets}}{{#active}}<span data-key="{{key}}" draggable="true" class="btn btn-small btn-info">{{label}}</span>{{/active}}{{/availableFacets}}</div>
+            <div class="stats-inactive-facets">{{#availableFacets}}{{^active}}<span data-key="{{key}}" draggable="true" class="btn btn-small">{{label}}</span>{{/active}}{{/availableFacets}}</div>
+        </div>
+
+        <br />
+        Layout
         <div class="stats-controls btn-group">
             <a class="btn btn-small side">Side</a>
             <a class="btn btn-small line btn-info">Top</a>
-        </div>
-
-        <div class="stats-available-facets">
-
-            <div class="stats-active-facets">{{#availableFacets}}{{#active}}<span data-key="{{key}}" draggable="true" class="btn btn-small btn-info">{{label}}</span>{{/active}}{{/availableFacets}}</div>
-            <div class="stats-inactive-facets">{{#availableFacets}}{{^active}}<span data-key="{{key}}" draggable="true" class="btn btn-small">{{label}}</span>{{/active}}{{/availableFacets}}</div>
         </div>
     </div>
 

@@ -1,3 +1,11 @@
+.stats-tab.is-empty {
+    .stats-available-facets-container,
+    .stats-facets-mask,
+    .stats-dataTable-container {
+        display: none; 
+    }
+}
+
 .stats-facets-container,
 .stats-dataTable-container {
     clear: both;
@@ -12,6 +20,11 @@
             text-overflow: ellipsis;
         }
     }
+    
+    .remove-filter.icon-remove {
+        cursor: pointer;
+    }
+    
 }
 
 .superHiddenTab {

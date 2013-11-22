@@ -35,6 +35,7 @@ define(["dojo/_base/declare",
         state: 'loading',
         store: {},
         opts: {
+            isEmpty: 'is-empty',
             autoUpdateTimerLength: 500,
             layout: 'line' // one of 'line', 'side'
         },
@@ -273,6 +274,11 @@ define(["dojo/_base/declare",
             var self = this,
                 ca = ASK._cache['nb-'+nbId],
                 annCon = ca['ann-con-'+annId];
+                
+            if (self.opts.isEmpty === "is-empty") {
+                self.opts.isEmpty = '';
+                domClass.remove(self.domNode, 'is-empty');
+            }
                 
             for (var subject in annCon)
                 for (var predicate in annCon[subject])

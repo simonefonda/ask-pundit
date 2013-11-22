@@ -2,14 +2,15 @@ define(["dojo/_base/declare",
         "dojo/on", 
         "dojo/query",
         "dojo/dom-construct",
-        
+        "dojo/dom-attr",
+
         "dojo/text!ask/tmpl/stats/DataTable.html",
         "lib/mustache",
         "dijit/_WidgetBase",
         "dijit/_TemplatedMixin",
     ],
     function(
-        declare, on, query, domConstruct,
+        declare, on, query, domConstruct, domAttr,
         template, mustache, 
         _WidgetBase, _TemplatedMixin) {
 
@@ -50,7 +51,22 @@ define(["dojo/_base/declare",
         },
         startup: function() {
             var self = this;
+            self.initBehaviors();
         }, // startup()
+        
+        initBehaviors: function() {
+            var self = this;
+            
+            query('.stats-filters-container .remove-filter').on('click', function(e) {
+                var tar = e.target,
+                    key = domAttr.get(tar, 'data-key'),
+                    val = domAttr.get(tar, 'data-value');
+                    
+                ASK.statsTab.toggleFilter(key, val);
+                console.log('Removing filter ', key, val);
+            });
+            
+        },
 
         autoUpdate: function() {
             var self = this;
@@ -94,6 +110,7 @@ define(["dojo/_base/declare",
         },
         renderDataTable: function() {
             this.render();
+            this.initBehaviors();
         }
         
     });

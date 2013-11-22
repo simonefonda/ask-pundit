@@ -1105,80 +1105,89 @@ a.ti-reset-button {
 #pundit-login-modal.pundit-login-state-logged .pundit-login-off, #pundit-login-modal.pundit-login-state-logged .pundit-login-waiting {
   display: none; }
 
-/* line 2, _stats.scss */
+/* line 4, _stats.scss */
+.stats-tab.is-empty .stats-available-facets-container,
+.stats-tab.is-empty .stats-facets-mask,
+.stats-tab.is-empty .stats-dataTable-container {
+  display: none; }
+
+/* line 10, _stats.scss */
 .stats-facets-container,
 .stats-dataTable-container {
   clear: both; }
 
-/* line 7, _stats.scss */
+/* line 15, _stats.scss */
 .stats-data-table table {
   table-layout: fixed; }
-  /* line 9, _stats.scss */
+  /* line 17, _stats.scss */
   .stats-data-table table td {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis; }
+/* line 24, _stats.scss */
+.stats-data-table .remove-filter.icon-remove {
+  cursor: pointer; }
 
-/* line 17, _stats.scss */
+/* line 30, _stats.scss */
 .superHiddenTab {
   opacity: 0.0; }
 
-/* line 22, _stats.scss */
+/* line 35, _stats.scss */
 .stats-available-facets-container .stats-available-facets span {
   border: 0px;
   margin-right: 2px; }
-  /* line 25, _stats.scss */
+  /* line 38, _stats.scss */
   .stats-available-facets-container .stats-available-facets span.drag-enter {
     border-left: 80px solid #666; }
-  /* line 28, _stats.scss */
+  /* line 41, _stats.scss */
   .stats-available-facets-container .stats-available-facets span.drag-dragged {
     opacity: 0.75; }
-/* line 33, _stats.scss */
+/* line 46, _stats.scss */
 .stats-available-facets-container .stats-available-facets .stats-active-facets,
 .stats-available-facets-container .stats-available-facets .stats-inactive-facets {
   background: #d8e5e8;
   padding: 2px; }
-  /* line 37, _stats.scss */
+  /* line 50, _stats.scss */
   .stats-available-facets-container .stats-available-facets .stats-active-facets.drag-enter,
   .stats-available-facets-container .stats-available-facets .stats-inactive-facets.drag-enter {
     background: #2a697a; }
-  /* line 41, _stats.scss */
+  /* line 54, _stats.scss */
   .stats-available-facets-container .stats-available-facets .stats-active-facets ul,
   .stats-available-facets-container .stats-available-facets .stats-inactive-facets ul {
     margin: 0px; }
-    /* line 43, _stats.scss */
+    /* line 56, _stats.scss */
     .stats-available-facets-container .stats-available-facets .stats-active-facets ul li,
     .stats-available-facets-container .stats-available-facets .stats-inactive-facets ul li {
       display: inline-block;
       padding: 2px; }
 
-/* line 55, _stats.scss */
+/* line 68, _stats.scss */
 .stats-lay-line .stats-facets-mask {
   height: 310px;
   overflow-y: hidden;
   margin-top: 10px; }
-  /* line 59, _stats.scss */
+  /* line 72, _stats.scss */
   .stats-lay-line .stats-facets-mask .stats-values-container ul {
     height: 200px; }
 
-/* line 67, _stats.scss */
+/* line 80, _stats.scss */
 .stats-lay-side .stats-dataTable-container {
   margin-left: 320px; }
-/* line 70, _stats.scss */
+/* line 83, _stats.scss */
 .stats-lay-side .stats-facets-mask {
   position: absolute;
   display: block;
   width: 310px; }
-  /* line 74, _stats.scss */
+  /* line 87, _stats.scss */
   .stats-lay-side .stats-facets-mask .stats-facets-container {
     display: block;
     width: 310px; }
-  /* line 78, _stats.scss */
+  /* line 91, _stats.scss */
   .stats-lay-side .stats-facets-mask .stats-facet {
     margin-top: 5px;
     width: 300px; }
 
-/* line 86, _stats.scss */
+/* line 99, _stats.scss */
 .stats-facet {
   float: left;
   display: inline-block;
@@ -1187,49 +1196,49 @@ a.ti-reset-button {
   padding: 2px;
   background: #d8e5e8;
   box-shadow: 3px 3px 3px #999; }
-  /* line 96, _stats.scss */
+  /* line 109, _stats.scss */
   .stats-facet .navbar {
     margin-bottom: 5px; }
-  /* line 99, _stats.scss */
+  /* line 112, _stats.scss */
   .stats-facet .navbar-inner {
     padding-left: 0px;
     padding-right: 0px;
     min-height: 20px; }
-    /* line 103, _stats.scss */
+    /* line 116, _stats.scss */
     .stats-facet .navbar-inner .nav > li > a {
       padding: 4px 10px; }
-  /* line 108, _stats.scss */
+  /* line 121, _stats.scss */
   .stats-facet .facet-controls .sort i {
     display: none; }
-  /* line 109, _stats.scss */
+  /* line 122, _stats.scss */
   .stats-facet .facet-controls .dropdown-menu.sort-count-desc li.sort-count-desc i {
     display: inline-block; }
-  /* line 110, _stats.scss */
+  /* line 123, _stats.scss */
   .stats-facet .facet-controls .dropdown-menu.sort-total-desc li.sort-total-desc i {
     display: inline-block; }
-  /* line 111, _stats.scss */
+  /* line 124, _stats.scss */
   .stats-facet .facet-controls .dropdown-menu.sort-value-asc li.sort-value-asc i {
     display: inline-block; }
-  /* line 114, _stats.scss */
+  /* line 127, _stats.scss */
   .stats-facet .stats-values-container {
     display: inline;
     padding: 0px;
     overflow: auto; }
-    /* line 120, _stats.scss */
+    /* line 133, _stats.scss */
     .stats-facet .stats-values-container .filtered > a,
     .stats-facet .stats-values-container .filtered > a:hover,
     .stats-facet .stats-values-container .filtered > a:focus {
       background-color: #faa732;
       color: #000; }
-    /* line 125, _stats.scss */
+    /* line 138, _stats.scss */
     .stats-facet .stats-values-container ul {
       min-width: 200px;
       overflow: auto;
       max-height: 200px; }
-      /* line 129, _stats.scss */
+      /* line 142, _stats.scss */
       .stats-facet .stats-values-container ul li {
         margin-bottom: 1px; }
-        /* line 131, _stats.scss */
+        /* line 144, _stats.scss */
         .stats-facet .stats-values-container ul li a {
           padding: 3px;
           cursor: pointer;
