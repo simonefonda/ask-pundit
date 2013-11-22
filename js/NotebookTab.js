@@ -111,6 +111,9 @@ define(["dojo/_base/declare",
                 headers: { "Accept": "application/json" },
             }).then(
                 function(data){
+                    
+                    console.log('ara che data ', data);
+                    
                     for (var ann in data) {
                         
                         var cache = ASK._cache['nb-'+self.notebookId];
@@ -145,11 +148,9 @@ define(["dojo/_base/declare",
 
                         self.label = label;
                         dojo.query('#nb-header-'+self.notebookId).innerHTML(self.label);
-                        //dojo.query('#tab-'+self.notebookId).innerHTML((self.isOwner ? "My N" : "N") +": "+ self.label);
-                        //dojo.query('#tab-'+self.notebookId).innerHTML('<div class="progress progress-striped active"><div class="bar" style="width: 40%;"></div></div>');
                     }
 
-                }, 
+                },
                 function(error) {
                     
                     // Deal with common errors
@@ -186,12 +187,17 @@ define(["dojo/_base/declare",
                 handleAs: "json",
                 headers: { "Accept": "application/json" }
             }).then(
-                function(data){
+                function(data, a, b){
 
                     var cache = ASK._cache['nb-'+self.notebookId];
                     cache.annotations = [];
                     cache.annToLoad = [];
                         
+                    // Empty notebook
+                    if (typeof(data) === "string" && data === "") {
+                        self.updateProgress();
+                    }
+                    
                     for (var nb_ann in data) {
                         
                         // TODO: cycle over this (possibly) HUGE response with a worker
@@ -262,7 +268,9 @@ define(["dojo/_base/declare",
             domStyle.set(query('#tab-'+self.notebookId+' .progress .bar')[0], 'width', perc+"%");
             query('.progress-'+self.notebookId+' .progress-percentage').innerHTML(perc+'% '+m);
 
-            if (self.progressTotal > 0 && self.progressCounter === self.progressTotal) {
+            console.log('Stica', self.progressCounter, self.progressTotal);
+            
+            if ((self.progressTotal > 0 && self.progressCounter === self.progressTotal) || (self.progressTotal === 0 && self.progressCounter === 0)) {
                 domStyle.set(query('.progress-'+self.notebookId)[0], 'display', 'none');
                 domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'block');
                 domStyle.set(query('.ask-notebook-more-buttons', self.domNode)[0], 'display', 'block');
