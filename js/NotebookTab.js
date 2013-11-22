@@ -111,9 +111,7 @@ define(["dojo/_base/declare",
                 headers: { "Accept": "application/json" },
             }).then(
                 function(data){
-                    
-                    console.log('ara che data ', data);
-                    
+                                        
                     for (var ann in data) {
                         
                         var cache = ASK._cache['nb-'+self.notebookId];
@@ -235,7 +233,7 @@ define(["dojo/_base/declare",
                 toLoad = ASK._cache['nb-'+self.notebookId].annToLoad;
             
             if (toLoad.length === 0) {
-                console.log('All of them started, yay');
+                // console.log('All of them started, yay');
                 return;
             }
             
@@ -245,12 +243,12 @@ define(["dojo/_base/declare",
             
             if (current > self.opts.maxRequests) {
                 self.currentDelay += self.opts.delayInc;
-                console.log('SLOWED DOWN ', id, self.currentDelay, current);
+                // console.log('SLOWED DOWN ', id, self.currentDelay, current);
             } else if (current < self.opts.minRequests && self.currentDelay >= self.opts.startingDelay + self.opts.delayInc) {
                 self.currentDelay = Math.max(self.opts.startingDelay, self.currentDelay - 2*self.opts.delayInc);
-                console.log('SPEEDED UP ', id, self.currentDelay, current);
+                // console.log('SPEEDED UP ', id, self.currentDelay, current);
             } else {
-                console.log('Loading next at current pace', id, self.currentDelay, current);
+                // console.log('Loading next at current pace', id, self.currentDelay, current);
             }
             
             setTimeout(function() {

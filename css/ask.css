@@ -1114,7 +1114,7 @@ a.ti-reset-button {
 /* line 10, _stats.scss */
 .stats-facets-container,
 .stats-dataTable-container {
-  clear: both; }
+  /* clear: both; */ }
 
 /* line 15, _stats.scss */
 .stats-data-table table {
@@ -1175,7 +1175,7 @@ a.ti-reset-button {
   margin-left: 320px; }
 /* line 83, _stats.scss */
 .stats-lay-side .stats-facets-mask {
-  position: absolute;
+  /* position: absolute; */
   display: block;
   width: 310px; }
   /* line 87, _stats.scss */

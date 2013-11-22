@@ -8,7 +8,7 @@
 
 .stats-facets-container,
 .stats-dataTable-container {
-    clear: both;
+    /* clear: both; */
 }
 
 .stats-data-table {
@@ -81,7 +81,7 @@
         margin-left: 320px;
     }
     .stats-facets-mask {
-        position: absolute;
+        /* position: absolute; */
         display: block;
         width: 310px;
         .stats-facets-container {

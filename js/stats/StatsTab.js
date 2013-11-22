@@ -37,7 +37,7 @@ define(["dojo/_base/declare",
         opts: {
             isEmpty: 'is-empty',
             autoUpdateTimerLength: 500,
-            layout: 'line' // one of 'line', 'side'
+            layout: 'side' // one of 'line', 'side'
         },
         // _skipNodeCache forces dojo to call _stringRepl, thus using mustache
         _skipNodeCache: true,
@@ -312,7 +312,9 @@ define(["dojo/_base/declare",
                             authorURI: self.get(ca['ann-met-'+annId], 'http://purl.org/dc/elements/1.1/creator') || 'uknown author',
                             authorLabel: ca['ACAnn-'+annId].createdBy,
 
-                            pageContext: ca['ACAnn-'+annId].pageContext
+                            pageContext: ca['ACAnn-'+annId].pageContext,
+                            
+                            seeAnnotation: ca['ACAnn-'+annId].seeAnnotationPage
                             
                             // TODO: add more stuff
                         });
@@ -501,7 +503,6 @@ define(["dojo/_base/declare",
         
         _update: function() {
             var self = this;
-            console.log('Update.. now!');
 
             if (self.worker) {
                 self.worker.postMessage({
