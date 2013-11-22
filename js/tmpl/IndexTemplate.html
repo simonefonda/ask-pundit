@@ -13,21 +13,20 @@
                 <div class="navbar">
                     <div class="navbar-inner">
 
-                        <div class="nav navbar">
-                            <div class="btn-group notebooks-sort">
-                                <button class="notebooks-sort-title btn">Title</button>
-                                <button class="notebooks-sort-author btn">Author</button>
-                                <button class="notebooks-sort-date btn">Creation date</button>
-                            </div>
-                        </div>
-                    
                         <div class="nav navbar-form">
                           <input id="tabNotebooksSearchInput" autocomplete="off" type="text" class="input-medium" placeholder="Search ..">
                           <ul class="author-list typeahead dropdown-menu"></ul>
                           <button id="tabNotebooksResetButton" class="btn btn-info">Reset</button>
                         </div>
-                    
-                    
+
+                        <div class="nav navbar pull-right notebooks-sort">
+                            <span class="label label-success">Sort by</span>
+                            <div class="btn-group">
+                                <button class="notebooks-sort-title btn">Title</button>
+                                <button class="notebooks-sort-author btn">Author</button>
+                                <button class="notebooks-sort-date btn">Creation date</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

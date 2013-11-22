@@ -422,8 +422,13 @@ div.nb-item {
 }
 
 
+
+.notebooks-sort {
+    display: block;
+}
+
+
 @import "ask_timeline";
 @import "my_ask";
-/* TODO: move this in pundit.scss? */
 @import "pundit_login_modal";
 @import "stats";
