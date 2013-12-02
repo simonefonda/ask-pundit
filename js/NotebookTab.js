@@ -285,11 +285,16 @@ define(["dojo/_base/declare",
             var self = this,
                 annotationId = data['http://purl.org/pundit/ont/ao#id'][0].value,
                 createdAt = data['http://purl.org/dc/terms/created'][0].value,
-                pageContext = data['http://purl.org/pundit/ont/ao#hasPageContext'][0].value,
+                pageContext,
                 createdBy = data['http://purl.org/dc/elements/1.1/creator'][0].value,
                 cache = ASK._cache['nb-'+self.notebookId],
                 placeAt = dojo.query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0];
-                     
+
+            if ('http://purl.org/pundit/ont/ao#hasPageContext' in data)
+                pageContext = data['http://purl.org/pundit/ont/ao#hasPageContext'][0].value;
+            else
+                pageContext = "http://No.PageContext.error";
+
             self.progressLoading++;
             
             // Annotation item

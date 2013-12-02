@@ -214,11 +214,11 @@ define(["dojo/_base/declare",
                 context = encodeURIComponent(dojo.toJson(self._extractContext(objectData[n]))),
                 url = lang.replace(ASK.ns.asCreateAnnotation, { id: id, context: context });
                         
-                console.log('Posting new annotation', context);
+                console.log('Posting new annotation', context, objectData[n]);
                 
                 var post = {
                     url: url,
-                    postData: dojo.toJson(objectData[n]),
+                    data: dojo.toJson(objectData[n]),
                     headers: {"Content-Type":"application/json;charset=UTF-8;"},
                     handleAs: "json",
                     load: function(data) {
