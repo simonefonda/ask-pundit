@@ -66,7 +66,7 @@ define(["dojo/_base/declare",
             ASK._cache.notebooks.push(self.notebookId);
 
             self.progressCounter = 0;
-            self.progressTotal = 0;
+            self.progressTotal = -1;
             self.progressLoading = 0;
 
             self.loadNotebookMetadata();
@@ -193,6 +193,8 @@ define(["dojo/_base/declare",
                         
                     // Empty notebook
                     if (typeof(data) === "string" && data === "") {
+                        console.log('?? EMPTY Notebook ??!!1!');
+                        self.progressTotal = 0;
                         self.updateProgress();
                     }
                     
@@ -209,8 +211,8 @@ define(["dojo/_base/declare",
                     
                     } // for
                     
-                    if (cache.annToLoad.length > 100)
-                        domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'none');
+                    self.progressTotal = cache.annToLoad.length;
+                    domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'none');
                     self.loadNext();
                 }, 
                 function(error) {
@@ -243,12 +245,12 @@ define(["dojo/_base/declare",
             
             if (current > self.opts.maxRequests) {
                 self.currentDelay += self.opts.delayInc;
-                // console.log('SLOWED DOWN ', id, self.currentDelay, current);
+                console.log('SLOWED DOWN ', id, self.currentDelay, current, toLoad.length+ " left");
             } else if (current < self.opts.minRequests && self.currentDelay >= self.opts.startingDelay + self.opts.delayInc) {
                 self.currentDelay = Math.max(self.opts.startingDelay, self.currentDelay - 2*self.opts.delayInc);
-                // console.log('SPEEDED UP ', id, self.currentDelay, current);
+                console.log('SPEEDED UP ', id, self.currentDelay, current, toLoad.length+ " left");
             } else {
-                // console.log('Loading next at current pace', id, self.currentDelay, current);
+                console.log('Loading next at current pace', id, self.currentDelay, current, toLoad.length+ " left");
             }
             
             setTimeout(function() {
@@ -269,6 +271,9 @@ define(["dojo/_base/declare",
             query('.progress-'+self.notebookId+' .progress-percentage').innerHTML(perc+'% '+m);
 
             if ((self.progressTotal > 0 && self.progressCounter === self.progressTotal) || (self.progressTotal === 0 && self.progressCounter === 0)) {
+                
+                console.log('Update progress is done!', self.progressTotal, self.progressCounter);
+                
                 domStyle.set(query('.progress-'+self.notebookId)[0], 'display', 'none');
                 domStyle.set(query('#notebook-tab-'+self.notebookId+' .ask-notebook-item-annotations')[0], 'display', 'block');
                 domStyle.set(query('.ask-notebook-more-buttons', self.domNode)[0], 'display', 'block');
