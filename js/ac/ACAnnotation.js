@@ -188,14 +188,20 @@ define([
                                         ' [data-askreplace="objects-'+annotationId+'-'+BASE64.encode(subject)+
                                         '-'+BASE64.encode(predicate)+'"]';
 
-                                var obj = new ACAnnotationObject({
-                                    notebookId: self.notebookId,
-                                    annotationId: annotationId,
-                                    uri: object_value,
-                                    uri_enc: BASE64.encode(object_value),
-                                    original: data[subject][predicate][object]
-                                }).placeAt(dojo.query(sel)[0]);
-                                _ob.push(obj);
+                                // DEBUG: some VERY broken annotation just breaks this, ranting about
+                                // an invalid template ... maybe there's some missing stuff?!
+                                try {
+                                    var obj = new ACAnnotationObject({
+                                        notebookId: self.notebookId,
+                                        annotationId: annotationId,
+                                        uri: object_value,
+                                        uri_enc: BASE64.encode(object_value),
+                                        original: data[subject][predicate][object]
+                                    }).placeAt(dojo.query(sel)[0]);
+                                    _ob.push(obj);
+                                } catch(e) {
+                                    console.log('OUCH, error with tha object');
+                                }
                             
                             } // for object in data[subject][predicate]
                         } // for predicate in data[subject]

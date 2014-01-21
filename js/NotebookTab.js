@@ -245,12 +245,12 @@ define(["dojo/_base/declare",
             
             if (current > self.opts.maxRequests) {
                 self.currentDelay += self.opts.delayInc;
-                console.log('SLOWED DOWN ', id, self.currentDelay, current, toLoad.length+ " left");
+                // console.log('SLOWED DOWN ', id, self.currentDelay, current, toLoad.length+ " left");
             } else if (current < self.opts.minRequests && self.currentDelay >= self.opts.startingDelay + self.opts.delayInc) {
                 self.currentDelay = Math.max(self.opts.startingDelay, self.currentDelay - 2*self.opts.delayInc);
-                console.log('SPEEDED UP ', id, self.currentDelay, current, toLoad.length+ " left");
+                // console.log('SPEEDED UP ', id, self.currentDelay, current, toLoad.length+ " left");
             } else {
-                console.log('Loading next at current pace', id, self.currentDelay, current, toLoad.length+ " left");
+                // console.log('Loading next at current pace', id, self.currentDelay, current, toLoad.length+ " left");
             }
             
             setTimeout(function() {
