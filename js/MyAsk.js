@@ -248,14 +248,23 @@ define(["dojo/_base/declare",
                 if (ASK.ns.rdf_type in ob.items[i]) {
                     var types = ob.items[i][ASK.ns.rdf_type];
                     
-                    for (var j = types.length; j--;) {
-                        if (types[j].value === ASK.ns.fragments.image) {
-                            ret.targets.push(ob.items[i]["http://purl.org/pundit/ont/ao#parentItemXP"][0].value);
-                            ret.targets.push(ob.items[i]["http://purl.org/dc/terms/isPartOf"][0].value);
-                            ret.pageContext = ob.items[i]["http://purl.org/pundit/ont/ao#hasPageContext"][0].value;
-                        }
-                    }
-                }
+					for (var j = types.length; j--;) {
+											if (types[j].value === ASK.ns.fragments.image) {
+					                            ret.targets.push(ob.items[i]["http://purl.org/pundit/ont/ao#parentItemXP"][0].value);
+					                            ret.targets.push(ob.items[i]["http://purl.org/dc/terms/isPartOf"][0].value);
+					                            ret.pageContext = ob.items[i]["http://purl.org/pundit/ont/ao#hasPageContext"][0].value;
+					                        } else {
+					                            //XXX: hack to import WAB ontology as annotations: to be fixed!
+					                            // if it is not an image fragment and has a pageContext attached...
+					                            if ("http://purl.org/pundit/ont/ao#hasPageContext" in ob.items[i]) {
+					                                    ret.pageContext = ob.items[i]["http://purl.org/pundit/ont/ao#hasPageContext"][0].value;
+					                                    ret.targets.push(i);
+					                            }
+					                        }
+					                    }
+					                }
+				
+				
             
             return ret;
         },
